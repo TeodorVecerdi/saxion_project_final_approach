@@ -1,0 +1,18 @@
+{
+  "name": "saxion_project_final_approach_server",
+  "version": "1.0.0",
+  "description": "Server for the Project Final Approach Course at Saxion",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bufferutil": "^4.0.1",
+    "socket.io": "1.1.0",
+    "socket.io-client": "1.1.0",
+    "utf-8-validate": "^5.0.2"
+  }
+}
