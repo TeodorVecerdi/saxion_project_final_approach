@@ -1,0 +1,9 @@
+bin/
+obj/
+/packages/
+.idea/
+.vs/ProjectLiftOff/v16/Server/sqlite3/db.lock
+.vs/ProjectLiftOff/v16/Server/sqlite3/storage.ide
+.vs/ProjectLiftOff/v16/Server/sqlite3/storage.ide-shm
+.vs/ProjectLiftOff/v16/Server/sqlite3/storage.ide-wal
+.vs/ProjectLiftOff/v16/.suo

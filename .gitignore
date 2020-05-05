@@ -1,3 +1,11 @@
 # Project exclude paths
 /node_modules/
 .idea/
+client/Game/bin/
+client/GXPEngine/bin/
+client/Game/obj/
+client/GXPEngine/obj/
+client/packages/
+client/.idea/
+client/.vs/
+client/.idea

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GXPEngine", "GXPEngine\GXPEngine.csproj", "{B5FCB6A7-B775-46CF-941E-5F4F8DA125B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{20748A35-7609-4853-BA58-04783F73E5E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5FCB6A7-B775-46CF-941E-5F4F8DA125B9}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B5FCB6A7-B775-46CF-941E-5F4F8DA125B9}.Debug|Any CPU.Build.0 = Debug|x86
+		{B5FCB6A7-B775-46CF-941E-5F4F8DA125B9}.Release|Any CPU.ActiveCfg = Release|x86
+		{B5FCB6A7-B775-46CF-941E-5F4F8DA125B9}.Release|Any CPU.Build.0 = Release|x86
+		{20748A35-7609-4853-BA58-04783F73E5E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20748A35-7609-4853-BA58-04783F73E5E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20748A35-7609-4853-BA58-04783F73E5E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20748A35-7609-4853-BA58-04783F73E5E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB79EEAC-EB97-44DA-A83E-73F599EC5E58}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{EB79EEAC-EB97-44DA-A83E-73F599EC5E58}.Debug|Any CPU.Build.0 = Debug|x86
+		{EB79EEAC-EB97-44DA-A83E-73F599EC5E58}.Release|Any CPU.ActiveCfg = Release|x86
+		{EB79EEAC-EB97-44DA-A83E-73F599EC5E58}.Release|Any CPU.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal
