@@ -9,3 +9,4 @@ client/packages/
 client/.idea/
 client/.vs/
 client/.idea
+test_client.js
