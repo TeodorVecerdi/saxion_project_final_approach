@@ -4,15 +4,19 @@
   "description": "Server for the Project Final Approach Course at Saxion",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "gcloud app deploy",
+    "start": "node server.js",
+    "install": "npm install"
   },
   "keywords": [],
-  "author": "",
+  "author": "Teodor Vecerdi",
   "license": "ISC",
   "dependencies": {
     "bufferutil": "^4.0.1",
     "socket.io": "1.1.0",
-    "socket.io-client": "1.1.0",
     "utf-8-validate": "^5.0.2"
+  },
+  "devDependencies": {
+    "socket.io-client": "latest"
   }
 }
