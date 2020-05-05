@@ -9,7 +9,7 @@
         <ProjectGuid>{20748A35-7609-4853-BA58-04783F73E5E6}</ProjectGuid>
         <OutputType>Exe</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Game</RootNamespace>
+        <RootNamespace>game</RootNamespace>
         <AssemblyName>Game</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
@@ -56,47 +56,15 @@
         </ProjectReference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="final_assignment\Components\Arrow.cs" />
-        <Compile Include="final_assignment\Components\Ball.cs" />
-        <Compile Include="final_assignment\Components\CircleCollider.cs" />
-        <Compile Include="final_assignment\Components\CollisionInfo.cs" />
-        <Compile Include="final_assignment\Components\LineSegment.cs" />
-        <Compile Include="final_assignment\Components\Quad.cs" />
-        <Compile Include="final_assignment\Environment\DelaunayVoronoi\Delaunay.cs" />
-        <Compile Include="final_assignment\Environment\DelaunayVoronoi\Edge.cs" />
-        <Compile Include="final_assignment\Environment\DelaunayVoronoi\Point.cs" />
-        <Compile Include="final_assignment\Environment\DelaunayVoronoi\Triangle.cs" />
-        <Compile Include="final_assignment\Environment\DelaunayVoronoi\Voronoi.cs" />
-        <Compile Include="final_assignment\Environment\DestructibleBlock.cs" />
-        <Compile Include="final_assignment\Environment\DestructibleChunk.cs" />
-        <Compile Include="final_assignment\Environment\DestructibleLineSegment.cs" />
-        <Compile Include="final_assignment\Environment\DoubleDestructibleLineSegment.cs" />
-        <Compile Include="final_assignment\MyGame.cs" />
-        <Compile Include="final_assignment\Scenes\Level1.cs" />
-        <Compile Include="final_assignment\Scenes\Level2.cs" />
-        <Compile Include="final_assignment\Scenes\Scene.cs" />
-        <Compile Include="final_assignment\Scenes\Tutorial.cs" />
-        <Compile Include="final_assignment\Tanks\AI\DumbEnemy.cs" />
-        <Compile Include="final_assignment\Tanks\AI\TankAIBase.cs" />
-        <Compile Include="final_assignment\Tanks\AI\Player.cs" />
-        <Compile Include="final_assignment\Tanks\AI\SmartEnemy.cs" />
-        <Compile Include="final_assignment\Tanks\AI\TutorialEnemy.cs" />
-        <Compile Include="final_assignment\Tanks\Components\AttackIndicator.cs" />
-        <Compile Include="final_assignment\Tanks\Components\Barrel.cs" />
-        <Compile Include="final_assignment\Tanks\Components\Bullet.cs" />
-        <Compile Include="final_assignment\Tanks\Components\Tank.cs" />
-        <Compile Include="final_assignment\Utils\CollisionUtils.cs" />
-        <Compile Include="final_assignment\Utils\Debug.cs" />
-        <Compile Include="final_assignment\Utils\MathUtils.cs" />
-        <Compile Include="final_assignment\Utils\Rand.cs" />
+        <Compile Include="App.cs" />
         <Compile Include="Globals.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Vec2.cs" />
+        <Compile Include="Utils\Debug.cs" />
+        <Compile Include="Utils\MathUtils.cs" />
+        <Compile Include="Utils\Rand.cs" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="data\**" />
-        <Content Include="final_assignment\Environment\DelaunayVoronoi\LICENSE.txt" />
-        <Content Include="final_assignment\Environment\DelaunayVoronoi\README.md" />
         <Content Include="lib\**" />
     </ItemGroup>
     <ItemGroup>

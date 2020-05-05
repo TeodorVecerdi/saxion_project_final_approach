@@ -1,11 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Text;
 using GXPEngine;
 
-namespace physics_programming.final_assignment.Utils {
+namespace game.utils {
     /// <summary>
     /// Debug class with utility methods: Log, LogWarning, LogError and Assert
     /// </summary>
