@@ -1,6 +1,8 @@
 # Project exclude paths
 server/node_modules/
-.idea/
+server/.idea/
+server/test_client.js
+
 client/Game/bin/
 client/GXPEngine/bin/
 client/Game/obj/
@@ -9,4 +11,3 @@ client/packages/
 client/.idea/
 client/.vs/
 client/.idea
-server/test_client.js
