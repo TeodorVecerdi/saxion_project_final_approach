@@ -2,121 +2,127 @@ const io = require('socket.io');
 let port = process.env.PORT || 8080;
 const server = io.listen(port);
 
+const Player = require('./models/Player');
+const Room = require('./models/Room');
+
 let players = {};
-let onlinePlayers = {};
+let rooms = {};
 
 let socketIdToSocket = {};
 let socketIdToPlayerId = {};
 let playerIdToSocketId = {};
 
-// TODO: HANDLE REQUESTS /////////////
-// online_players_request ////////////
-// TODO: IMPLEMENT ACCOUNT CREATION //
-
 server.on("connection", socket => {
     console.info(`Client connected [id=${socket.id}]`);
+    socketIdToSocket[socket.id] = socket;
 
-    socket.on('data_request', data => {
-        if (players.hasOwnProperty(data)) {
-            onlinePlayers[data] = true;
-            socketIdToPlayerId[socket.id] = data;
-            socketIdToSocket[socket.id] = socket;
-            playerIdToSocketId[data] = socket.id;
+    socket.emit("request_account");
 
-            socket.emit('data_request_success', players[data]);
-            broadcast(socket, 'client_initialised', players[data]);
-        } else {
-            socket.emit('data_request_fail');
+    socket.on("request_account_success", data => {
+        let accountData = JSON.parse(data);
+        let player = new Player(accountData['username'], accountData['avatar'], accountData['guid'], socket.id, "none");
+        players[player.guid] = player;
+
+        socketIdToPlayerId[socket.id] = player.guid;
+        playerIdToSocketId[player.guid] = socket.id;
+    });
+
+    socket.on("request_rooms", data => {
+        socket.emit("request_rooms_success", roomsToJSON());
+    });
+
+    socket.on("create_room", data => {
+        let roomData = JSON.parse(data);
+        let player = players[socketIdToPlayerId[socket.id]];
+        let room = new Room(roomData['guid'], roomData['name'], roomData['desc'], "", roomData['pub'], roomData['nsfw']);
+        if (room.pub === false) {
+            room.code = roomData['code'];
+        }
+        room.players.push(player);
+        player.room = room.guid;
+        socket.emit("create_room_success", roomData);
+    });
+
+    socket.on("join_room", data => {
+        let roomData = JSON.parse(data);
+        let room = rooms[roomData['guid']];
+        let player = players[socketIdToPlayerId[socket.id]];
+
+        if (room === undefined)
+            socket.emit("join_room_failed", {'code': 0, 'message': 'Room does not exist.'});
+        else if (room.pub === false && roomData['code'] !== room.code)
+            socket.emit("join_room_failed", {'code': 1, 'message': 'Invalid room code.'});
+        else {
+            room.players.push(player.guid);
+            player.room = room.guid;
+            socket.emit("join_room_success", {'guid': room.guid});
+            broadcast(socket, 'client_joined', player.toJSON(), room.guid);
         }
     });
-    socket.on('initialised', data => {
-        let playerData = JSON.parse(data);
 
-        onlinePlayers[playerData["id"]] = true;
-        socketIdToPlayerId[socket.id] = playerData["id"];
-        socketIdToSocket[socket.id] = socket;
-        playerIdToSocketId[playerData["id"]] = socket.id;
-
-        //TODO: Add more fields here --//
-        players[playerData["id"]] = {
-            id: playerData["id"],
-            name: playerData["name"],
-            position: playerData["position"]
-        };
-        //TODO: -----------------------//
-        broadcast(socket, 'client_initialised', players[playerData["id"]]);
+    socket.on("send_message", data => {
+        broadcast(socket, "new_message", {'message': data, 'from': players[socketIdToPlayerId[socket.id]].toJSON()})
     });
 
     socket.on("disconnect", data => {
         console.info(`Client gone [id=${socket.id}]`);
-        broadcast(socket, 'client_disconnected', {'playerId': socketIdToPlayerId[socket.id]});
-
         let socketId = socket.id;
         let playerId = socketIdToPlayerId[socketId];
+        broadcast(socket, 'client_disconnected', players[playerId].toJSON(), players[playerId].room);
 
-        onlinePlayers[playerId] = false;
+        delete players[playerId];
         delete socketIdToPlayerId[socketId];
         delete socketIdToSocket[socketId];
         delete playerIdToSocketId[playerId];
-    });
 
-    socket.on('updated', data => {
-        let playerData = JSON.parse(data);
-        let playerId = socketIdToPlayerId[socket.id];
-        if (players[playerId] === undefined) return;
-
-        //TODO: Add more fields here --//
-        players[playerId]["position"] = playerData["position"];
-        //TODO: -----------------------//
-
-        broadcast(socket, 'client_updated', players[playerId]);
-    });
-
-    socket.on('online_players_request', data => {
-        let playerId = socketIdToPlayerId[socket.id];
-        console.info(`Player with GUID ${playerId} is requesting online players`);
-        let onlinePlayersData = {};
-        for(let key in onlinePlayers) {
-            if(onlinePlayers.hasOwnProperty(key)) {
-                if(onlinePlayers[key] === true && key !== playerId) {
-                    onlinePlayersData[key] = players[key];
-                }
+        let roomsToDelete = [];
+        for (let guid in rooms) {
+            let room = rooms[guid];
+            room.players = room.players.filter(player => player.guid !== playerId);
+            if (!room.players || !room.players.length) {
+                roomsToDelete.push(guid);
             }
         }
-        console.info(`Sending online players: ${JSON.stringify(onlinePlayersData)}`);
-        socket.emit('online_players', onlinePlayersData);
-    });
-
-    socket.on('debug', data => {
-        console.log(getDebugData());
-        socket.emit('debug', getDebugData())
+        for (let guid in roomsToDelete) {
+            // noinspection JSUnfilteredForInLoop
+            delete rooms[guid];
+        }
     });
 });
 
-let getDebugData = () => {
-    return {
-        'players': players,
-        'onlinePlayers': onlinePlayers,
-        's2p': socketIdToPlayerId
-    };
-};
-
-let broadcast = (socket, message, data) => {
-    for (let key in onlinePlayers) {
-        if (onlinePlayers.hasOwnProperty(key)) {
-            let targetSocketId = playerIdToSocketId[key];
+let broadcast = (socket, message, data, room = "") => {
+    for (let guid in players) {
+        if (players.hasOwnProperty(guid)) {
+            let targetSocketId = playerIdToSocketId[guid];
             let targetSocket = socketIdToSocket[targetSocketId];
-            if(targetSocket === undefined) continue;
+            if (targetSocket === undefined) continue;
 
-            let value = onlinePlayers[key];
-            if (value === true && (socket === undefined || targetSocketId !== socket.id)) {
+            let player = players[guid];
+            if ((room === "" || player.room === room) && (socket === undefined || targetSocketId !== socket.id)) {
                 targetSocket.emit(message, data);
-                // console.info(`broadcasted ${message} to [pID,sID] : [${key},${targetSocket.id}]`);
             }
         }
     }
 };
-setInterval(() => {
+
+let roomsToJSON = () => {
+    let jsonRooms = {};
+    for (let key in rooms) {
+        jsonRooms[key] = rooms[key].toJSON();
+    }
+    return jsonRooms;
+};
+
+let playersToJSON = () => {
+    let jsonPlayers = {};
+    for (let key in players) {
+        jsonPlayers[key] = players[key].toJSON();
+    }
+    return jsonPlayers;
+};
+
+/*setInterval(() => {
     broadcast(undefined, 'update', {});
-}, 25);
+}, 25);*/
+
 console.log(`Server started on port ${port}`);
