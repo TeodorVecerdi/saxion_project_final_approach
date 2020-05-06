@@ -1,8 +1,6 @@
 using System;
 using System.Drawing;
-using game.network;
 using GXPEngine;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
 
@@ -57,72 +55,31 @@ namespace game {
             Socket = IO.Socket("http://localhost:8080");
             Socket.On("connect", () => {
                 Debug.LogInfo("Requesting own data");
-                Socket.Emit("data_request", GUID);
             });
             Socket.On("disconnect", (data) => { Console.WriteLine($"Disconnected. Reason: {data}"); });
-            Socket.On("data_request_success", data => {
-                var playerData = (JObject) data;
-                var x = playerData["position"]["x"].Value<float>();
-                var y = playerData["position"]["y"].Value<float>();
-                Position.Set(x, y);
-                
-                Debug.LogInfo("Requesting online players");
-                Socket.Emit("online_players_request");
-            });
-            Socket.On("data_request_fail", data => {
-                var playerData = new JObject();
-                playerData["id"] = GUID;
-                playerData["name"] = Name;
-                playerData["position"] = new JObject();
-                playerData["position"]["x"] = Position.x;
-                playerData["position"]["y"] = Position.y;
-                Socket.Emit("initialised", playerData.ToString(Formatting.None));
-                Debug.LogInfo("Requesting online players");
-                Socket.Emit("online_players_request");
-            });
             Socket.On("debug", data => { Console.WriteLine("DEBUG DATA:\n{0}", data); });
-            Socket.On("update", data => {
-                var playerData = new JObject();
-                playerData["position"] = new JObject();
-                playerData["position"]["x"] = Position.x;
-                playerData["position"]["y"] = Position.y;
-                Socket.Emit("updated", playerData.ToString(Formatting.None));
-            });
-            
             
             // OTHER CLIENTS
-            Socket.On("online_players", data => {
-                var onlinePlayers = (JObject) data;
-                foreach (var onlinePlayer in onlinePlayers) {
-                    var playerDataJObject = (JObject) onlinePlayer.Value;
-                    var playerData = new NetworkData(
-                        playerDataJObject["name"].Value<string>(),
-                        playerDataJObject["id"].Value<string>(),
-                        new Vector2(playerDataJObject["position"]["x"].Value<float>(), playerDataJObject["position"]["y"].Value<float>())
-                    );
-                    NetworkManager.Instance.InitialiseClient(playerData);
-                }
-            });
-            Socket.On("client_initialised", data => {
+
+            Socket.On("client_joined", data => {
                 var playerDataJObject = (JObject) data;
-                var playerData = new NetworkData(
+                // TODO: HANDLE client_joined
+
+                /*var playerData = new NetworkData(
                     playerDataJObject["name"].Value<string>(),
                     playerDataJObject["id"].Value<string>(),
                     new Vector2(playerDataJObject["position"]["x"].Value<float>(), playerDataJObject["position"]["y"].Value<float>())
                 );
-                NetworkManager.Instance.InitialiseClient(playerData);
+                NetworkManager.Instance.InitialiseClient(playerData);*/
             });
 
             Socket.On("client_disconnected", data => {
                 var playerId = ((JObject) data)["playerId"].Value<string>();
-                NetworkManager.Instance.RemoveClient(playerId);
+                // TODO: HANDLE client_disconnected
+                
+                // NetworkManager.Instance.RemoveClient(playerId);
             });
-
-            Socket.On("client_updated", data => {
-                var playerDataJObject = (JObject) data;
-                var playerData = new NetworkData(guid: playerDataJObject["id"].Value<string>(), position: new Vector2(playerDataJObject["position"]["x"].Value<float>(), playerDataJObject["position"]["y"].Value<float>()));
-                NetworkManager.Instance.UpdateClient(playerData);
-            });
+            
         }
 
         ~Player() {
