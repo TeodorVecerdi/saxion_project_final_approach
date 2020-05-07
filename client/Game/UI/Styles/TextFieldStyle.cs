@@ -19,38 +19,44 @@ namespace game.ui {
         private float leftMarginFocused;
         private float textSizeNormal;
         private float textSizeFocused;
+        private float caretWidthNormal;
+        private float caretWidthFocused;
 
-        public Color Text;
-        public Color PlaceholderText;
-        public Color Background;
-        public Color Border;
-        public Color Caret;
+        public Color TextColor;
+        public Color PlaceholderTextColor;
+        public Color BackgroundColor;
+        public Color BorderColor;
+        public Color CaretColor;
         public float BorderSize;
         public float LeftMargin;
         public float TextSize;
+        public float CaretWidth;
 
         public void Normal() {
-            Text = textNormal;
-            PlaceholderText = placeholderTextNormal;
-            Background = backgroundNormal;
-            Border = borderNormal;
-            Caret = caretNormal;
+            TextColor = textNormal;
+            PlaceholderTextColor = placeholderTextNormal;
+            BackgroundColor = backgroundNormal;
+            BorderColor = borderNormal;
+            CaretColor = caretNormal;
             BorderSize = borderSizeNormal;
             LeftMargin = leftMarginNormal;
             TextSize = textSizeNormal;
+            CaretWidth = caretWidthNormal;
         }
+
         public void Focus() {
-            Text = textFocused;
-            PlaceholderText = placeholderTextFocused;
-            Background = backgroundFocused;
-            Border = borderFocused;
-            Caret = caretFocused;
+            TextColor = textFocused;
+            PlaceholderTextColor = placeholderTextFocused;
+            BackgroundColor = backgroundFocused;
+            BorderColor = borderFocused;
+            CaretColor = caretFocused;
             BorderSize = borderSizeFocused;
             LeftMargin = leftMarginFocused;
             TextSize = textSizeFocused;
+            CaretWidth = caretWidthFocused;
         }
 
-        public TextFieldStyle(Color textNormal = default, Color textFocused = default, Color placeholderTextNormal = default, Color placeholderTextFocused = default, Color backgroundNormal = default, Color backgroundFocused = default, Color borderNormal = default, Color borderFocused = default, Color caretNormal = default, Color caretFocused = default, float borderSizeNormal = default, float borderSizeFocused = default, float leftMarginNormal = default, float leftMarginFocused = default, float textSizeNormal = default, float textSizeFocused = default) : this() {
+        public TextFieldStyle(Color textNormal = default, Color textFocused = default, Color placeholderTextNormal = default, Color placeholderTextFocused = default, Color backgroundNormal = default, Color backgroundFocused = default, Color borderNormal = default, Color borderFocused = default, Color caretNormal = default, Color caretFocused = default, float borderSizeNormal = default, float borderSizeFocused = default, float leftMarginNormal = default, float leftMarginFocused = default, float textSizeNormal = default, float textSizeFocused = default, float caretWidthNormal = default, float caretWidthFocused = default) : this() {
             this.textNormal = textNormal == default ? Default.textNormal : textNormal;
             this.textFocused = textFocused == default ? Default.textFocused : textFocused;
             this.placeholderTextNormal = placeholderTextNormal == default ? Default.placeholderTextNormal : placeholderTextNormal;
@@ -67,6 +73,8 @@ namespace game.ui {
             this.leftMarginFocused = leftMarginFocused == default ? Default.leftMarginFocused : leftMarginFocused;
             this.textSizeNormal = textSizeNormal == default ? Default.textSizeNormal : textSizeNormal;
             this.textSizeFocused = textSizeFocused == default ? Default.textSizeFocused : textSizeFocused;
+            this.caretWidthNormal = caretWidthNormal == default ? Default.caretWidthNormal : caretWidthNormal;
+            this.caretWidthFocused = caretWidthFocused == default ? Default.caretWidthFocused : caretWidthFocused;
             Normal();
         }
 
@@ -79,23 +87,26 @@ namespace game.ui {
             backgroundFocused = Color.FromArgb(41, 41, 55),
             borderNormal = Color.FromArgb(30, 30, 45),
             borderFocused = Color.FromArgb(47, 47, 65),
-            caretNormal = Color.FromArgb(0, 255,215,0),
-            caretFocused = Color.FromArgb(255,215,0),
+            caretNormal = Color.FromArgb(0, 255, 215, 0),
+            caretFocused = Color.FromArgb(255, 215, 0),
             borderSizeNormal = 2f,
             borderSizeFocused = 2f,
             leftMarginNormal = 8f,
             leftMarginFocused = 8f,
             textSizeNormal = 16f,
             textSizeFocused = 16f,
-            
-            Text = Color.FromArgb(255, 255, 255),
-            PlaceholderText = Color.FromArgb(192, 192, 192),
-            Background = Color.FromArgb(41, 41, 55),
-            Border = Color.FromArgb(30, 30, 45),
-            Caret = Color.FromArgb(0, 255,215,0),
+            caretWidthNormal = 2f,
+            caretWidthFocused = 2f,
+
+            TextColor = Color.FromArgb(255, 255, 255),
+            PlaceholderTextColor = Color.FromArgb(192, 192, 192),
+            BackgroundColor = Color.FromArgb(41, 41, 55),
+            BorderColor = Color.FromArgb(30, 30, 45),
+            CaretColor = Color.FromArgb(0, 255, 215, 0),
             BorderSize = 2f,
             LeftMargin = 8f,
-            TextSize = 16f
+            TextSize = 16f,
+            CaretWidth = 2f
         };
     }
 }

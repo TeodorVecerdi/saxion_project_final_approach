@@ -122,29 +122,29 @@ namespace game.ui {
         private void Draw() {
             Clear(Color.Transparent);
 
-            Stroke(textFieldStyle.Border);
+            Stroke(textFieldStyle.BorderColor);
             StrokeWeight(textFieldStyle.BorderSize);
-            Fill(textFieldStyle.Background);
+            Fill(textFieldStyle.BackgroundColor);
             ShapeAlign(CenterMode.Min, CenterMode.Min);
             Rect(0, 0, bounds.width, bounds.height);
 
             TextSize(textFieldStyle.TextSize);
             TextAlign(CenterMode.Min, CenterMode.Center);
             if (string.IsNullOrEmpty(currentText)) {
-                Fill(textFieldStyle.PlaceholderText);
+                Fill(textFieldStyle.PlaceholderTextColor);
                 Text(placeholderText, textFieldStyle.LeftMargin, bounds.height / 2f);
             } else {
-                Fill(textFieldStyle.Text);
+                Fill(textFieldStyle.TextColor);
                 Text(currentText, textFieldStyle.LeftMargin, bounds.height / 2f);
             }
 
             if (focused && showCaret) {
                 ShapeAlign(CenterMode.Min, CenterMode.Center);
                 NoStroke();
-                Fill(textFieldStyle.Caret);
+                Fill(textFieldStyle.CaretColor);
                 var textWidth = TextWidth(currentText);
                 var textHeight = TextHeight("A");
-                Rect(textWidth + textFieldStyle.LeftMargin, bounds.height / 2f, 2, textHeight);
+                Rect(textWidth + textFieldStyle.LeftMargin, bounds.height / 2f, textFieldStyle.CaretWidth, textHeight);
             }
         }
     }
