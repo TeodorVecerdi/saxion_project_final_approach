@@ -151,6 +151,7 @@
         <Content Include="lib\**" />
     </ItemGroup>
     <ItemGroup>
+        <None Include="App.config" />
         <None Include="packages.config" />
     </ItemGroup>
 
@@ -174,7 +175,12 @@
         <Copy SourceFiles="@(DataFiles)" DestinationFiles="@(DataFiles->'$(DataDestinationDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(LibDestinationDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" />
     </Target>
+    
     <Target Name="AfterBuild">
+        <Exec ContinueOnError="true" Command='ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " /XF *.exe *.config *.manifest GXPEngine.dll GXPEngine.pdb Game.pdb /XD lib logs data /E /IS /MOVE'> 
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+        </Exec>
+        <Error Condition="$(ErrorCode) &gt; 8" Message="Robocopy failed"/>
     </Target>
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
         <PropertyGroup>
