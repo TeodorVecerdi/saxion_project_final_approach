@@ -141,7 +141,12 @@
         <Compile Include="Globals.cs" />
         <Compile Include="Player.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="UI\MouseHotspot.cs" />
+        <Compile Include="UI\Button.cs" />
+        <Compile Include="UI\SpriteButton.cs" />
+        <Compile Include="UI\SpriteTextField.cs" />
+        <Compile Include="UI\Styles\ButtonStyle.cs" />
+        <Compile Include="UI\Styles\TextFieldStyle.cs" />
+        <Compile Include="UI\TextField.cs" />
         <Compile Include="Utils\Debug.cs" />
         <Compile Include="Utils\MathUtils.cs" />
         <Compile Include="Utils\Rand.cs" />
@@ -177,10 +182,10 @@
     </Target>
     
     <Target Name="AfterBuild">
-        <Exec ContinueOnError="true" Command='ROBOCOPY "$(TargetDir) " "$(TargetDir)lib\ " /XF *.exe *.config *.manifest GXPEngine.dll GXPEngine.pdb Game.pdb /XD lib logs data /E /IS /MOVE'> 
-            <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+        <Exec ContinueOnError="true" Command="ROBOCOPY &quot;$(TargetDir) &quot; &quot;$(TargetDir)lib\ &quot; /XF *.exe *.config *.manifest GXPEngine.dll GXPEngine.pdb Game.pdb /XD lib logs data /E /IS /MOVE"> 
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
         </Exec>
-        <Error Condition="$(ErrorCode) &gt; 8" Message="Robocopy failed"/>
+        <Error Condition="$(ErrorCode) &gt; 8" Message="Robocopy failed" />
     </Target>
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
         <PropertyGroup>
