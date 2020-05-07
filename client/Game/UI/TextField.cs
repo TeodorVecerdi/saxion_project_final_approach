@@ -1,12 +1,12 @@
 using System;
 using System.Drawing;
 using GXPEngine;
-using GXPEngine.Core;
 using Rectangle = GXPEngine.Core.Rectangle;
 
 namespace game.ui {
     public class TextField : EasyDraw {
         private readonly Action<string, string> onValueChanged;
+        private readonly Action<int> onKeyTyped;
         private readonly Action onGainFocus;
         private readonly Action onLoseFocus;
         private readonly Action onMouseClick;
@@ -33,16 +33,17 @@ namespace game.ui {
         private bool IsMouseOnTop => Input.mouseX >= bounds.x && Input.mouseX <= bounds.x + bounds.width && Input.mouseY >= bounds.y && Input.mouseY <= bounds.y + bounds.height;
         public string Text => currentText;
 
-        public TextField(float x, float y, float width, float height, string placeholderText, Action<string, string> onValueChanged = null, Action onGainFocus = null, Action onLoseFocus = null, Action onMouseClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
-            : this(x, y, width, height, placeholderText, TextFieldStyle.Default, onValueChanged, onGainFocus, onLoseFocus, onMouseClick, onMouseEnter, onMouseLeave, onMousePress, onMouseRelease) { }
+        public TextField(float x, float y, float width, float height, string placeholderText, Action<string, string> onValueChanged = null, Action<int> onKeyTyped = null, Action onGainFocus = null, Action onLoseFocus = null, Action onMouseClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
+            : this(x, y, width, height, placeholderText, TextFieldStyle.Default, onValueChanged, onKeyTyped, onGainFocus, onLoseFocus, onMouseClick, onMouseEnter, onMouseLeave, onMousePress, onMouseRelease) { }
 
-        public TextField(float x, float y, float width, float height, string placeholderText, TextFieldStyle textFieldStyle, Action<string, string> onValueChanged = null, Action onGainFocus = null, Action onLoseFocus = null, Action onMouseClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
+        public TextField(float x, float y, float width, float height, string placeholderText, TextFieldStyle textFieldStyle, Action<string, string> onValueChanged = null, Action<int> onKeyTyped = null, Action onGainFocus = null, Action onLoseFocus = null, Action onMouseClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
             : base(Mathf.Ceiling(width), Mathf.Ceiling(height), false) {
             bounds = new Rectangle(x, y, width, height);
             this.placeholderText = placeholderText;
             this.textFieldStyle = textFieldStyle;
 
             this.onValueChanged += onValueChanged;
+            this.onKeyTyped += onKeyTyped;
             this.onGainFocus += onGainFocus;
             this.onLoseFocus += onLoseFocus;
             this.onMouseClick += onMouseClick;
@@ -93,6 +94,7 @@ namespace game.ui {
 
             if (Input.AnyKeyDown() && focused) {
                 var key = Input.LastKeyDown;
+                onKeyTyped?.Invoke(key);
                 oldText = currentText;
                 if (key == Key.BACKSPACE) {
                     if (!string.IsNullOrEmpty(currentText))

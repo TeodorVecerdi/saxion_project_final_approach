@@ -7,6 +7,7 @@ using Rectangle = GXPEngine.Core.Rectangle;
 namespace game.ui {
     public class SpriteTextField : EasyDraw {
         private readonly Action<string, string> onValueChanged;
+        private readonly Action<int> onKeyTyped;
         private readonly Action onGainFocus;
         private readonly Action onLoseFocus;
         private readonly Action onMouseClick;
@@ -35,10 +36,10 @@ namespace game.ui {
 
         public string Text => currentText;
 
-        public SpriteTextField(float x, float y, float width, float height, string placeholderText, Texture2D texture, Action<string, string> onValueChanged = null, Action onGainFocus = null, Action onLoseFocus = null, Action onMouseClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
-            : this(x, y, width, height, placeholderText, texture, TextFieldStyle.Default, onValueChanged, onGainFocus, onLoseFocus, onMouseClick, onMouseEnter, onMouseLeave, onMousePress, onMouseRelease) { }
+        public SpriteTextField(float x, float y, float width, float height, string placeholderText, Texture2D texture, Action<string, string> onValueChanged = null, Action<int> onKeyTyped = null, Action onGainFocus = null, Action onLoseFocus = null, Action onMouseClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
+            : this(x, y, width, height, placeholderText, texture, TextFieldStyle.Default, onValueChanged, onKeyTyped, onGainFocus, onLoseFocus, onMouseClick, onMouseEnter, onMouseLeave, onMousePress, onMouseRelease) { }
 
-        public SpriteTextField(float x, float y, float width, float height, string placeholderText, Texture2D texture, TextFieldStyle textFieldStyle, Action<string, string> onValueChanged = null, Action onGainFocus = null, Action onLoseFocus = null, Action onMouseClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
+        public SpriteTextField(float x, float y, float width, float height, string placeholderText, Texture2D texture, TextFieldStyle textFieldStyle, Action<string, string> onValueChanged = null, Action<int> onKeyTyped = null, Action onGainFocus = null, Action onLoseFocus = null, Action onMouseClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
             : base(Mathf.Ceiling(width), Mathf.Ceiling(height), false) {
             bounds = new Rectangle(x, y, width, height);
             this.placeholderText = placeholderText;
@@ -46,6 +47,7 @@ namespace game.ui {
             this.textFieldStyle = textFieldStyle;
 
             this.onValueChanged += onValueChanged;
+            this.onKeyTyped += onKeyTyped;
             this.onGainFocus += onGainFocus;
             this.onLoseFocus += onLoseFocus;
             this.onMouseClick += onMouseClick;
@@ -96,6 +98,7 @@ namespace game.ui {
 
             if (Input.AnyKeyDown() && focused) {
                 var key = Input.LastKeyDown;
+                onKeyTyped?.Invoke(key);
                 oldText = currentText;
                 if (key == Key.BACKSPACE) {
                     if (!string.IsNullOrEmpty(currentText))
