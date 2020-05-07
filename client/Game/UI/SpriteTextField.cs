@@ -62,11 +62,11 @@ namespace game.ui {
             var onTop = IsMouseOnTop;
 
             // Check for button states and apply style
-            if (Input.GetMouseButtonUp(Buttons.LEFT) && pressed) {
+            if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
                 onMouseRelease?.Invoke();
                 pressed = false;
                 Draw();
-            } else if (Input.GetMouseButtonDown(Buttons.LEFT) && onTop) {
+            } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
                 onMouseClick?.Invoke();
                 pressed = true;
                 if (!focused) {
@@ -78,7 +78,7 @@ namespace game.ui {
 
                 textFieldStyle.Focus();
                 Draw();
-            } else if (Input.GetMouseButton(Buttons.LEFT) && pressed) {
+            } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
                 onMousePress?.Invoke();
                 Draw();
             } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
@@ -87,7 +87,7 @@ namespace game.ui {
             } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
                 onMouseLeave?.Invoke();
                 Draw();
-            } else if (Input.GetMouseButtonDown(Buttons.LEFT) && !onTop && focused) {
+            } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && !onTop && focused) {
                 focused = false;
                 onLoseFocus?.Invoke();
                 textFieldStyle.Normal();

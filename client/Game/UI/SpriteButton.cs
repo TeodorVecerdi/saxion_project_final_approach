@@ -45,18 +45,18 @@ namespace game.ui {
             var onTop = IsMouseOnTop;
 
             // Check for button states and setup style
-            if (Input.GetMouseButtonUp(Buttons.LEFT) && pressed) {
+            if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
                 onMouseRelease?.Invoke();
                 if (onTop) buttonStyle.Hover();
                 else buttonStyle.Normal();
                 pressed = false;
                 Draw();
-            } else if (Input.GetMouseButtonDown(Buttons.LEFT) && onTop) {
+            } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
                 onMouseClick?.Invoke();
                 buttonStyle.Press();
                 pressed = true;
                 Draw();
-            } else if (Input.GetMouseButton(Buttons.LEFT) && pressed) {
+            } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
                 onMousePress?.Invoke();
                 buttonStyle.Press();
                 Draw();

@@ -4,6 +4,7 @@ using System.Drawing;
 using game.ui;
 using GXPEngine;
 using GXPEngine.Core;
+using Button = game.ui.Button;
 
 namespace game {
     public class App : Game {
