@@ -1,10 +1,12 @@
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using game.ui;
 using game.utils;
 using GXPEngine;
 using GXPEngine.Core;
 using Button = game.ui.Button;
+using Debug = GXPEngine.Debug;
 
 namespace game {
     public class App : Game {
@@ -86,8 +88,9 @@ namespace game {
             body.AddChild(new Button(20, Globals.HEIGHT - 40 - 190 - 30, Globals.WIDTH - 80, 40, "Submit", onClick: () => {
                 if (string.IsNullOrEmpty(username)) return;
                 NetworkManager.Instance.Initialize(username, avatarIndex);
-                mainUI.Destroy();
+                mainUI.LateDestroy();
                 CreateTempLoggedInUI();
+                // ShowLoadingScreen();
             }));
             #endregion
             #endregion
@@ -95,26 +98,26 @@ namespace game {
 
         private void CreateTempLoggedInUI() {
             var temp = new Pivot();
-            AddChild(temp);
-            
+            LateAddChild(temp);
+
             var primaryTitleStyle = new LabelStyle(Color.White, 32f, FontLoader.CenterCenterAlignment);
             var secondaryTitleStyle = new LabelStyle(Color.White, 20f, FontLoader.LeftCenterAlignment);
             var secondaryTitleStyleBold = new LabelStyle(Color.White, 20f, FontLoader.LeftCenterAlignment, FontLoader.SourceCodeBold);
-            temp.AddChild(new Label(10, 10, Globals.WIDTH, 60, "Successfully logged in!", primaryTitleStyle));
-            temp.AddChild(new Label(40, 100, Globals.WIDTH, 40, $"Username:", secondaryTitleStyle));
-            temp.AddChild(new Label(370, 100, Globals.WIDTH, 40, $"{NetworkManager.Instance.Username}", secondaryTitleStyleBold));
-            temp.AddChild(new Label(40, 150, Globals.WIDTH, 40, $"Unique Identifier:", secondaryTitleStyle));
-            temp.AddChild(new Label(370, 150, Globals.WIDTH, 40, $"{NetworkManager.Instance.GUID}", secondaryTitleStyleBold));
-            temp.AddChild(new Label(40, 200, Globals.WIDTH, 40, $"Room Id:", secondaryTitleStyle));
-            temp.AddChild(new Label(370, 200, Globals.WIDTH, 40, $"{NetworkManager.Instance.RoomID}", secondaryTitleStyleBold));
-            temp.AddChild(new Label(40, 250, Globals.WIDTH, 40, $"Avatar:", secondaryTitleStyle));
+            temp.LateAddChild(new Label(10, 10, Globals.WIDTH, 60, "Successfully logged in!", primaryTitleStyle) {ShouldRepaint = true});
+            temp.LateAddChild(new Label(40, 100, Globals.WIDTH, 40, $"Username:", secondaryTitleStyle) {ShouldRepaint = true});
+            temp.LateAddChild(new Label(370, 100, Globals.WIDTH, 40, $"{NetworkManager.Instance.Username}", secondaryTitleStyleBold) {ShouldRepaint = true});
+            temp.LateAddChild(new Label(40, 150, Globals.WIDTH, 40, $"Unique Identifier:", secondaryTitleStyle) {ShouldRepaint = true});
+            temp.LateAddChild(new Label(370, 150, Globals.WIDTH, 40, $"{NetworkManager.Instance.GUID}", secondaryTitleStyleBold) {ShouldRepaint = true});
+            temp.LateAddChild(new Label(40, 200, Globals.WIDTH, 40, $"Room Id:", secondaryTitleStyle) {ShouldRepaint = true});
+            temp.LateAddChild(new Label(370, 200, Globals.WIDTH, 40, $"{NetworkManager.Instance.RoomID}", secondaryTitleStyleBold) {ShouldRepaint = true});
+            temp.LateAddChild(new Label(40, 250, Globals.WIDTH, 40, $"Avatar:", secondaryTitleStyle) {ShouldRepaint = true});
             Sprite texture;
-            if(NetworkManager.Instance.AvatarIndex == 0) texture = new Sprite("data/sprites/avatar_blue.png");
-            else if(NetworkManager.Instance.AvatarIndex == 1) texture = new Sprite("data/sprites/avatar_green.png");
+            if (NetworkManager.Instance.AvatarIndex == 0) texture = new Sprite("data/sprites/avatar_blue.png");
+            else if (NetworkManager.Instance.AvatarIndex == 1) texture = new Sprite("data/sprites/avatar_green.png");
             else if (NetworkManager.Instance.AvatarIndex == 2) texture = new Sprite("data/sprites/avatar_red.png");
             else texture = new Sprite("data/sprites/avatar_yellow.png");
-            texture.SetScaleXY(0.5f,0.5f);
-            temp.AddChild(new SpriteButton(370, 250, 512, 512, "", texture));
+            texture.SetScaleXY(0.5f, 0.5f);
+            temp.LateAddChild(new SpriteButton(370, 250, 512, 512, "", texture));
         }
 
         private void SetupInput() {
