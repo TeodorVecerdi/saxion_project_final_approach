@@ -150,6 +150,7 @@
         <Compile Include="UI\Styles\TextFieldStyle.cs" />
         <Compile Include="UI\TextField.cs" />
         <Compile Include="Utils\Debug.cs" />
+        <Compile Include="Utils\FontLoader.cs" />
         <Compile Include="Utils\MathUtils.cs" />
         <Compile Include="Utils\Rand.cs" />
     </ItemGroup>

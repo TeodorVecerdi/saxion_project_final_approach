@@ -1,4 +1,5 @@
 using System.Drawing;
+using game.utils;
 using GXPEngine;
 using Rectangle = GXPEngine.Core.Rectangle;
 
@@ -41,9 +42,7 @@ namespace game.ui {
             Clear(Color.Transparent);
             NoStroke();
             Fill(labelStyle.TextColor);
-            TextSize(labelStyle.TextSize);
-            TextAlign(labelStyle.TextAlignmentHorizontal, labelStyle.TextAlignmentVertical);
-            Text(labelText, 0, 0);
+            graphics.DrawString(labelText, labelStyle.Font, brush, 0, 0, labelStyle.TextAlignment);
         }
     }
 }

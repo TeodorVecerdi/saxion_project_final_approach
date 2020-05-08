@@ -81,9 +81,8 @@ namespace game.ui {
 
             NoStroke();
             Fill(buttonStyle.TextColor);
-            TextSize(buttonStyle.TextSize);
-            TextAlign(CenterMode.Center, CenterMode.Center);
-            Text(buttonText, bounds.width / 2f, bounds.height / 2f);
+            graphics.DrawString(buttonText, buttonStyle.Font, brush, bounds.width/2f, bounds.height / 2f, buttonStyle.TextAlignment);
+            
         }
     }
 }

@@ -1,43 +1,41 @@
 using System.Drawing;
-using GXPEngine;
+using game.utils;
 
 namespace game.ui {
     public struct LabelStyle {
         private Color textColorNormal;
         private float textSizeNormal;
-        private CenterMode textAlignmentHorizontalNormal;
-        private CenterMode textAlignmentVerticalNormal;
+        private StringFormat textAlignmentNormal;
+        private Font fontNormal => FontLoader.Instance[textSizeNormal];
 
         public Color TextColor;
         public float TextSize;
-        public CenterMode TextAlignmentHorizontal;
-        public CenterMode TextAlignmentVertical;
+        public StringFormat TextAlignment;
+        public Font Font;
 
         public void Normal() {
             TextColor = textColorNormal;
             TextSize = textSizeNormal;
-            TextAlignmentHorizontal = textAlignmentHorizontalNormal;
-            TextAlignmentVertical = textAlignmentVerticalNormal;
+            TextAlignment = textAlignmentNormal;
+            Font = fontNormal;
         }
 
-        public LabelStyle(Color textColorNormal = default, float textSizeNormal = default, CenterMode textAlignmentHorizontalNormal = CenterMode.Min, CenterMode textAlignmentVerticalNormal = CenterMode.Min) : this() {
+        public LabelStyle(Color textColorNormal = default, float textSizeNormal = default, StringFormat textAlignmentNormal = null) : this() {
             this.textColorNormal = textColorNormal == default ? Default.textColorNormal : textColorNormal;
             this.textSizeNormal = textSizeNormal == default ? Default.textSizeNormal : textSizeNormal;
-            this.textAlignmentHorizontalNormal = textAlignmentHorizontalNormal == CenterMode.Min ? Default.textAlignmentHorizontalNormal : textAlignmentHorizontalNormal;
-            this.textAlignmentVerticalNormal = textAlignmentVerticalNormal == CenterMode.Min ? Default.textAlignmentVerticalNormal : textAlignmentVerticalNormal;
+            this.textAlignmentNormal = textAlignmentNormal ?? Default.textAlignmentNormal;
             Normal();
         }
         
         public static LabelStyle Default = new LabelStyle {
             textColorNormal = Color.FromArgb(255,0,0,0),
             textSizeNormal = 16f,
-            textAlignmentHorizontalNormal = CenterMode.Min,
-            textAlignmentVerticalNormal = CenterMode.Min,
+            textAlignmentNormal = FontLoader.LeftTopAlignment,
             
             TextColor = Color.FromArgb(255,0,0,0),
             TextSize = 16f,
-            TextAlignmentHorizontal = CenterMode.Min,
-            TextAlignmentVertical = CenterMode.Min
+            TextAlignment = FontLoader.LeftTopAlignment,
+            Font = FontLoader.Instance[16f]
         };
     }
 }

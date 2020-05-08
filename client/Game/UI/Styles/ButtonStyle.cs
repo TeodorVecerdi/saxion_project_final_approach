@@ -1,4 +1,5 @@
 using System.Drawing;
+using game.utils;
 
 namespace game.ui {
     public struct ButtonStyle {
@@ -17,12 +18,21 @@ namespace game.ui {
         private float textSizeNormal;
         private float textSizeHover;
         private float textSizePressed;
+        private StringFormat textAlignmentNormal;
+        private StringFormat textAlignmentHover;
+        private StringFormat textAlignmentPressed;
+        private FontLoader fontLoaderInstance;
+        private Font fontNormal => fontLoaderInstance[textSizeNormal];
+        private Font fontHover => fontLoaderInstance[textSizeHover];
+        private Font fontPressed => fontLoaderInstance[textSizePressed];
 
         public Color TextColor;
         public Color BackgroundColor;
         public Color BorderColor;
         public float BorderSize;
         public float TextSize;
+        public StringFormat TextAlignment;
+        public Font Font;
 
         public void Normal() {
             TextColor = textNormal;
@@ -30,6 +40,8 @@ namespace game.ui {
             BorderColor = borderNormal;
             BorderSize = borderSizeNormal;
             TextSize = textSizeNormal;
+            TextAlignment = textAlignmentNormal;
+            Font = fontNormal;
         }
 
         public void Hover() {
@@ -38,6 +50,8 @@ namespace game.ui {
             BorderColor = borderHover;
             BorderSize = borderSizeHover;
             TextSize = textSizeHover;
+            TextAlignment = textAlignmentHover;
+            Font = fontHover;
         }
 
         public void Press() {
@@ -46,9 +60,11 @@ namespace game.ui {
             BorderColor = borderPressed;
             BorderSize = borderSizePressed;
             TextSize = textSizePressed;
+            TextAlignment = textAlignmentPressed;
+            Font = fontPressed;
         }
 
-        public ButtonStyle(Color textNormal = default, Color textHover = default, Color textPressed = default, Color backgroundNormal = default, Color backgroundHover = default, Color backgroundPressed = default, Color borderNormal = default, Color borderHover = default, Color borderPressed = default, float borderSizeNormal = default, float borderSizeHover = default, float borderSizePressed = default, float textSizeNormal = default, float textSizeHover = default, float textSizePressed = default) : this() {
+        public ButtonStyle(Color textNormal = default, Color textHover = default, Color textPressed = default, Color backgroundNormal = default, Color backgroundHover = default, Color backgroundPressed = default, Color borderNormal = default, Color borderHover = default, Color borderPressed = default, float borderSizeNormal = default, float borderSizeHover = default, float borderSizePressed = default, float textSizeNormal = default, float textSizeHover = default, float textSizePressed = default, StringFormat textAlignmentNormal = null, StringFormat textAlignmentHover = null, StringFormat textAlignmentPressed = null, FontLoader fontLoaderInstance = null) : this() {
             this.textNormal = textNormal == default ? Default.textNormal : textNormal;
             this.textHover = textHover == default ? Default.textHover : textHover;
             this.textPressed = textPressed == default ? Default.textPressed : textPressed;
@@ -64,6 +80,10 @@ namespace game.ui {
             this.textSizeNormal = textSizeNormal == default ? Default.textSizeNormal : textSizeNormal;
             this.textSizeHover = textSizeHover == default ? Default.textSizeHover : textSizeHover;
             this.textSizePressed = textSizePressed == default ? Default.textSizePressed : textSizePressed;
+            this.textAlignmentNormal = textAlignmentNormal ?? Default.textAlignmentNormal;
+            this.textAlignmentHover = textAlignmentHover ?? Default.textAlignmentHover;
+            this.textAlignmentPressed = textAlignmentPressed ?? Default.textAlignmentPressed;
+            this.fontLoaderInstance = fontLoaderInstance ?? Default.fontLoaderInstance;
             Normal();
         }
 
@@ -83,12 +103,19 @@ namespace game.ui {
             textSizeNormal = 16f,
             textSizeHover = 16f,
             textSizePressed = 16f,
+            textAlignmentNormal = FontLoader.CenterCenterAlignment,
+            textAlignmentHover = FontLoader.CenterCenterAlignment,
+            textAlignmentPressed = FontLoader.CenterCenterAlignment,
+            fontLoaderInstance = FontLoader.SourceCode,
+            
             
             TextColor = Color.FromArgb(255, 255, 255),
             BackgroundColor = Color.FromArgb(41, 41, 55),
             BorderColor = Color.FromArgb(30, 30, 45),
             BorderSize = 2f,
-            TextSize = 16f
+            TextSize = 16f,
+            TextAlignment = FontLoader.CenterCenterAlignment,
+            Font =  FontLoader.SourceCode[16f]
         };
     }
 }

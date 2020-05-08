@@ -1,6 +1,8 @@
 using System;
 using System.Drawing;
+using game.utils;
 using GXPEngine;
+using Debug = GXPEngine.Debug;
 using Rectangle = GXPEngine.Core.Rectangle;
 
 namespace game.ui {
@@ -19,11 +21,12 @@ namespace game.ui {
         private readonly string placeholderText;
         private TextFieldStyle textFieldStyle;
 
-        private string currentText;
-        private string oldText;
+        private string currentText = "";
+        private string oldText = "";
 
         private const float caretTimerInitial = 0.5f;
         private float caretTimer;
+        private int caretIndex = -1;
 
         private bool focused;
         private bool pressed;
@@ -96,11 +99,27 @@ namespace game.ui {
                 var key = Input.LastKeyDown;
                 onKeyTyped?.Invoke(key);
                 oldText = currentText;
-                if (key == Key.BACKSPACE) {
-                    if (!string.IsNullOrEmpty(currentText))
-                        currentText = currentText.Substring(0, currentText.Length - 1);
+                if (key == Key.BACKSPACE && !string.IsNullOrEmpty(currentText) && caretIndex != -1) {
+                    currentText = currentText.Remove(caretIndex, 1);
+                    caretIndex--;
+                    caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
+                } else if (key == Key.DELETE && !string.IsNullOrEmpty(currentText) && caretIndex != currentText.Length - 1) {
+                    currentText = currentText.Remove(caretIndex+1, 1);
+                    caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
+                } else if (key == Key.LEFT) {
+                    caretIndex--;
+                    caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
+                } else if (key == Key.RIGHT) {
+                    caretIndex++;
+                    caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
                 } else {
-                    currentText += Input.KeyToString(key);
+                    // Treat as normal character
+                    var keyValue = Input.KeyToString(key);
+                    if (!string.IsNullOrEmpty(keyValue)) {
+                        currentText = currentText.Insert(caretIndex + 1, keyValue);
+                        caretIndex++;
+                        caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
+                    }
                 }
 
                 onValueChanged?.Invoke(oldText, currentText);
@@ -128,23 +147,24 @@ namespace game.ui {
             ShapeAlign(CenterMode.Min, CenterMode.Min);
             Rect(0, 0, bounds.width, bounds.height);
 
-            TextSize(textFieldStyle.TextSize);
-            TextAlign(CenterMode.Min, CenterMode.Center);
             if (string.IsNullOrEmpty(currentText)) {
                 Fill(textFieldStyle.PlaceholderTextColor);
-                Text(placeholderText, textFieldStyle.LeftMargin, bounds.height / 2f);
+                graphics.DrawString(placeholderText, textFieldStyle.Font, brush, textFieldStyle.LeftMargin, bounds.height / 2f, textFieldStyle.TextAlignment);
             } else {
                 Fill(textFieldStyle.TextColor);
-                Text(currentText, textFieldStyle.LeftMargin, bounds.height / 2f);
+                graphics.DrawString(currentText, textFieldStyle.Font, brush, textFieldStyle.LeftMargin, bounds.height / 2f, textFieldStyle.TextAlignment);
             }
 
             if (focused && showCaret) {
                 ShapeAlign(CenterMode.Min, CenterMode.Center);
                 NoStroke();
                 Fill(textFieldStyle.CaretColor);
-                var textWidth = TextWidth(currentText);
+                var textLength = currentText.Length.Constrain(1, int.MaxValue);
+                var stringWidth = graphics.MeasureString(currentText, textFieldStyle.Font, new SizeF(0f, 0f), textFieldStyle.TextAlignment).Width;
+                var charWidth = stringWidth / (double) textLength;
+                var caretPosition = (caretIndex + 1) * charWidth - Mathf.Sqrt(textFieldStyle.TextSize);
                 var textHeight = TextHeight("A");
-                Rect(textWidth + textFieldStyle.LeftMargin, bounds.height / 2f, textFieldStyle.CaretWidth, textHeight);
+                Rect((float)caretPosition + textFieldStyle.LeftMargin, bounds.height / 2f, textFieldStyle.CaretWidth, textHeight);
             }
         }
     }
