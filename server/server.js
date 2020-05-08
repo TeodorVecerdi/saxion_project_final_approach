@@ -20,11 +20,13 @@ server.on("connection", socket => {
 
     socket.on("request_account_success", data => {
         let accountData = JSON.parse(data);
-        let player = new Player(accountData['username'], accountData['avatar'], accountData['guid'], socket.id, "none");
+        let player = new Player(accountData['username'], accountData['avatar'], accountData['guid'], socket.id, accountData["room"]);
         players[player.guid] = player;
 
         socketIdToPlayerId[socket.id] = player.guid;
         playerIdToSocketId[player.guid] = socket.id;
+        
+        console.info(`Got player data: ${data}`);
     });
 
     socket.on("request_rooms", data => {
