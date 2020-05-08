@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Drawing.Printing;
 using game.utils;
 
 namespace game.ui {
@@ -20,12 +19,17 @@ namespace game.ui {
         private float leftMarginFocused;
         private float textSizeNormal;
         private float textSizeFocused;
+        private float placeholderTextSizeNormal;
+        private float placeholderTextSizeFocused;
         private float caretWidthNormal;
         private float caretWidthFocused;
         private StringFormat textAlignmentNormal;
         private StringFormat textAlignmentFocused;
-        private Font fontNormal => FontLoader.Instance[textSizeNormal];
-        private Font fontFocused => FontLoader.Instance[textSizeFocused];
+        private FontLoader fontLoaderInstance;
+        private Font fontNormal => fontLoaderInstance[textSizeNormal];
+        private Font fontFocused => fontLoaderInstance[textSizeFocused];
+        private Font placeholderFontNormal => fontLoaderInstance[placeholderTextSizeNormal];
+        private Font placeholderFontFocused => fontLoaderInstance[placeholderTextSizeFocused];
 
         public Color TextColor;
         public Color PlaceholderTextColor;
@@ -35,8 +39,10 @@ namespace game.ui {
         public float BorderSize;
         public float LeftMargin;
         public float TextSize;
+        public float PlaceholderTextSize;
         public float CaretWidth;
         public Font Font;
+        public Font PlaceholderFont;
         public StringFormat TextAlignment;
 
         public void Normal() {
@@ -48,8 +54,10 @@ namespace game.ui {
             BorderSize = borderSizeNormal;
             LeftMargin = leftMarginNormal;
             TextSize = textSizeNormal;
+            PlaceholderTextSize = placeholderTextSizeNormal;
             CaretWidth = caretWidthNormal;
             Font = fontNormal;
+            PlaceholderFont = placeholderFontNormal;
             TextAlignment = textAlignmentNormal;
         }
 
@@ -62,12 +70,14 @@ namespace game.ui {
             BorderSize = borderSizeFocused;
             LeftMargin = leftMarginFocused;
             TextSize = textSizeFocused;
+            PlaceholderTextSize = placeholderTextSizeFocused;
             CaretWidth = caretWidthFocused;
             Font = fontFocused;
+            PlaceholderFont = placeholderFontFocused;
             TextAlignment = textAlignmentFocused;
         }
 
-        public TextFieldStyle(Color textNormal = default, Color textFocused = default, Color placeholderTextNormal = default, Color placeholderTextFocused = default, Color backgroundNormal = default, Color backgroundFocused = default, Color borderNormal = default, Color borderFocused = default, Color caretNormal = default, Color caretFocused = default, float borderSizeNormal = default, float borderSizeFocused = default, float leftMarginNormal = default, float leftMarginFocused = default, float textSizeNormal = default, float textSizeFocused = default, float caretWidthNormal = default, float caretWidthFocused = default, StringFormat textAlignmentNormal = null, StringFormat textAlignmentFocused = null) : this() {
+        public TextFieldStyle(Color textNormal = default, Color textFocused = default, Color placeholderTextNormal = default, Color placeholderTextFocused = default, Color backgroundNormal = default, Color backgroundFocused = default, Color borderNormal = default, Color borderFocused = default, Color caretNormal = default, Color caretFocused = default, float borderSizeNormal = default, float borderSizeFocused = default, float leftMarginNormal = default, float leftMarginFocused = default, float textSizeNormal = default, float textSizeFocused = default, float placeholderTextSizeNormal = default, float placeholderTextSizeFocused = default, float caretWidthNormal = default, float caretWidthFocused = default, StringFormat textAlignmentNormal = null, StringFormat textAlignmentFocused = null, FontLoader fontLoaderInstance = null) : this() {
             this.textNormal = textNormal == default ? Default.textNormal : textNormal;
             this.textFocused = textFocused == default ? Default.textFocused : textFocused;
             this.placeholderTextNormal = placeholderTextNormal == default ? Default.placeholderTextNormal : placeholderTextNormal;
@@ -84,10 +94,13 @@ namespace game.ui {
             this.leftMarginFocused = leftMarginFocused == default ? Default.leftMarginFocused : leftMarginFocused;
             this.textSizeNormal = textSizeNormal == default ? Default.textSizeNormal : textSizeNormal;
             this.textSizeFocused = textSizeFocused == default ? Default.textSizeFocused : textSizeFocused;
+            this.placeholderTextSizeNormal = placeholderTextSizeNormal == default ? Default.placeholderTextSizeNormal : placeholderTextSizeNormal;
+            this.placeholderTextSizeFocused = placeholderTextSizeFocused == default ? Default.placeholderTextSizeFocused : placeholderTextSizeFocused;
             this.caretWidthNormal = caretWidthNormal == default ? Default.caretWidthNormal : caretWidthNormal;
             this.caretWidthFocused = caretWidthFocused == default ? Default.caretWidthFocused : caretWidthFocused;
             this.textAlignmentNormal = textAlignmentNormal ?? Default.textAlignmentNormal;
             this.textAlignmentFocused = textAlignmentFocused ?? Default.textAlignmentFocused;
+            this.fontLoaderInstance = fontLoaderInstance ?? Default.fontLoaderInstance;
             Normal();
         }
 
@@ -108,10 +121,13 @@ namespace game.ui {
             leftMarginFocused = 8f,
             textSizeNormal = 16f,
             textSizeFocused = 16f,
+            placeholderTextSizeNormal = 16f,
+            placeholderTextSizeFocused = 16f,
             caretWidthNormal = 2f,
             caretWidthFocused = 2f,
             textAlignmentNormal = FontLoader.LeftCenterAlignment,
             textAlignmentFocused = FontLoader.LeftCenterAlignment,
+            fontLoaderInstance = FontLoader.SourceCode,
 
             TextColor = Color.FromArgb(255, 255, 255),
             PlaceholderTextColor = Color.FromArgb(192, 192, 192),
@@ -122,7 +138,7 @@ namespace game.ui {
             LeftMargin = 8f,
             TextSize = 16f,
             CaretWidth = 2f,
-            Font = FontLoader.Instance[16f],
+            Font = FontLoader.SourceCode[16f],
             TextAlignment = FontLoader.LeftCenterAlignment
         };
     }

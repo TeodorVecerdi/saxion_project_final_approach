@@ -1,24 +1,16 @@
 using System.Drawing;
-using game.utils;
+using System.Drawing.Text;
 using GXPEngine;
 using Rectangle = GXPEngine.Core.Rectangle;
 
 namespace game.ui {
     public class Label : EasyDraw {
         private readonly Rectangle bounds;
-        private string labelText;
         private LabelStyle labelStyle;
+        
+        public bool ShouldRepaint { private get; set; }
+        public string LabelText;
 
-        public string LabelText {
-            get => labelText;
-            set {
-                labelText = value;
-                TextSize(labelStyle.TextSize);
-                base.width = Mathf.Ceiling(TextWidth(labelText) * 1.5f);
-                base.height = Mathf.Ceiling(TextHeight(labelText) * 1.5f);
-                Draw();
-            }
-        }
 
         public Label(float x, float y, string labelText) 
             : this(x, y, Globals.WIDTH, Globals.HEIGHT, labelText, LabelStyle.Default) { }
@@ -32,17 +24,33 @@ namespace game.ui {
         public Label(float x, float y, float width, float height, string labelText, LabelStyle labelStyle)
             : base(Mathf.Ceiling(width), Mathf.Ceiling(height), false) {
             bounds = new Rectangle(x, y, width, height);
-            this.labelText = labelText;
+            LabelText = labelText;
             this.labelStyle = labelStyle;
             Draw();
             SetXY(x, y);
+        }
+
+        private void Update() {
+            if (ShouldRepaint) {
+                ShouldRepaint = false;
+                Draw();
+            }
         }
 
         private void Draw() {
             Clear(Color.Transparent);
             NoStroke();
             Fill(labelStyle.TextColor);
-            graphics.DrawString(labelText, labelStyle.Font, brush, 0, 0, labelStyle.TextAlignment);
+            var textX = 0f;
+            var textY = 0f;
+            if (labelStyle.TextAlignment.Alignment == StringAlignment.Far)
+                textX += bounds.width;
+            else if (labelStyle.TextAlignment.Alignment == StringAlignment.Center) textX += bounds.width / 2;
+            if (labelStyle.TextAlignment.LineAlignment == StringAlignment.Far)
+                textY += bounds.height;
+            else if (labelStyle.TextAlignment.LineAlignment == StringAlignment.Center) textY += bounds.height / 2;
+            graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+            graphics.DrawString(LabelText, labelStyle.Font, brush, textX, textY, labelStyle.TextAlignment);
         }
     }
 }

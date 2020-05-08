@@ -6,7 +6,8 @@ namespace game.ui {
         private Color textColorNormal;
         private float textSizeNormal;
         private StringFormat textAlignmentNormal;
-        private Font fontNormal => FontLoader.Instance[textSizeNormal];
+        private FontLoader fontLoaderInstance;
+        private Font fontNormal => fontLoaderInstance[textSizeNormal];
 
         public Color TextColor;
         public float TextSize;
@@ -20,10 +21,11 @@ namespace game.ui {
             Font = fontNormal;
         }
 
-        public LabelStyle(Color textColorNormal = default, float textSizeNormal = default, StringFormat textAlignmentNormal = null) : this() {
+        public LabelStyle(Color textColorNormal = default, float textSizeNormal = default, StringFormat textAlignmentNormal = null, FontLoader fontLoaderInstance = null) : this() {
             this.textColorNormal = textColorNormal == default ? Default.textColorNormal : textColorNormal;
             this.textSizeNormal = textSizeNormal == default ? Default.textSizeNormal : textSizeNormal;
             this.textAlignmentNormal = textAlignmentNormal ?? Default.textAlignmentNormal;
+            this.fontLoaderInstance = fontLoaderInstance ?? Default.fontLoaderInstance;
             Normal();
         }
         
@@ -31,11 +33,12 @@ namespace game.ui {
             textColorNormal = Color.FromArgb(255,0,0,0),
             textSizeNormal = 16f,
             textAlignmentNormal = FontLoader.LeftTopAlignment,
+            fontLoaderInstance = FontLoader.SourceCode,
             
             TextColor = Color.FromArgb(255,0,0,0),
             TextSize = 16f,
             TextAlignment = FontLoader.LeftTopAlignment,
-            Font = FontLoader.Instance[16f]
+            Font = FontLoader.SourceCode[16f]
         };
     }
 }

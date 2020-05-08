@@ -4,13 +4,16 @@ using System.Drawing.Text;
 
 namespace game.utils {
     public class FontLoader {
-        private static FontLoader instance;
-        private static FontLoader instanceSourceCodeVariable;
+        private static FontLoader instanceSourceCode;
+        private static FontLoader instanceSourceCodeBold;
         private static FontLoader instanceFiraCode;
+        private static FontLoader instanceFiraCodeBold;
         
-        public static FontLoader Instance => SourceCode;
-        public static FontLoader SourceCode => instanceSourceCodeVariable ?? (instanceSourceCodeVariable = new FontLoader("Source Code Variable", "data/fonts/SourceCodeVariable-Roman.ttf"));
+        public static FontLoader Default => SourceCode;
+        public static FontLoader SourceCode => instanceSourceCode ?? (instanceSourceCode = new FontLoader("Source Code Variable", "data/fonts/SourceCodeVariable-Roman.ttf"));
+        public static FontLoader SourceCodeBold => instanceSourceCodeBold ?? (instanceSourceCodeBold = new FontLoader("Source Code Variable", "data/fonts/SourceCodeVariable-Roman.ttf", bold:true));
         public static FontLoader FiraCode => instanceFiraCode ?? (instanceFiraCode = new FontLoader("Fira Code Retina", "data/fonts/FiraCode-Retina.ttf"));
+        public static FontLoader FiraCodeBold => instanceFiraCodeBold ?? (instanceFiraCodeBold = new FontLoader("Fira Code Retina", "data/fonts/FiraCode-Retina.ttf", bold:true));
 
         public static readonly StringFormat LeftTopAlignment = new StringFormat {Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
         public static readonly StringFormat CenterTopAlignment = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
@@ -28,16 +31,21 @@ namespace game.utils {
 
         private readonly Dictionary<float, Font> fonts;
         private readonly FontFamily fontFamily;
+        private FontStyle fontStyle = FontStyle.Regular;
 
-        private FontLoader(string fontFamily, string fontPath) {
+        private FontLoader(string fontFamily, string fontPath, bool bold = false, bool italic = false, bool strikethrough = false, bool underline = false) {
             var collection = new PrivateFontCollection();
             collection.AddFontFile(fontPath);
             this.fontFamily = new FontFamily(fontFamily, collection);
+            if (bold) fontStyle |= FontStyle.Bold;
+            if (italic) fontStyle |= FontStyle.Italic;
+            if (strikethrough) fontStyle |= FontStyle.Strikeout;
+            if (underline) fontStyle |= FontStyle.Underline;
             fonts = new Dictionary<float, Font>();
         }
         
         private FontLoader() : this("Source Code Variable", "data/fonts/SourceCodeVariable-Roman.ttf") {}
         
-        public Font this[float fontSize] => fonts.ContainsKey(fontSize) ? fonts[fontSize] : fonts[fontSize] = new Font(fontFamily, fontSize, FontStyle.Regular, GraphicsUnit.Point);
+        public Font this[float fontSize] => fonts.ContainsKey(fontSize) ? fonts[fontSize] : fonts[fontSize] = new Font(fontFamily, fontSize, fontStyle, GraphicsUnit.Point);
     }
 }
