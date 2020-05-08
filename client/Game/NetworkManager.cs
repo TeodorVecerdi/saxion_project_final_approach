@@ -26,9 +26,7 @@ namespace game {
 
             // Remote URL: "https://saxion-0.ey.r.appspot.com"
             socket = IO.Socket("http://localhost:8080");
-            socket.On("connect", data => {
-                Debug.Log("Client connected.");
-            });
+            socket.On("connect", data => { Debug.Log("Client connected."); });
             SetupSocket();
         }
 
