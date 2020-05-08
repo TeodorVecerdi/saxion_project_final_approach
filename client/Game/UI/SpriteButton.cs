@@ -21,7 +21,7 @@ namespace game.ui {
 
         public bool ShouldRepaint { private get; set; }
         public string ButtonText;
-        public Texture2D Texture;
+        public Sprite Sprite;
         
         private bool IsMouseOnTop {
             get {
@@ -30,14 +30,14 @@ namespace game.ui {
             }
         }
         
-        public SpriteButton(float x, float y, float width, float height, string buttonText, Texture2D texture, Action onClick, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
-            : this(x, y, width, height, buttonText, texture, ButtonStyle.Default, onClick, onMouseEnter, onMouseLeave, onMousePress, onMouseRelease) { }
+        public SpriteButton(float x, float y, float width, float height, string buttonText, Sprite sprite, Action onClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
+            : this(x, y, width, height, buttonText, sprite, ButtonStyle.Default, onClick, onMouseEnter, onMouseLeave, onMousePress, onMouseRelease) { }
 
-        public SpriteButton(float x, float y, float width, float height, string buttonText, Texture2D texture, ButtonStyle buttonStyle, Action onClick, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
+        public SpriteButton(float x, float y, float width, float height, string buttonText, Sprite sprite, ButtonStyle buttonStyle, Action onClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
             : base(Mathf.Ceiling(width), Mathf.Ceiling(height), false) {
             bounds = new Rectangle(x, y, width, height);
             ButtonText = buttonText;
-            Texture = texture;
+            Sprite = sprite;
             this.buttonStyle = buttonStyle;
 
             this.onClick += onClick;
@@ -90,7 +90,7 @@ namespace game.ui {
         private void Draw() {
             Clear(Color.Transparent);
             
-            DrawTexture(Texture, Texture.width/2f, Texture.height/2f);
+            DrawSprite(Sprite, Sprite.texture.width/2f, Sprite.texture.height/2f);
             
             NoStroke();
             Fill(buttonStyle.TextColor);
