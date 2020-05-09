@@ -22,6 +22,7 @@ namespace game.ui {
         private readonly string placeholderText;
         private TextFieldStyle textFieldStyle;
 
+        private string currentText = "";
         private string oldText = "";
 
         private const float caretTimerInitial = 0.5f;
@@ -36,9 +37,15 @@ namespace game.ui {
         private bool showCaret;
         private bool wasMouseOnTopPreviousFrame;
         private bool repeating;
-        
+
         public bool ShouldRepaint { private get; set; }
-        public new string Text = "";
+        public string Text {
+            get => currentText;
+            set {
+                currentText = value;
+                caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
+            }
+        }
 
         private bool IsMouseOnTop {
             get {
@@ -112,31 +119,31 @@ namespace game.ui {
                     var key = Input.LastKeyDown;
                     if (repeating) onKeyRepeat?.Invoke(key);
                     else onKeyTyped?.Invoke(key);
-                    oldText = Text;
-                    if (key == Key.BACKSPACE && !string.IsNullOrEmpty(Text) && caretIndex != -1) {
-                        Text = Text.Remove(caretIndex, 1);
+                    oldText = currentText;
+                    if (key == Key.BACKSPACE && !string.IsNullOrEmpty(currentText) && caretIndex != -1) {
+                        currentText = currentText.Remove(caretIndex, 1);
                         caretIndex--;
-                        caretIndex = caretIndex.Constrain(-1, Text.Length - 1);
-                    } else if (key == Key.DELETE && !string.IsNullOrEmpty(Text) && caretIndex != Text.Length - 1) {
-                        Text = Text.Remove(caretIndex + 1, 1);
-                        caretIndex = caretIndex.Constrain(-1, Text.Length - 1);
+                        caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
+                    } else if (key == Key.DELETE && !string.IsNullOrEmpty(currentText) && caretIndex != currentText.Length - 1) {
+                        currentText = currentText.Remove(caretIndex + 1, 1);
+                        caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
                     } else if (key == Key.LEFT) {
                         caretIndex--;
-                        caretIndex = caretIndex.Constrain(-1, Text.Length - 1);
+                        caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
                     } else if (key == Key.RIGHT) {
                         caretIndex++;
-                        caretIndex = caretIndex.Constrain(-1, Text.Length - 1);
+                        caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
                     } else {
                         // Treat as normal character
                         var keyValue = Input.KeyToString(key);
                         if (!string.IsNullOrEmpty(keyValue)) {
-                            Text = Text.Insert(caretIndex + 1, keyValue);
+                            currentText = currentText.Insert(caretIndex + 1, keyValue);
                             caretIndex++;
-                            caretIndex = caretIndex.Constrain(-1, Text.Length - 1);
+                            caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
                         }
                     }
 
-                    onValueChanged?.Invoke(oldText, Text);
+                    onValueChanged?.Invoke(oldText, currentText);
                     Draw();
                 } else if (Input.AnyKey() && !repeating) {
                     repeating = true;
@@ -159,7 +166,7 @@ namespace game.ui {
             }
 
             wasMouseOnTopPreviousFrame = onTop;
-            
+
             if (ShouldRepaint) {
                 ShouldRepaint = false;
                 Draw();
@@ -184,20 +191,20 @@ namespace game.ui {
             if (textFieldStyle.TextAlignment.LineAlignment == StringAlignment.Far)
                 textY += bounds.height;
             else if (textFieldStyle.TextAlignment.LineAlignment == StringAlignment.Center) textY += bounds.height / 2;
-            if (string.IsNullOrEmpty(Text)) {
+            if (string.IsNullOrEmpty(currentText)) {
                 Fill(textFieldStyle.PlaceholderTextColor);
                 graphics.DrawString(placeholderText, textFieldStyle.PlaceholderFont, brush, textX, textY, textFieldStyle.TextAlignment);
             } else {
                 Fill(textFieldStyle.TextColor);
-                graphics.DrawString(Text, textFieldStyle.Font, brush, textX, textY, textFieldStyle.TextAlignment);
+                graphics.DrawString(currentText, textFieldStyle.Font, brush, textX, textY, textFieldStyle.TextAlignment);
             }
 
             if (focused && showCaret) {
                 ShapeAlign(CenterMode.Min, CenterMode.Center);
                 NoStroke();
                 Fill(textFieldStyle.CaretColor);
-                var textLength = Text.Length.Constrain(1, int.MaxValue);
-                var stringWidth = graphics.MeasureString(Text, textFieldStyle.Font, new SizeF(0f, 0f), textFieldStyle.TextAlignment).Width;
+                var textLength = currentText.Length.Constrain(1, int.MaxValue);
+                var stringWidth = graphics.MeasureString(currentText, textFieldStyle.Font, new SizeF(0f, 0f), textFieldStyle.TextAlignment).Width;
                 var charWidth = stringWidth / (double) textLength;
                 var caretPosition = (caretIndex + 1) * charWidth - Mathf.Sqrt(textFieldStyle.TextSize);
                 var textHeight = TextHeight("A");

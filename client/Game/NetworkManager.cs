@@ -1,13 +1,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using game.Scenes;
 using GXPEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
 
 namespace game {
-    public class NetworkManager {
+    public class NetworkManager : GameObject {
         private static NetworkManager instance;
         public static NetworkManager Instance => instance ?? (instance = new NetworkManager());
 
@@ -17,6 +18,10 @@ namespace game {
         public int AvatarIndex;
 
         private Socket socket;
+        private bool initialized;
+        private bool shouldSwitchScene;
+        
+        private NetworkManager() {}
 
         public void Initialize(string username, int avatarIndex) {
             Username = username;
@@ -26,14 +31,30 @@ namespace game {
 
             // Remote URL: "https://saxion-0.ey.r.appspot.com"
             socket = IO.Socket("http://localhost:8080");
-            socket.On("connect", data => { Debug.Log("Client connected."); });
+            socket.On("connect", data => {
+                Debug.Log("Client connected.");
+                if (!initialized) 
+                    shouldSwitchScene = true;
+                initialized = true;
+            });
             SetupSocket();
         }
 
-        private void SetupSocket() {
-            socket.On("request_account", data => { socket.Emit("request_account_success", UserData.ToString(Formatting.None)); });
+        private void Update() {
+            if (shouldSwitchScene) {
+                SceneManager.Instance.LoadScene("Home");
+                shouldSwitchScene = false;
+            }
+        }
 
-            socket.On("disconnect", data => { Debug.Log($"Client disconnected. Reason: {data}"); });
+        private void SetupSocket() {
+            socket.On("request_account", data => {
+                socket.Emit("request_account_success", UserData.ToString(Formatting.None));
+            });
+
+            socket.On("disconnect", data => {
+                Debug.Log($"Client disconnected. Reason: {data}");
+            });
 
             socket.On("request_rooms_success", data => { Debug.LogWarning("Socket.IO response not implemented for 'request_rooms_success'"); });
             socket.On("create_room_success", data => { Debug.LogWarning("Socket.IO response not implemented for 'create_room_success'"); });
@@ -45,6 +66,6 @@ namespace game {
             socket.On("client_disconnected", data => { Debug.LogWarning("Socket.IO response not implemented for 'client_disconnected'"); });
         }
 
-        private JObject UserData => new JObject {["username"] = Username, ["avatar"] = AvatarIndex, ["guid"] = GUID, ["room"] = RoomID};
+        public JObject UserData => new JObject {["username"] = Username, ["avatar"] = AvatarIndex, ["guid"] = GUID, ["room"] = RoomID};
     }
 }
