@@ -53,7 +53,7 @@ namespace game {
             frameTimer -= Time.deltaTime;
         }
 
-        public override void RenderSelf(GLContext glContext) {
+        protected override void RenderSelf(GLContext glContext) {
             var uvs = new[] {
                 currentUV.x, currentUV.y,
                 currentUV.x + uvSize.x, currentUV.y,
