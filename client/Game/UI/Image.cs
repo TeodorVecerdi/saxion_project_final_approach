@@ -23,6 +23,7 @@ namespace game.ui {
             useSprite = false;
             texture = image;
             Draw();
+            SetXY(x, y);
         }
 
         public Image(float x, float y, float width, float height, Sprite image) : base(Mathf.Ceiling(width), Mathf.Ceiling(height), false) {
@@ -30,6 +31,7 @@ namespace game.ui {
             useSprite = true;
             sprite = image;
             Draw();
+            SetXY(x, y);
         }
 
         private void Update() {

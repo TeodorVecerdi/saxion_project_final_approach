@@ -89,9 +89,10 @@ namespace game.ui {
         private void Draw() {
             Clear(Color.Transparent);
 
-            Stroke(buttonStyle.BorderColor);
-            StrokeWeight(buttonStyle.BorderSize);
-            Fill(buttonStyle.BackgroundColor);
+            Stroke(buttonStyle.BorderColor, buttonStyle.BorderColor.A);
+            if(buttonStyle.BorderSize>0f) StrokeWeight(buttonStyle.BorderSize);
+            else NoStroke();
+            Fill(buttonStyle.BackgroundColor, buttonStyle.BackgroundColor.A);
             ShapeAlign(CenterMode.Min, CenterMode.Min);
             Rect(0, 0, bounds.width, bounds.height);
 

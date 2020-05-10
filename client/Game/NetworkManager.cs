@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GXPEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -17,6 +18,9 @@ namespace game {
         private Socket socket;
         private bool initialized;
         private bool shouldSwitchScene;
+
+        public bool RoomsReady = false;
+        public List<JObject> Rooms;
         
         private NetworkManager() {}
 
@@ -37,6 +41,22 @@ namespace game {
             SetupSocket();
         }
 
+        public void CreateAndJoinRoom(string roomName, string roomDesc, string code, bool isNSFW, bool isPublic) {
+            var roomData = new JObject {
+                ["name"] = roomName,
+                ["desc"] = roomDesc,
+                ["code"] = code,
+                ["nsfw"] = isNSFW,
+                ["pub"] = isPublic,
+                ["guid"] = Guid.NewGuid().ToString()
+            };
+            socket.Emit("create_room", roomData.ToString(Formatting.None));
+        }
+
+        public void RequestRooms() {
+            socket.Emit("request_rooms", "");
+        }
+
         private void Update() {
             if (shouldSwitchScene) {
                 SceneManager.Instance.LoadScene("Home");
@@ -53,8 +73,19 @@ namespace game {
                 Debug.Log($"Client disconnected. Reason: {data}");
             });
 
-            socket.On("request_rooms_success", data => { Debug.LogWarning("Socket.IO response not implemented for 'request_rooms_success'"); });
-            socket.On("create_room_success", data => { Debug.LogWarning("Socket.IO response not implemented for 'create_room_success'"); });
+            socket.On("request_rooms_success", data => {
+                RoomsReady = true;
+                Rooms = new List<JObject>();
+                var objData = (JObject) data;
+                Debug.Log(objData);
+                foreach (var prop in objData.Properties()) {
+                    Rooms.Add(objData[prop.Name] as JObject);
+                }
+            });
+            socket.On("create_room_success", data => {
+                Debug.LogWarning("Socket.IO response not implemented for 'create_room_success'"); 
+                Debug.Log(data);
+            });
             socket.On("join_room_failed", data => { Debug.LogWarning("Socket.IO response not implemented for 'join_room_failed'"); });
             socket.On("join_room_success", data => { Debug.LogWarning("Socket.IO response not implemented for 'join_room_success'"); });
 

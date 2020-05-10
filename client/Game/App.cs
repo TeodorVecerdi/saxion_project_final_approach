@@ -7,7 +7,7 @@ namespace game {
         private MouseCursor mouseCursor;
         public App() : base(Globals.WIDTH, Globals.HEIGHT, Globals.FULLSCREEN, Globals.VSYNC, pPixelArt: Globals.PIXEL_ART, windowTitle: Globals.WINDOW_TITLE) {
             targetFps = 60;
-            ShowMouse(false);
+            ShowMouse(true);
             SetupInput();
 
             networkManager = NetworkManager.Instance;
@@ -18,7 +18,7 @@ namespace game {
             AddChild(sceneManager);
             AddChild(mouseCursor);
             
-            sceneManager.LoadScene("0");
+            sceneManager.LoadScene("Login");
         }
         private void SetupInput() {
             // Input.AddAxis("Horizontal", new List<int>{Key.LEFT, Key.A}, new List<int>{Key.RIGHT, Key.D});

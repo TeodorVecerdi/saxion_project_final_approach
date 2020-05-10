@@ -42,6 +42,7 @@ server.on("connection", socket => {
         }
         room.players.push(player);
         player.room = room.guid;
+        rooms[room.guid] = room;
         socket.emit("create_room_success", roomData);
     });
 

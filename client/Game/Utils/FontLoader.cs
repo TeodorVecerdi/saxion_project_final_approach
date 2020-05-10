@@ -15,15 +15,15 @@ namespace game.utils {
         public static FontLoader FiraCode => instanceFiraCode ?? (instanceFiraCode = new FontLoader("Fira Code Retina", "data/fonts/FiraCode-Retina.ttf"));
         public static FontLoader FiraCodeBold => instanceFiraCodeBold ?? (instanceFiraCodeBold = new FontLoader("Fira Code Retina", "data/fonts/FiraCode-Retina.ttf", bold:true));
 
-        public static readonly StringFormat LeftTopAlignment = new StringFormat {Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
-        public static readonly StringFormat CenterTopAlignment = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
-        public static readonly StringFormat RightTopAlignment = new StringFormat {Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
-        public static readonly StringFormat LeftCenterAlignment = new StringFormat {Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
-        public static readonly StringFormat CenterCenterAlignment = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
-        public static readonly StringFormat RightCenterAlignment = new StringFormat {Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
-        public static readonly StringFormat LeftBottomAlignment = new StringFormat {Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Far, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
-        public static readonly StringFormat CenterBottomAlignment = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
-        public static readonly StringFormat RightBottomAlignment = new StringFormat {Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Far, FormatFlags = StringFormatFlags.MeasureTrailingSpaces};
+        public static readonly StringFormat LeftTopAlignment = new StringFormat {Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.MeasureTrailingSpaces, Trimming = StringTrimming.Word};
+        public static readonly StringFormat CenterTopAlignment = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.MeasureTrailingSpaces, Trimming = StringTrimming.Word};
+        public static readonly StringFormat RightTopAlignment = new StringFormat {Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Near, FormatFlags = StringFormatFlags.MeasureTrailingSpaces, Trimming = StringTrimming.Word};
+        public static readonly StringFormat LeftCenterAlignment = new StringFormat {Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.MeasureTrailingSpaces, Trimming = StringTrimming.Word};
+        public static readonly StringFormat CenterCenterAlignment = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.MeasureTrailingSpaces, Trimming = StringTrimming.Word};
+        public static readonly StringFormat RightCenterAlignment = new StringFormat {Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.MeasureTrailingSpaces, Trimming = StringTrimming.Word};
+        public static readonly StringFormat LeftBottomAlignment = new StringFormat {Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Far, FormatFlags = StringFormatFlags.MeasureTrailingSpaces, Trimming = StringTrimming.Word};
+        public static readonly StringFormat CenterBottomAlignment = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far, FormatFlags = StringFormatFlags.MeasureTrailingSpaces, Trimming = StringTrimming.Word};
+        public static readonly StringFormat RightBottomAlignment = new StringFormat {Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Far, FormatFlags = StringFormatFlags.MeasureTrailingSpaces, Trimming = StringTrimming.Word};
         
         public static readonly StringFormat LeftVerticalAlignment = new StringFormat {Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.DirectionVertical},
             CenterVerticalAlignment = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.DirectionVertical},

@@ -50,7 +50,7 @@ namespace game.ui {
                 textY += bounds.height;
             else if (labelStyle.TextAlignment.LineAlignment == StringAlignment.Center) textY += bounds.height / 2;
             graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-            graphics.DrawString(LabelText, labelStyle.Font, brush, textX, textY, labelStyle.TextAlignment);
+            graphics.DrawString(LabelText, labelStyle.Font, brush, new RectangleF(0, 0, bounds.width, bounds.height), labelStyle.TextAlignment);
         }
     }
 }

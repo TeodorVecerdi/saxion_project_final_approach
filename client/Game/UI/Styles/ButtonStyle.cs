@@ -63,8 +63,33 @@ namespace game.ui {
             TextAlignment = textAlignmentPressed;
             Font = fontPressed;
         }
+        
+        public ButtonStyle Alter(Color textColorNormal = default, Color textColorHover = default, Color textColorPressed = default, Color backgroundColorNormal = default, Color backgroundColorHover = default, Color backgroundColorPressed = default, Color borderColorNormal = default, Color borderColorHover = default, Color borderColorPressed = default, float borderSizeNormal = -1f, float borderSizeHover = -1f, float borderSizePressed = -1f, float textSizeNormal = -1f, float textSizeHover = -1f, float textSizePressed = -1f, StringFormat textAlignmentNormal = null, StringFormat textAlignmentHover = null, StringFormat textAlignmentPressed = null, FontLoader fontLoaderInstance = null) {
+            var copy = this;
+            copy.textColorNormal = textColorNormal == default ? this.textColorNormal : textColorNormal;
+            copy.textColorHover = textColorHover == default ? this.textColorHover : textColorHover;
+            copy.textColorPressed = textColorPressed == default ? this.textColorPressed : textColorPressed;
+            copy.backgroundColorNormal = backgroundColorNormal == default ? this.backgroundColorNormal : backgroundColorNormal;
+            copy.backgroundColorHover = backgroundColorHover == default ? this.backgroundColorHover : backgroundColorHover;
+            copy.backgroundColorPressed = backgroundColorPressed == default ? this.backgroundColorPressed : backgroundColorPressed;
+            copy.borderColorNormal = borderColorNormal == default ? this.borderColorNormal : borderColorNormal;
+            copy.borderColorHover = borderColorHover == default ? this.borderColorHover : borderColorHover;
+            copy.borderColorPressed = borderColorPressed == default ? this.borderColorPressed : borderColorPressed;
+            copy.borderSizeNormal = borderSizeNormal == -1f ? this.borderSizeNormal : borderSizeNormal;
+            copy.borderSizeHover = borderSizeHover == -1f ? this.borderSizeHover : borderSizeHover;
+            copy.borderSizePressed = borderSizePressed == -1f ? this.borderSizePressed : borderSizePressed;
+            copy.textSizeNormal = textSizeNormal == -1f ? this.textSizeNormal : textSizeNormal;
+            copy.textSizeHover = textSizeHover == -1f ? this.textSizeHover : textSizeHover;
+            copy.textSizePressed = textSizePressed == -1f ? this.textSizePressed : textSizePressed;
+            copy.textAlignmentNormal = textAlignmentNormal ?? this.textAlignmentNormal;
+            copy.textAlignmentHover = textAlignmentHover ?? this.textAlignmentHover;
+            copy.textAlignmentPressed = textAlignmentPressed ?? this.textAlignmentPressed;
+            copy.fontLoaderInstance = fontLoaderInstance ?? this.fontLoaderInstance;
+            copy.Normal();
+            return copy;
+        }
 
-        public ButtonStyle(Color textColorNormal = default, Color textColorHover = default, Color textColorPressed = default, Color backgroundColorNormal = default, Color backgroundColorHover = default, Color backgroundColorPressed = default, Color borderColorNormal = default, Color borderColorHover = default, Color borderColorPressed = default, float borderSizeNormal = default, float borderSizeHover = default, float borderSizePressed = default, float textSizeNormal = default, float textSizeHover = default, float textSizePressed = default, StringFormat textAlignmentNormal = null, StringFormat textAlignmentHover = null, StringFormat textAlignmentPressed = null, FontLoader fontLoaderInstance = null) : this() {
+        public ButtonStyle(Color textColorNormal = default, Color textColorHover = default, Color textColorPressed = default, Color backgroundColorNormal = default, Color backgroundColorHover = default, Color backgroundColorPressed = default, Color borderColorNormal = default, Color borderColorHover = default, Color borderColorPressed = default, float borderSizeNormal = -1f, float borderSizeHover = -1f, float borderSizePressed = -1f, float textSizeNormal = -1f, float textSizeHover = -1f, float textSizePressed = -1f, StringFormat textAlignmentNormal = null, StringFormat textAlignmentHover = null, StringFormat textAlignmentPressed = null, FontLoader fontLoaderInstance = null) : this() {
             this.textColorNormal = textColorNormal == default ? Default.textColorNormal : textColorNormal;
             this.textColorHover = textColorHover == default ? Default.textColorHover : textColorHover;
             this.textColorPressed = textColorPressed == default ? Default.textColorPressed : textColorPressed;
@@ -74,12 +99,12 @@ namespace game.ui {
             this.borderColorNormal = borderColorNormal == default ? Default.borderColorNormal : borderColorNormal;
             this.borderColorHover = borderColorHover == default ? Default.borderColorHover : borderColorHover;
             this.borderColorPressed = borderColorPressed == default ? Default.borderColorPressed : borderColorPressed;
-            this.borderSizeNormal = borderSizeNormal == default ? Default.borderSizeNormal : borderSizeNormal;
-            this.borderSizeHover = borderSizeHover == default ? Default.borderSizeHover : borderSizeHover;
-            this.borderSizePressed = borderSizePressed == default ? Default.borderSizePressed : borderSizePressed;
-            this.textSizeNormal = textSizeNormal == default ? Default.textSizeNormal : textSizeNormal;
-            this.textSizeHover = textSizeHover == default ? Default.textSizeHover : textSizeHover;
-            this.textSizePressed = textSizePressed == default ? Default.textSizePressed : textSizePressed;
+            this.borderSizeNormal = borderSizeNormal == -1f ? Default.borderSizeNormal : borderSizeNormal;
+            this.borderSizeHover = borderSizeHover == -1f ? Default.borderSizeHover : borderSizeHover;
+            this.borderSizePressed = borderSizePressed == -1f ? Default.borderSizePressed : borderSizePressed;
+            this.textSizeNormal = textSizeNormal == -1f ? Default.textSizeNormal : textSizeNormal;
+            this.textSizeHover = textSizeHover == -1f ? Default.textSizeHover : textSizeHover;
+            this.textSizePressed = textSizePressed == -1f ? Default.textSizePressed : textSizePressed;
             this.textAlignmentNormal = textAlignmentNormal ?? Default.textAlignmentNormal;
             this.textAlignmentHover = textAlignmentHover ?? Default.textAlignmentHover;
             this.textAlignmentPressed = textAlignmentPressed ?? Default.textAlignmentPressed;

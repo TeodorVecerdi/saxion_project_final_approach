@@ -11,8 +11,11 @@ namespace game {
 
         public MouseCursor() {
             normal = new Sprite("data/sprites/cursors/cursor_normal.png") {scale = 0.05f};
+            normal.SetOrigin(512, 512);
             button = new Sprite("data/sprites/cursors/cursor_button.png") {scale = 0.05f};
+            button.SetOrigin(512, 512);
             text = new Sprite("data/sprites/cursors/cursor_text.png") {scale = 0.05f};
+            text.SetOrigin(512, 512);
             Normal();
         }
 

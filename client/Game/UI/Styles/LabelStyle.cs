@@ -20,6 +20,16 @@ namespace game.ui {
             TextAlignment = textAlignmentNormal;
             Font = fontNormal;
         }
+        
+        public LabelStyle Alter(Color textColorNormal = default, float textSizeNormal = default, StringFormat textAlignmentNormal = null, FontLoader fontLoaderInstance = null) {
+            var copy = this;
+            copy.textColorNormal = textColorNormal == default ? this.textColorNormal : textColorNormal;
+            copy.textSizeNormal = textSizeNormal == default ? this.textSizeNormal : textSizeNormal;
+            copy.textAlignmentNormal = textAlignmentNormal ?? this.textAlignmentNormal;
+            copy.fontLoaderInstance = fontLoaderInstance ?? this.fontLoaderInstance;
+            copy.Normal();
+            return copy;
+        }
 
         public LabelStyle(Color textColorNormal = default, float textSizeNormal = default, StringFormat textAlignmentNormal = null, FontLoader fontLoaderInstance = null) : this() {
             this.textColorNormal = textColorNormal == default ? Default.textColorNormal : textColorNormal;

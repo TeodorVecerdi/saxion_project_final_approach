@@ -42,32 +42,34 @@ namespace game {
             body.AddChild(new Label(0, 0, 500, 24, "Username", textFieldLabelStyle));
             body.AddChild(new TextField(0, 24, 500, 40, "", new TextFieldStyle(placeholderTextSizeNormal: 12f, placeholderTextSizeFocused: 12f), onValueChanged: (oldValue, newValue) => username = newValue));
             body.AddChild(new Label(0, 84, 500, 24, "Avatar", textFieldLabelStyle));
-            var avatarContainer = new Pivot {scaleX = 0f, x = 160, y = 108};
-            var avatarButton = new SpriteButton(0, 108, 128, 128, "Click\r\nto switch", new Sprite("data/sprites/avatar_blue_sm.png", true), avatarButtonStyle, () => { avatarContainer.scaleX = Math.Abs(avatarContainer.scaleX) < 0.0001f ? 1f : 0f; });
+            var avatarContainer = new Pivot {x = -100000f, y = 108};
+            var avatarButton = new SpriteButton(0, 108, 128, 128, "Click\r\nto switch", new Sprite("data/sprites/avatar_blue_sm.png", true), avatarButtonStyle, () => {
+                avatarContainer.x = Math.Abs(avatarContainer.x - 160f) < 0.0001f ? -100000f : 160f;
+            });
             body.AddChild(avatarButton);
             body.AddChild(avatarContainer);
             avatarContainer.AddChild(new SpriteButton(0, 0, 128, 128, "", new Sprite("data/sprites/avatar_blue_sm.png", true), avatarButtonStyle, () => {
                 avatarButton.Sprite = new Sprite("data/sprites/avatar_blue_sm.png", true);
                 avatarButton.ShouldRepaint = true;
-                avatarContainer.scaleX = 0f;
+                avatarContainer.x = -100000f;
                 avatarIndex = 0;
             }));
             avatarContainer.AddChild(new SpriteButton(138, 0, 128, 128, "", new Sprite("data/sprites/avatar_green_sm.png", true), avatarButtonStyle, () => {
                 avatarButton.Sprite = new Sprite("data/sprites/avatar_green_sm.png", true);
                 avatarButton.ShouldRepaint = true;
-                avatarContainer.scaleX = 0f;
+                avatarContainer.x = -100000f;
                 avatarIndex = 1;
             }));
             avatarContainer.AddChild(new SpriteButton(276, 0, 128, 128, "", new Sprite("data/sprites/avatar_red_sm.png", true), avatarButtonStyle, () => {
                 avatarButton.Sprite = new Sprite("data/sprites/avatar_red_sm.png", true);
                 avatarButton.ShouldRepaint = true;
-                avatarContainer.scaleX = 0f;
+                avatarContainer.x = -100000f;
                 avatarIndex = 2;
             }));
             avatarContainer.AddChild(new SpriteButton(414, 0, 128, 128, "", new Sprite("data/sprites/avatar_yellow_sm.png", true), avatarButtonStyle, () => {
                 avatarButton.Sprite = new Sprite("data/sprites/avatar_yellow_sm.png", true);
                 avatarButton.ShouldRepaint = true;
-                avatarContainer.scaleX = 0f;
+                avatarContainer.x = -100000f;
                 avatarIndex = 3;
             }));
             body.AddChild(new Button(20, Globals.HEIGHT - 40 - 190 - 30, Globals.WIDTH - 80, 40, "Submit", onClick: () => {

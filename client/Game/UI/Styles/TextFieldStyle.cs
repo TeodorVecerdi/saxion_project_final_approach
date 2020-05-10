@@ -77,6 +77,35 @@ namespace game.ui {
             TextAlignment = textAlignmentFocused;
         }
 
+        public TextFieldStyle Alter(Color textNormal = default, Color textFocused = default, Color placeholderTextNormal = default, Color placeholderTextFocused = default, Color backgroundNormal = default, Color backgroundFocused = default, Color borderNormal = default, Color borderFocused = default, Color caretNormal = default, Color caretFocused = default, float borderSizeNormal = default, float borderSizeFocused = default, float leftMarginNormal = default, float leftMarginFocused = default, float textSizeNormal = default, float textSizeFocused = default, float placeholderTextSizeNormal = default, float placeholderTextSizeFocused = default, float caretWidthNormal = default, float caretWidthFocused = default, StringFormat textAlignmentNormal = null, StringFormat textAlignmentFocused = null, FontLoader fontLoaderInstance = null) {
+            var copy = this;
+            copy.textNormal = textNormal == default ? this.textNormal : textNormal;
+            copy.textFocused = textFocused == default ? this.textFocused : textFocused;
+            copy.placeholderTextNormal = placeholderTextNormal == default ? this.placeholderTextNormal : placeholderTextNormal;
+            copy.placeholderTextFocused = placeholderTextFocused == default ? this.placeholderTextFocused : placeholderTextFocused;
+            copy.backgroundNormal = backgroundNormal == default ? this.backgroundNormal : backgroundNormal;
+            copy.backgroundFocused = backgroundFocused == default ? this.backgroundFocused : backgroundFocused;
+            copy.borderNormal = borderNormal == default ? this.borderNormal : borderNormal;
+            copy.borderFocused = borderFocused == default ? this.borderFocused : borderFocused;
+            copy.caretNormal = caretNormal == default ? this.caretNormal : caretNormal;
+            copy.caretFocused = caretFocused == default ? this.caretFocused : caretFocused;
+            copy.borderSizeNormal = borderSizeNormal == default ? this.borderSizeNormal : borderSizeNormal;
+            copy.borderSizeFocused = borderSizeFocused == default ? this.borderSizeFocused : borderSizeFocused;
+            copy.leftMarginNormal = leftMarginNormal == default ? this.leftMarginNormal : leftMarginNormal;
+            copy.leftMarginFocused = leftMarginFocused == default ? this.leftMarginFocused : leftMarginFocused;
+            copy.textSizeNormal = textSizeNormal == default ? this.textSizeNormal : textSizeNormal;
+            copy.textSizeFocused = textSizeFocused == default ? this.textSizeFocused : textSizeFocused;
+            copy.placeholderTextSizeNormal = placeholderTextSizeNormal == default ? this.placeholderTextSizeNormal : placeholderTextSizeNormal;
+            copy.placeholderTextSizeFocused = placeholderTextSizeFocused == default ? this.placeholderTextSizeFocused : placeholderTextSizeFocused;
+            copy.caretWidthNormal = caretWidthNormal == default ? this.caretWidthNormal : caretWidthNormal;
+            copy.caretWidthFocused = caretWidthFocused == default ? this.caretWidthFocused : caretWidthFocused;
+            copy.textAlignmentNormal = textAlignmentNormal ?? this.textAlignmentNormal;
+            copy.textAlignmentFocused = textAlignmentFocused ?? this.textAlignmentFocused;
+            copy.fontLoaderInstance = fontLoaderInstance ?? this.fontLoaderInstance;
+            copy.Normal();
+            return copy;
+        }
+
         public TextFieldStyle(Color textNormal = default, Color textFocused = default, Color placeholderTextNormal = default, Color placeholderTextFocused = default, Color backgroundNormal = default, Color backgroundFocused = default, Color borderNormal = default, Color borderFocused = default, Color caretNormal = default, Color caretFocused = default, float borderSizeNormal = default, float borderSizeFocused = default, float leftMarginNormal = default, float leftMarginFocused = default, float textSizeNormal = default, float textSizeFocused = default, float placeholderTextSizeNormal = default, float placeholderTextSizeFocused = default, float caretWidthNormal = default, float caretWidthFocused = default, StringFormat textAlignmentNormal = null, StringFormat textAlignmentFocused = null, FontLoader fontLoaderInstance = null) : this() {
             this.textNormal = textNormal == default ? Default.textNormal : textNormal;
             this.textFocused = textFocused == default ? Default.textFocused : textFocused;
@@ -139,7 +168,9 @@ namespace game.ui {
             TextSize = 16f,
             CaretWidth = 2f,
             Font = FontLoader.SourceCode[16f],
-            TextAlignment = FontLoader.LeftCenterAlignment
+            TextAlignment = FontLoader.LeftCenterAlignment,
+            PlaceholderFont = FontLoader.SourceCode[16f],
+            PlaceholderTextSize = 16f
         };
     }
 }

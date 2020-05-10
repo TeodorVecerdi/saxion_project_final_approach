@@ -149,6 +149,7 @@
         <Compile Include="Scenes\Scene.cs" />
         <Compile Include="Scenes\SceneManager.cs" />
         <Compile Include="Scenes\Test.cs" />
+        <Compile Include="UIFactory.cs" />
         <Compile Include="UI\Button.cs" />
         <Compile Include="UI\Checkbox.cs" />
         <Compile Include="UI\Image.cs" />
