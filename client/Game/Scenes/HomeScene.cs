@@ -86,7 +86,7 @@ namespace game {
             tab1CreatePublic.AddChild(new Button(40, 168+40+60+40+20, Globals.WIDTH/3f - 80, 40, "Create", onClick: () => {
                 if(string.IsNullOrEmpty(publicRoomNameTextField.Text) || string.IsNullOrEmpty(publicRoomDescriptionTextField.Text))
                     return;
-                NetworkManager.Instance.CreateAndJoinRoom(publicRoomNameTextField.Text, publicRoomDescriptionTextField.Text, "", publicRoomNSFWCheckbox.IsChecked, true);
+                NetworkManager.Instance.CreateAndJoinRoom(publicRoomNameTextField.Text, publicRoomDescriptionTextField.Text, "0", "", publicRoomNSFWCheckbox.IsChecked, true);
             }));
             tab1CreatePublic.AddChild(new Button(40, Globals.HEIGHT-80, Globals.WIDTH/3f-80, 40, "Back", onClick: () => {
                 tab1CreatePublic.x = -100000f;
@@ -103,7 +103,7 @@ namespace game {
             tab1CreatePrivate.AddChild(new Button(40, 252 + 40 + 60+40+20, Globals.WIDTH/3f - 80, 40, "Create", onClick: () => {
                 if(string.IsNullOrEmpty(privateRoomNameTextField.Text) || string.IsNullOrEmpty(privateRoomDescriptionTextField.Text) || string.IsNullOrEmpty(privateRoomCodeTextField.Text))
                     return;
-                NetworkManager.Instance.CreateAndJoinRoom(privateRoomNameTextField.Text, privateRoomDescriptionTextField.Text, privateRoomCodeTextField.Text, privateRoomNSFWCheckbox.IsChecked, false);
+                NetworkManager.Instance.CreateAndJoinRoom(privateRoomNameTextField.Text, privateRoomDescriptionTextField.Text, "0", privateRoomCodeTextField.Text, privateRoomNSFWCheckbox.IsChecked, false);
             }));
             tab1CreatePrivate.AddChild(new Button(40, Globals.HEIGHT-80, Globals.WIDTH/3f - 80, 40, "Back", onClick: () => {
                 tab1CreatePrivate.x = -100000f;
@@ -118,13 +118,6 @@ namespace game {
             tab3.AddChild(new Button(40, Globals.HEIGHT-80f, Globals.WIDTH/3f-80, 40, "Refresh", onClick: () => {
                 NetworkManager.Instance.RequestRooms();
             }));
-            var roomButtonStyle = ButtonStyle.Default.Alter(backgroundColorNormal:Color.FromArgb(0,255,255,255), backgroundColorHover:Color.FromArgb(0,255,255,255),backgroundColorPressed:Color.FromArgb(0,255,255,255),borderSizeHover:0,borderSizeNormal:0,borderSizePressed:0);
-            var room1 = UIFactory.CreateRoom("Room 1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse facilisis commodo dui, vel facilisis mauris commodo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ut fringilla turpis.", true, "123");
-            var room2 = UIFactory.CreateRoom("Room 2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse facilisis commodo dui, vel facilisis mauris commodo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ut fringilla turpis.", false, "11111aaaaaa");
-            room1.y = 100f;
-            room2.y = 250f;
-            // tab3.AddChild(room1);
-            // tab3.AddChild(room2);
             NetworkManager.Instance.RequestRooms();
             IsLoaded = true;
         }
@@ -139,7 +132,7 @@ namespace game {
                 var i = 0;
                 foreach (var room in NetworkManager.Instance.Rooms) {
                     if(room.Value<bool>("pub") == false) continue;
-                    var roomUIElement = UIFactory.CreateRoom(room);
+                    var roomUIElement = UIFactory.CreateJoinRoomEntry(room);
                     roomUIElement.y = i*150+100;
                     tab3.AddChild(roomUIElement);
                     i++;

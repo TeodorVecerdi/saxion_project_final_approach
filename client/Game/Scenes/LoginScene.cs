@@ -9,6 +9,7 @@ namespace game {
     public class LoginScene : Scene {
         private string username;
         private int avatarIndex;
+        private bool consent = true;
 
         public LoginScene() {
             username = "";
@@ -72,9 +73,12 @@ namespace game {
                 avatarContainer.x = -100000f;
                 avatarIndex = 3;
             }));
+            body.AddChild(new Checkbox(0, 270, Globals.WIDTH - 40, 70, "Would you like to share anonymous\nusage statistics to help us\nimprove the user experience?", onValueChanged: (oldValue, newValue) => {
+                consent = newValue;
+            }) {IsChecked = true});
             body.AddChild(new Button(20, Globals.HEIGHT - 40 - 190 - 30, Globals.WIDTH - 80, 40, "Submit", onClick: () => {
                 if (string.IsNullOrEmpty(username)) return;
-                NetworkManager.Instance.Initialize(username, avatarIndex);
+                NetworkManager.Instance.Initialize(username, avatarIndex, consent);
                 SceneManager.Instance.LoadScene("Loading");
             }));
             IsLoaded = true;

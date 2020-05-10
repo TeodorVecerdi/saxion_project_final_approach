@@ -25,7 +25,13 @@ namespace game.ui {
 
         public string LabelText;
 
-        public bool IsChecked => isChecked;
+        public bool IsChecked {
+            get => isChecked;
+            set {
+                isChecked = value;
+                Draw();
+            }
+        }
         public bool ShouldRepaint { private get; set; }
         private bool IsMouseOnTop {
             get {

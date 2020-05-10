@@ -14,6 +14,7 @@ namespace game {
         public string GUID;
         public string RoomID;
         public int AvatarIndex;
+        public bool Consent;
 
         private Socket socket;
         private bool initialized;
@@ -24,11 +25,12 @@ namespace game {
         
         private NetworkManager() {}
 
-        public void Initialize(string username, int avatarIndex) {
+        public void Initialize(string username, int avatarIndex, bool consent) {
             Username = username;
             AvatarIndex = avatarIndex;
             GUID = Guid.NewGuid().ToString();
             RoomID = "none";
+            Consent = consent;
 
             // Remote URL: "https://saxion-0.ey.r.appspot.com"
             socket = IO.Socket("http://localhost:8080");
@@ -41,10 +43,11 @@ namespace game {
             SetupSocket();
         }
 
-        public void CreateAndJoinRoom(string roomName, string roomDesc, string code, bool isNSFW, bool isPublic) {
+        public void CreateAndJoinRoom(string roomName, string roomDesc, string roomType, string code, bool isNSFW, bool isPublic) {
             var roomData = new JObject {
                 ["name"] = roomName,
                 ["desc"] = roomDesc,
+                ["type"] = roomType,
                 ["code"] = code,
                 ["nsfw"] = isNSFW,
                 ["pub"] = isPublic,
@@ -94,6 +97,6 @@ namespace game {
             socket.On("client_disconnected", data => { Debug.LogWarning("Socket.IO response not implemented for 'client_disconnected'"); });
         }
 
-        public JObject UserData => new JObject {["username"] = Username, ["avatar"] = AvatarIndex, ["guid"] = GUID, ["room"] = RoomID};
+        public JObject UserData => new JObject {["username"] = Username, ["avatar"] = AvatarIndex, ["guid"] = GUID, ["room"] = RoomID, ["consent"] = Consent};
     }
 }

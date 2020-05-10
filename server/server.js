@@ -20,7 +20,7 @@ server.on("connection", socket => {
 
     socket.on("request_account_success", data => {
         let accountData = JSON.parse(data);
-        let player = new Player(accountData['username'], accountData['avatar'], accountData['guid'], socket.id, accountData["room"]);
+        let player = new Player(accountData['username'], accountData['avatar'], accountData['guid'], socket.id, accountData['consent'], accountData["room"]);
         players[player.guid] = player;
 
         socketIdToPlayerId[socket.id] = player.guid;

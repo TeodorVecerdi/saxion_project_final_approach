@@ -13,10 +13,10 @@ namespace game {
         private static LabelStyle RoomTitleStyle = new LabelStyle(Color.White, 20f, textAlignmentNormal: FontLoader.LeftCenterAlignment, fontLoaderInstance: FontLoader.SourceCodeBold);
         private static LabelStyle RoomDescStyle = new LabelStyle(Color.White, textAlignmentNormal: FontLoader.LeftTopAlignment, textSizeNormal: 13f);
 
-        public static GameObject CreateRoom(JObject roomData) {
-            return CreateRoom(roomData.Value<string>("name"), roomData.Value<string>("desc"), roomData.Value<bool>("nsfw"), roomData.Value<string>("guid"));
+        public static GameObject CreateJoinRoomEntry(JObject roomData) {
+            return CreateJoinRoomEntry(roomData.Value<string>("name"), roomData.Value<string>("desc"), roomData.Value<bool>("nsfw"), roomData.Value<string>("guid"));
         }
-        public static GameObject CreateRoom(string roomName, string roomDesc, bool isNSFW, string roomId) {
+        public static GameObject CreateJoinRoomEntry(string roomName, string roomDesc, bool isNSFW, string roomId) {
             var roomContainer = new Pivot();
             roomContainer.name = $"ROOM: {roomId}";
             roomContainer.AddChild(new Label(40, 0, Globals.WIDTH / 3f - 80f, 20, roomName, RoomTitleStyle));
