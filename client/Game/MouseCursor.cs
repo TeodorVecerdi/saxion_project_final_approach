@@ -10,6 +10,7 @@ namespace game {
         private Sprite active;
 
         public MouseCursor() {
+            name = "Mouse Cursor";
             normal = new Sprite("data/sprites/cursors/cursor_normal.png") {scale = 0.05f};
             normal.SetOrigin(512, 512);
             button = new Sprite("data/sprites/cursors/cursor_button.png") {scale = 0.05f};

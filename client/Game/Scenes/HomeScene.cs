@@ -2,6 +2,7 @@ using System.Drawing;
 using game.ui;
 using game.utils;
 using GXPEngine;
+using GXPEngine.Core;
 using Button = game.ui.Button;
 
 namespace game {
@@ -18,36 +19,13 @@ namespace game {
         private GameObject tab2;
         private GameObject tab3;
 
+        private AnimatedSprite loadingPrivateRooms;
+        private AnimatedSprite loadingPublicRooms;
+
         public HomeScene() {
             SceneID = "Home";
         }
-
-        /*
-        public override void Load() {
-            var primaryTitleStyle = new LabelStyle(Color.White, 32f, FontLoader.CenterCenterAlignment);
-            var secondaryTitleStyle = new LabelStyle(Color.White, 20f, FontLoader.LeftCenterAlignment);
-            var secondaryTitleStyleBold = new LabelStyle(Color.White, 20f, FontLoader.LeftCenterAlignment, FontLoader.SourceCodeBold);
-            var userData = NetworkManager.Instance.UserData;
-            Root.AddChild(new Label(10, 10, Globals.WIDTH, 60, "Successfully logged in!", primaryTitleStyle) {ShouldRepaint = true});
-            Root.AddChild(new Label(40, 100, Globals.WIDTH, 40, $"Username:", secondaryTitleStyle) {ShouldRepaint = true});
-            Root.AddChild(new Label(370, 100, Globals.WIDTH, 40, $"{userData["username"]}", secondaryTitleStyleBold) {ShouldRepaint = true});
-            Root.AddChild(new Label(40, 150, Globals.WIDTH, 40, $"Unique Identifier:", secondaryTitleStyle) {ShouldRepaint = true});
-            Root.AddChild(new Label(370, 150, Globals.WIDTH, 40, $"{userData["guid"]}", secondaryTitleStyleBold) {ShouldRepaint = true});
-            Root.AddChild(new Label(40, 200, Globals.WIDTH, 40, $"Room Id:", secondaryTitleStyle) {ShouldRepaint = true});
-            Root.AddChild(new Label(370, 200, Globals.WIDTH, 40, $"{userData["room"]}", secondaryTitleStyleBold) {ShouldRepaint = true});
-            Root.AddChild(new Label(40, 250, Globals.WIDTH, 40, $"Avatar:", secondaryTitleStyle) {ShouldRepaint = true});
-            Sprite texture;
-            var avatarIndex = userData.Value<int>("avatar");
-            if (avatarIndex == 0) texture = new Sprite("data/sprites/avatar_blue.png");
-            else if (avatarIndex == 1) texture = new Sprite("data/sprites/avatar_green.png");
-            else if (avatarIndex == 2) texture = new Sprite("data/sprites/avatar_red.png");
-            else texture = new Sprite("data/sprites/avatar_yellow.png");
-            
-            texture.SetScaleXY(0.5f, 0.5f);
-            Root.AddChild(new SpriteButton(370, 250, 512, 512, "", texture));
-            IsLoaded = true;
-        }
-        */
+        
         public override void Load() {
             var primaryTitleStyle = new LabelStyle(Color.White, 20f, FontLoader.CenterCenterAlignment);
             var secondaryTitleStyle = new LabelStyle(Color.White, 16f, FontLoader.CenterCenterAlignment);
@@ -122,12 +100,14 @@ namespace game {
                 tab1Main.x = 0f;
             }));
 
-            tab2.AddChild(new Label(40, 50, Globals.WIDTH / 3f - 80, 50, "JOIN PRIVATE ROOM", primaryTitleStyle));
+            tab2.AddChild(new Label(0, 50, Globals.WIDTH / 3f, 50, "JOIN PRIVATE ROOM", primaryTitleStyle));
+            tab2.AddChild(loadingPrivateRooms = new AnimatedSprite(Texture2D.GetInstance("data/sprites/spinner.png", true), 12, 1, 0.083F) {x = -100000f, y = 150 - 48f, scale = 0.75f});
             tab2.AddChild(new Button(40, Globals.HEIGHT - 80f, 2 * Globals.WIDTH / 3f - 80, 40, "Refresh", onClick: () => {
                 RefreshRooms();
             }));
 
             tab3.AddChild(new Label(0, 50, Globals.WIDTH / 3f, 50, "JOIN PUBLIC ROOM", primaryTitleStyle));
+            tab3.AddChild(loadingPublicRooms = new AnimatedSprite(Texture2D.GetInstance("data/sprites/spinner.png", true), 12, 1, 0.083F) {x = -100000f, y = 150 - 48f, scale = 0.75f});
 
             RefreshRooms();
             IsLoaded = true;
@@ -135,6 +115,8 @@ namespace game {
 
         private void RefreshRooms() {
             NetworkManager.Instance.RequestRooms();
+            loadingPrivateRooms.x = Globals.WIDTH / 6f - 48f;
+            loadingPublicRooms.x = Globals.WIDTH / 6f - 48f;
             tab2.GetChildren().ForEach(child => {
                 if (child.name.StartsWith("ROOM:")) child.LateDestroy();
             });
@@ -147,6 +129,9 @@ namespace game {
         private void Update() {
             if (NetworkManager.Instance.RoomsReady) {
                 NetworkManager.Instance.RoomsReady = false;
+                loadingPrivateRooms.x = -100000f;
+                loadingPublicRooms.x = -100000f;
+                
                 var iPrivate = 0;
                 var iPublic = 0;
                 foreach (var room in NetworkManager.Instance.Rooms) {

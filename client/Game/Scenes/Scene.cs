@@ -7,6 +7,7 @@ namespace game {
         public bool IsLoaded = false;
 
         protected Scene() {
+            name = "Scene";
             AddChild(Root);
         }
         public abstract void Load();

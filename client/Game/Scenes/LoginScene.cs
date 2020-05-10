@@ -9,15 +9,17 @@ namespace game {
     public class LoginScene : Scene {
         private string username;
         private int avatarIndex;
-        private bool consent = true;
+        private bool consent;
 
         public LoginScene() {
-            username = "";
-            avatarIndex = 0;
             SceneID = "Login";
         }
 
         public override void Load() {
+            username = "";
+            avatarIndex = 0;
+            consent = true;
+            
             var primaryTitleStyle = new LabelStyle(Color.White, 32f, FontLoader.CenterCenterAlignment);
             var secondaryTitleStyle = new LabelStyle(Color.White, 20f, FontLoader.CenterCenterAlignment);
             var secondaryTitleStyle2 = new LabelStyle(Color.White, 20f, FontLoader.LeftCenterAlignment);

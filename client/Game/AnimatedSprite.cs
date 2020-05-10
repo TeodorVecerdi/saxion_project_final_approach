@@ -17,6 +17,7 @@ namespace game {
         public uint Color = 0xffffffff;
 
         public AnimatedSprite(Texture2D texture, int cols, int rows, float frameTime) {
+            name = $"AnimatedSprite [{texture.filename}";
             this.texture = texture;
             this.cols = cols;
             this.rows = rows;
