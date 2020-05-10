@@ -29,6 +29,12 @@ server.on("connection", socket => {
         console.info(`Got player data: ${data}`);
     });
 
+    socket.on("set_location", data => {
+        let playerId = socketIdToPlayerId[socket.id];
+        console.log(playerId);
+        players[playerId].location = data;
+    })
+
     socket.on("request_rooms", data => {
         socket.emit("request_rooms_success", roomsToJSON());
     });

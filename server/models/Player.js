@@ -1,10 +1,11 @@
 module.exports = class Player {
-    constructor(username, avatar, guid, socketId, consent, room = "") {
+    constructor(username, avatar, guid, socketId, consent, location = "", room = "") {
         this.username = username;
         this.avatar = avatar;
         this.guid = guid;
         this.socketId = socketId;
         this.consent = consent;
+        this.location = location;
         this.room = room;
     }
 
@@ -15,6 +16,7 @@ module.exports = class Player {
             'guid': this.guid,
             'socketId': this.socketId,
             'consent': this.consent,
+            'location': this.location,
             'room': this.room
         };
     }
