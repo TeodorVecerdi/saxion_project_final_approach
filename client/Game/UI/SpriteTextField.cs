@@ -33,7 +33,7 @@ namespace game.ui {
         private float caretTimer;
         private float repeatTimer;
         private int caretIndex = -1;
-
+        private int repeatKey;
         private bool focused;
         private bool pressed;
         private bool showCaret;
@@ -153,6 +153,7 @@ namespace game.ui {
                 } else if (Input.AnyKey() && !repeating) {
                     repeating = true;
                     repeatTimer = repeatStart;
+                    repeatKey = Input.LastKeyDown;
                 } else if (!Input.AnyKey() && repeating) {
                     repeating = false;
                 }
@@ -169,7 +170,10 @@ namespace game.ui {
                     Draw();
                 }
             }
-
+            if (repeating && repeatKey != Input.LastKey) {
+                repeating = false;
+            }
+            
             wasMouseOnTopPreviousFrame = onTop;
 
             if (ShouldRepaint) {
