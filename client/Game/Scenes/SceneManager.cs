@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GXPEngine;
 
-namespace game.Scenes {
+namespace game {
     public class SceneManager : GameObject {
         private static SceneManager instance;
         public static SceneManager Instance => instance ?? (instance = new SceneManager());

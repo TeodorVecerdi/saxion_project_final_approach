@@ -5,7 +5,7 @@ using game.utils;
 using GXPEngine;
 using Button = game.ui.Button;
 
-namespace game.Scenes {
+namespace game {
     public class LoginScene : Scene {
         private string username;
         private int avatarIndex;

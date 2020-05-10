@@ -1,13 +1,4 @@
-using System;
-using System.Drawing;
-using System.Threading.Tasks;
-using game.Scenes;
-using game.ui;
-using game.utils;
 using GXPEngine;
-using GXPEngine.Core;
-using Button = game.ui.Button;
-using Debug = GXPEngine.Debug;
 
 namespace game {
     public class App : Game {

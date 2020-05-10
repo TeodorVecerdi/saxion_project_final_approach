@@ -3,7 +3,7 @@ using game.ui;
 using game.utils;
 using GXPEngine;
 
-namespace game.Scenes {
+namespace game {
     public class HomeScene : Scene {
         public HomeScene() {
             SceneID = "Home";

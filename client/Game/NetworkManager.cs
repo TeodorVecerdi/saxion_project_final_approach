@@ -1,7 +1,4 @@
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using game.Scenes;
 using GXPEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

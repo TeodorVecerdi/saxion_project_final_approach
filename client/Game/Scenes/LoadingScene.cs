@@ -3,7 +3,7 @@ using game.ui;
 using game.utils;
 using GXPEngine.Core;
 
-namespace game.Scenes {
+namespace game {
     public class LoadingScene : Scene {
 
         public LoadingScene() {

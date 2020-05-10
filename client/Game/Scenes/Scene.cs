@@ -1,6 +1,6 @@
 using GXPEngine;
 
-namespace game.Scenes {
+namespace game {
     public abstract class Scene : GameObject {
         public string SceneID;
         public readonly Pivot Root = new Pivot();

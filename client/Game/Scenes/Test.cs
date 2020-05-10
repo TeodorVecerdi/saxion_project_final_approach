@@ -1,7 +1,7 @@
 using game.ui;
 using GXPEngine;
 
-namespace game.Scenes {
+namespace game {
     public class Test : Scene {
         public Test() {
             SceneID = "0";
