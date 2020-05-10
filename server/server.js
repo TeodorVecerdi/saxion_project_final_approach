@@ -36,7 +36,7 @@ server.on("connection", socket => {
     socket.on("create_room", data => {
         let roomData = JSON.parse(data);
         let player = players[socketIdToPlayerId[socket.id]];
-        let room = new Room(roomData['guid'], roomData['name'], roomData['desc'], "", roomData['pub'], roomData['nsfw']);
+        let room = new Room(roomData['guid'], roomData['name'], roomData['desc'], roomData['type'], "", roomData['pub'], roomData['nsfw']);
         if (room.pub === false) {
             room.code = roomData['code'];
         }

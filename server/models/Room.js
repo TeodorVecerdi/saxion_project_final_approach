@@ -1,8 +1,9 @@
 module.exports = class Room {
-    constructor(guid, name, desc, code = "", pub = true, nsfw = false) {
+    constructor(guid, name, desc, type, code = "", pub = true, nsfw = false) {
         this.guid = guid;
         this.name = name;
         this.desc = desc;
+        this.type = type;
         this.code = code;
         this.pub = pub;
         this.nsfw = nsfw;
@@ -17,7 +18,8 @@ module.exports = class Room {
             'code': this.code,
             'pub': this.pub,
             'nsfw': this.nsfw,
-            'players': this.players
+            'players': this.players,
+            'type': this.type
         }
     }
 };
