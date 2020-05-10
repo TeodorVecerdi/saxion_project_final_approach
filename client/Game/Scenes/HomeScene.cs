@@ -3,22 +3,21 @@ using game.ui;
 using game.utils;
 using GXPEngine;
 using Button = game.ui.Button;
-using Debug = GXPEngine.Debug;
 
 namespace game {
     public class HomeScene : Scene {
         private TextField publicRoomNameTextField;
         private TextField publicRoomDescriptionTextField;
         private Checkbox publicRoomNSFWCheckbox;
-        
+
         private TextField privateRoomNameTextField;
         private TextField privateRoomDescriptionTextField;
         private TextField privateRoomCodeTextField;
         private Checkbox privateRoomNSFWCheckbox;
 
-        private TextField joinRoomCodeTextField;
+        private GameObject tab2;
         private GameObject tab3;
-        
+
         public HomeScene() {
             SceneID = "Home";
         }
@@ -55,91 +54,116 @@ namespace game {
             var textFieldLabelStyle = new LabelStyle(Color.FromArgb(205, 205, 205), 14f, FontLoader.LeftCenterAlignment);
 
             var tab1 = new Pivot();
-            var tab2 = new Pivot();
-            tab2.SetXY(Globals.WIDTH/3f, 0f);
+            tab2 = new Pivot();
+            tab2.SetXY(Globals.WIDTH / 3f, 0f);
             tab3 = new Pivot();
-            tab3.SetXY(2f * Globals.WIDTH/3f, 0f);
+            tab3.SetXY(2f * Globals.WIDTH / 3f, 0f);
             Root.AddChild(tab1);
             Root.AddChild(tab2);
             Root.AddChild(tab3);
             var tab1Main = new Pivot();
-            var tab1CreatePublic = new Pivot() { x=-100000f};
-            var tab1CreatePrivate = new Pivot() { x=-100000f};
+            var tab1CreatePublic = new Pivot() {x = -100000f};
+            var tab1CreatePrivate = new Pivot() {x = -100000f};
             tab1.AddChild(tab1Main);
             tab1.AddChild(tab1CreatePublic);
             tab1.AddChild(tab1CreatePrivate);
-            tab1Main.AddChild(new Label(0, 50, Globals.WIDTH/3f, 50, "CREATE ROOM", primaryTitleStyle));
-            tab1Main.AddChild(new Button(40, 100, Globals.WIDTH/3f - 80, 40, "Public room", onClick: () => {
+            tab1Main.AddChild(new Label(0, 50, Globals.WIDTH / 3f, 50, "CREATE ROOM", primaryTitleStyle));
+            tab1Main.AddChild(new Button(40, 100, Globals.WIDTH / 3f - 80, 40, "Public room", onClick: () => {
                 tab1CreatePublic.x = 0;
                 tab1Main.x = -100000f;
             }));
-            tab1Main.AddChild(new Button(40, 150, Globals.WIDTH/3f - 80, 40, "Private room", onClick: () => {
+            tab1Main.AddChild(new Button(40, 150, Globals.WIDTH / 3f - 80, 40, "Private room", onClick: () => {
                 tab1CreatePrivate.x = 0;
                 tab1Main.x = -100000f;
             }));
-            tab1CreatePublic.AddChild(new Label(40, 0 + 40, Globals.WIDTH/3f - 80f, 40, "Create public room", primaryTitleStyle));
-            tab1CreatePublic.AddChild(new Label(40, 0 + 40 + 60, Globals.WIDTH/3f-80, 24, "Room Name", textFieldLabelStyle));
-            tab1CreatePublic.AddChild(publicRoomNameTextField = new TextField(40, 24 + 40 + 60, Globals.WIDTH/3f-80, 40, ""));
-            tab1CreatePublic.AddChild(new Label(40, 84 + 40 + 60, Globals.WIDTH/3f-80, 24, "Room Description", textFieldLabelStyle));
-            tab1CreatePublic.AddChild(publicRoomDescriptionTextField = new TextField(40, 108 + 40 + 60, Globals.WIDTH/3f-80, 40, ""));
-            tab1CreatePublic.AddChild(publicRoomNSFWCheckbox = new Checkbox(40, 168 + 40 + 60, Globals.WIDTH/3f-80, 40, "Mark room as NSFW (not safe for work)"));
-            tab1CreatePublic.AddChild(new Button(40, 168+40+60+40+20, Globals.WIDTH/3f - 80, 40, "Create", onClick: () => {
-                if(string.IsNullOrEmpty(publicRoomNameTextField.Text) || string.IsNullOrEmpty(publicRoomDescriptionTextField.Text))
+            tab1CreatePublic.AddChild(new Label(40, 0 + 40, Globals.WIDTH / 3f - 80f, 40, "Create public room", primaryTitleStyle));
+            tab1CreatePublic.AddChild(new Label(40, 0 + 40 + 60, Globals.WIDTH / 3f - 80, 24, "Room Name", textFieldLabelStyle));
+            tab1CreatePublic.AddChild(publicRoomNameTextField = new TextField(40, 24 + 40 + 60, Globals.WIDTH / 3f - 80, 40, ""));
+            tab1CreatePublic.AddChild(new Label(40, 84 + 40 + 60, Globals.WIDTH / 3f - 80, 24, "Room Description", textFieldLabelStyle));
+            tab1CreatePublic.AddChild(publicRoomDescriptionTextField = new TextField(40, 108 + 40 + 60, Globals.WIDTH / 3f - 80, 40, ""));
+            tab1CreatePublic.AddChild(publicRoomNSFWCheckbox = new Checkbox(40, 168 + 40 + 60, Globals.WIDTH / 3f - 80, 40, "Mark room as NSFW (not safe for work)"));
+            tab1CreatePublic.AddChild(new Button(40, 168 + 40 + 60 + 40 + 20, Globals.WIDTH / 3f - 80, 40, "Create", onClick: () => {
+                if (string.IsNullOrEmpty(publicRoomNameTextField.Text) || string.IsNullOrEmpty(publicRoomDescriptionTextField.Text))
                     return;
-                NetworkManager.Instance.CreateAndJoinRoom(publicRoomNameTextField.Text, publicRoomDescriptionTextField.Text, "0", "", publicRoomNSFWCheckbox.IsChecked, true);
+                NetworkManager.Instance.CreateAndJoinRoom(publicRoomNameTextField.Text, publicRoomDescriptionTextField.Text, "", publicRoomNSFWCheckbox.IsChecked, true);
+                publicRoomNameTextField.Text = "";
+                publicRoomDescriptionTextField.Text = "";
+                publicRoomNSFWCheckbox.IsChecked = false;
+                tab1CreatePublic.x = -100000f;
+                tab1Main.x = 0f;
+                RefreshRooms();
             }));
-            tab1CreatePublic.AddChild(new Button(40, Globals.HEIGHT-80, Globals.WIDTH/3f-80, 40, "Back", onClick: () => {
+            tab1CreatePublic.AddChild(new Button(40, Globals.HEIGHT - 80, Globals.WIDTH / 3f - 80, 40, "Back", onClick: () => {
                 tab1CreatePublic.x = -100000f;
                 tab1Main.x = 0f;
             }));
-            tab1CreatePrivate.AddChild(new Label(40, 0 + 40, Globals.WIDTH/3f - 80f, 40, "Create private room", primaryTitleStyle));
-            tab1CreatePrivate.AddChild(new Label(40, 0 + 40 + 60, Globals.WIDTH/3f - 80, 24, "Room Name", textFieldLabelStyle));
-            tab1CreatePrivate.AddChild(privateRoomNameTextField = new TextField(40, 24 + 40 + 60, Globals.WIDTH/3f - 80, 40, ""));
-            tab1CreatePrivate.AddChild(new Label(40, 84 + 40 + 60, Globals.WIDTH/3f - 80, 24, "Room Description", textFieldLabelStyle));
-            tab1CreatePrivate.AddChild(privateRoomDescriptionTextField = new TextField(40, 108 + 40 + 60, Globals.WIDTH/3f - 80, 40, ""));
-            tab1CreatePrivate.AddChild(new Label(40, 168 + 40 + 60, Globals.WIDTH/3f - 80, 24, "Room Code", textFieldLabelStyle));
-            tab1CreatePrivate.AddChild(privateRoomCodeTextField = new TextField(40, 192 + 40 + 60, Globals.WIDTH/3f - 80, 40, ""));
-            tab1CreatePrivate.AddChild(privateRoomNSFWCheckbox = new Checkbox(40, 252 + 40 + 60, Globals.WIDTH/3f - 80, 40, "Mark room as NSFW (not safe for work)"));
-            tab1CreatePrivate.AddChild(new Button(40, 252 + 40 + 60+40+20, Globals.WIDTH/3f - 80, 40, "Create", onClick: () => {
-                if(string.IsNullOrEmpty(privateRoomNameTextField.Text) || string.IsNullOrEmpty(privateRoomDescriptionTextField.Text) || string.IsNullOrEmpty(privateRoomCodeTextField.Text))
+            tab1CreatePrivate.AddChild(new Label(40, 0 + 40, Globals.WIDTH / 3f - 80f, 40, "Create private room", primaryTitleStyle));
+            tab1CreatePrivate.AddChild(new Label(40, 0 + 40 + 60, Globals.WIDTH / 3f - 80, 24, "Room Name", textFieldLabelStyle));
+            tab1CreatePrivate.AddChild(privateRoomNameTextField = new TextField(40, 24 + 40 + 60, Globals.WIDTH / 3f - 80, 40, ""));
+            tab1CreatePrivate.AddChild(new Label(40, 84 + 40 + 60, Globals.WIDTH / 3f - 80, 24, "Room Description", textFieldLabelStyle));
+            tab1CreatePrivate.AddChild(privateRoomDescriptionTextField = new TextField(40, 108 + 40 + 60, Globals.WIDTH / 3f - 80, 40, ""));
+            tab1CreatePrivate.AddChild(new Label(40, 168 + 40 + 60, Globals.WIDTH / 3f - 80, 24, "Room Code", textFieldLabelStyle));
+            tab1CreatePrivate.AddChild(privateRoomCodeTextField = new TextField(40, 192 + 40 + 60, Globals.WIDTH / 3f - 80, 40, ""));
+            tab1CreatePrivate.AddChild(privateRoomNSFWCheckbox = new Checkbox(40, 252 + 40 + 60, Globals.WIDTH / 3f - 80, 40, "Mark room as NSFW (not safe for work)"));
+            tab1CreatePrivate.AddChild(new Button(40, 252 + 40 + 60 + 40 + 20, Globals.WIDTH / 3f - 80, 40, "Create", onClick: () => {
+                if (string.IsNullOrEmpty(privateRoomNameTextField.Text) || string.IsNullOrEmpty(privateRoomDescriptionTextField.Text) || string.IsNullOrEmpty(privateRoomCodeTextField.Text))
                     return;
-                NetworkManager.Instance.CreateAndJoinRoom(privateRoomNameTextField.Text, privateRoomDescriptionTextField.Text, "0", privateRoomCodeTextField.Text, privateRoomNSFWCheckbox.IsChecked, false);
+                NetworkManager.Instance.CreateAndJoinRoom(privateRoomNameTextField.Text, privateRoomDescriptionTextField.Text, privateRoomCodeTextField.Text, privateRoomNSFWCheckbox.IsChecked, false);
+                privateRoomNameTextField.Text = "";
+                privateRoomDescriptionTextField.Text = "";
+                privateRoomCodeTextField.Text = "";
+                privateRoomNSFWCheckbox.IsChecked = false;
+                tab1CreatePrivate.x = -100000f;
+                tab1Main.x = 0f;
+                RefreshRooms();
             }));
-            tab1CreatePrivate.AddChild(new Button(40, Globals.HEIGHT-80, Globals.WIDTH/3f - 80, 40, "Back", onClick: () => {
+            tab1CreatePrivate.AddChild(new Button(40, Globals.HEIGHT - 80, Globals.WIDTH / 3f - 80, 40, "Back", onClick: () => {
                 tab1CreatePrivate.x = -100000f;
                 tab1Main.x = 0f;
             }));
-            
-            tab2.AddChild(new Label(40, 50, Globals.WIDTH/3f - 80, 50, "JOIN PRIVATE ROOM", primaryTitleStyle));
-            tab2.AddChild(new Label(40, 120, Globals.WIDTH/3f - 80, 50, "Enter room code:", secondaryTitleStyle));
-            tab2.AddChild(joinRoomCodeTextField = new TextField(40, 170, Globals.WIDTH/3f - 80, 50, "code", TextFieldStyle.Default));
-            tab2.AddChild(new Button(40, 170+50+20, Globals.WIDTH/3f - 80f, 40, "JOIN"));
-            tab3.AddChild(new Label(0, 50, Globals.WIDTH/3f, 50, "JOIN PUBLIC ROOM", primaryTitleStyle));
-            tab3.AddChild(new Button(40, Globals.HEIGHT-80f, Globals.WIDTH/3f-80, 40, "Refresh", onClick: () => {
-                NetworkManager.Instance.RequestRooms();
+
+            tab2.AddChild(new Label(40, 50, Globals.WIDTH / 3f - 80, 50, "JOIN PRIVATE ROOM", primaryTitleStyle));
+            tab2.AddChild(new Button(40, Globals.HEIGHT - 80f, 2 * Globals.WIDTH / 3f - 80, 40, "Refresh", onClick: () => {
+                RefreshRooms();
             }));
-            NetworkManager.Instance.RequestRooms();
+
+            tab3.AddChild(new Label(0, 50, Globals.WIDTH / 3f, 50, "JOIN PUBLIC ROOM", primaryTitleStyle));
+
+            RefreshRooms();
             IsLoaded = true;
         }
 
-        
+        private void RefreshRooms() {
+            NetworkManager.Instance.RequestRooms();
+            tab2.GetChildren().ForEach(child => {
+                if (child.name.StartsWith("ROOM:")) child.LateDestroy();
+            });
+                
+            tab3.GetChildren().ForEach(child => {
+                if (child.name.StartsWith("ROOM:")) child.LateDestroy();
+            });
+        }
+
         private void Update() {
             if (NetworkManager.Instance.RoomsReady) {
                 NetworkManager.Instance.RoomsReady = false;
-                tab3.GetChildren().ForEach(child => {
-                    if(child.name.StartsWith("ROOM:")) child.LateDestroy();
-                });
-                var i = 0;
+                var iPrivate = 0;
+                var iPublic = 0;
                 foreach (var room in NetworkManager.Instance.Rooms) {
-                    if(room.Value<bool>("pub") == false) continue;
-                    var roomUIElement = UIFactory.CreateJoinRoomEntry(room);
-                    roomUIElement.y = i*150+100;
-                    tab3.AddChild(roomUIElement);
-                    i++;
+                    if (room.IsPublic) {
+                        var roomUIElement = UIFactory.CreateJoinPublicRoomEntry(room);
+                        roomUIElement.y = iPublic * 150 + 100;
+                        tab3.AddChild(roomUIElement);
+                        iPublic++;
+                    } else {
+                        var roomUIElement = UIFactory.CreateJoinPrivateRoomEntry(room);
+                        roomUIElement.y = iPrivate * 150 + 100;
+                        tab2.AddChild(roomUIElement);
+                        iPrivate++;
+                    }
                 }
             }
         }
-        
 
         public override void Unload() {
             Root.GetChildren().ForEach(child => child.LateDestroy());

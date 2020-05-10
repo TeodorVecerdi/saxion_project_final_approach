@@ -10,28 +10,20 @@ namespace game {
         private static NetworkManager instance;
         public static NetworkManager Instance => instance ?? (instance = new NetworkManager());
 
-        public string Username;
-        public string GUID;
-        public string RoomID;
-        public int AvatarIndex;
-        public bool Consent;
+        private NetworkPlayer playerData;
+        private NetworkRoom activeRoom;
 
         private Socket socket;
         private bool initialized;
         private bool shouldSwitchScene;
 
         public bool RoomsReady = false;
-        public List<JObject> Rooms;
+        public List<NetworkRoom> Rooms;
         
         private NetworkManager() {}
 
         public void Initialize(string username, int avatarIndex, bool consent) {
-            Username = username;
-            AvatarIndex = avatarIndex;
-            GUID = Guid.NewGuid().ToString();
-            RoomID = "none";
-            Consent = consent;
-
+            playerData = new NetworkPlayer(username, Guid.NewGuid().ToString(), "none", "none", avatarIndex, consent);
             // Remote URL: "https://saxion-0.ey.r.appspot.com"
             socket = IO.Socket("http://localhost:8080");
             socket.On("connect", data => {
@@ -43,33 +35,33 @@ namespace game {
             SetupSocket();
         }
 
-        public void CreateAndJoinRoom(string roomName, string roomDesc, string roomType, string code, bool isNSFW, bool isPublic) {
-            var roomData = new JObject {
-                ["name"] = roomName,
-                ["desc"] = roomDesc,
-                ["type"] = roomType,
-                ["code"] = code,
-                ["nsfw"] = isNSFW,
-                ["pub"] = isPublic,
-                ["guid"] = Guid.NewGuid().ToString()
-            };
-            socket.Emit("create_room", roomData.ToString(Formatting.None));
+        public void CreateAndJoinRoom(string roomName, string roomDesc, string code, bool isNSFW, bool isPublic) {
+            activeRoom = new NetworkRoom(roomName, roomDesc, Guid.NewGuid().ToString(), code, playerData.Location, isPublic, isNSFW);
+            playerData.RoomID = activeRoom.GUID;
+            socket.Emit("create_room", activeRoom.JSONString);
         }
 
         public void RequestRooms() {
             socket.Emit("request_rooms", "");
+        }        
+        
+        public void JoinLocation(string location) {
+            playerData.Location = location;
+            socket.Emit("set_location", playerData.Location);
+            SceneManager.Instance.LoadScene("Home");
         }
+
 
         private void Update() {
             if (shouldSwitchScene) {
-                SceneManager.Instance.LoadScene("Home");
+                SceneManager.Instance.LoadScene("Map");
                 shouldSwitchScene = false;
             }
         }
 
         private void SetupSocket() {
             socket.On("request_account", data => {
-                socket.Emit("request_account_success", UserData.ToString(Formatting.None));
+                socket.Emit("request_account_success", playerData.JSONString);
             });
 
             socket.On("disconnect", data => {
@@ -78,11 +70,13 @@ namespace game {
 
             socket.On("request_rooms_success", data => {
                 RoomsReady = true;
-                Rooms = new List<JObject>();
+                Rooms = new List<NetworkRoom>();
                 var objData = (JObject) data;
                 Debug.Log(objData);
                 foreach (var prop in objData.Properties()) {
-                    Rooms.Add(objData[prop.Name] as JObject);
+                    var roomData = (JObject)objData[prop.Name];
+                    var room = new NetworkRoom(roomData.Value<string>("name"), roomData.Value<string>("desc"), roomData.Value<string>("guid"),roomData.Value<string>("code"), roomData.Value<string>("type"), roomData.Value<bool>("pub"), roomData.Value<bool>("nsfw"));
+                    Rooms.Add(room);
                 }
             });
             socket.On("create_room_success", data => {
@@ -96,7 +90,5 @@ namespace game {
             socket.On("new_message", data => { Debug.LogWarning("Socket.IO response not implemented for 'new_message'"); });
             socket.On("client_disconnected", data => { Debug.LogWarning("Socket.IO response not implemented for 'client_disconnected'"); });
         }
-
-        public JObject UserData => new JObject {["username"] = Username, ["avatar"] = AvatarIndex, ["guid"] = GUID, ["room"] = RoomID, ["consent"] = Consent};
     }
 }

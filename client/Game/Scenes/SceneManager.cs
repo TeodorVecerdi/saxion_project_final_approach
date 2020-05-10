@@ -19,6 +19,7 @@ namespace game {
             AddScene(new LoginScene());
             AddScene(new LoadingScene());
             AddScene(new HomeScene());
+            AddScene(new MapScene());
             AddScene(new Test());
         }
 

@@ -75,8 +75,8 @@ namespace game {
                 
             }));
             var roomButtonStyle = ButtonStyle.Default.Alter(backgroundColorNormal:Color.FromArgb(0,255,255,255), backgroundColorHover:Color.FromArgb(0,255,255,255),backgroundColorPressed:Color.FromArgb(0,255,255,255),borderSizeHover:0,borderSizeNormal:0,borderSizePressed:0);
-            var room1 = UIFactory.CreateJoinRoomEntry("Room 1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse facilisis commodo dui, vel facilisis mauris commodo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ut fringilla turpis.", true, "123");
-            var room2 = UIFactory.CreateJoinRoomEntry("Room 2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse facilisis commodo dui, vel facilisis mauris commodo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ut fringilla turpis.", false, "11111aaaaaa");
+            var room1 = UIFactory.CreateJoinPublicRoomEntry("Room 1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse facilisis commodo dui, vel facilisis mauris commodo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ut fringilla turpis.", true, "123");
+            var room2 = UIFactory.CreateJoinPublicRoomEntry("Room 2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse facilisis commodo dui, vel facilisis mauris commodo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ut fringilla turpis.", false, "11111aaaaaa");
             room1.y = 100f;
             room2.y = 320f;
             tab3.AddChild(room1);
