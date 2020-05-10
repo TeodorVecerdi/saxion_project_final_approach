@@ -1,3 +1,4 @@
+using System.Drawing;
 using game.ui;
 using GXPEngine;
 
@@ -16,6 +17,8 @@ namespace game {
                 Debug.Log($"Message sent: {message}");
                 messageTextfield.Text = "";
             }));
+            
+            Root.AddChild(new Checkbox(20, Globals.HEIGHT/2f + 120, 400, 50, "Helloooooo"));
         }
 
         public override void Unload() {

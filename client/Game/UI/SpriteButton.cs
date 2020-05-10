@@ -22,14 +22,14 @@ namespace game.ui {
         public bool ShouldRepaint { private get; set; }
         public string ButtonText;
         public Sprite Sprite;
-        
+
         private bool IsMouseOnTop {
             get {
-                var globalBounds = TransformPoint(0,0);
+                var globalBounds = TransformPoint(0, 0);
                 return Input.mouseX >= globalBounds.x && Input.mouseX <= globalBounds.x + bounds.width && Input.mouseY >= globalBounds.y && Input.mouseY <= globalBounds.y + bounds.height;
             }
         }
-        
+
         public SpriteButton(float x, float y, float width, float height, string buttonText, Sprite sprite, Action onClick = null, Action onMouseEnter = null, Action onMouseLeave = null, Action onMousePress = null, Action onMouseRelease = null)
             : this(x, y, width, height, buttonText, sprite, ButtonStyle.Default, onClick, onMouseEnter, onMouseLeave, onMousePress, onMouseRelease) { }
 
@@ -71,10 +71,12 @@ namespace game.ui {
                 Draw();
             } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
                 onMouseEnter?.Invoke();
+                MouseCursor.Instance.Button();
                 buttonStyle.Hover();
                 Draw();
             } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
                 onMouseLeave?.Invoke();
+                MouseCursor.Instance.Normal();
                 buttonStyle.Normal();
                 Draw();
             }
@@ -89,9 +91,9 @@ namespace game.ui {
 
         private void Draw() {
             Clear(Color.Transparent);
-            
-            DrawSprite(Sprite, Sprite.texture.width/2f, Sprite.texture.height/2f);
-            
+
+            DrawSprite(Sprite, Sprite.texture.width / 2f, Sprite.texture.height / 2f);
+
             NoStroke();
             Fill(buttonStyle.TextColor);
             graphics.TextRenderingHint = TextRenderingHint.AntiAlias;

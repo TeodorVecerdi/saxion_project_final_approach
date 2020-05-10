@@ -4,15 +4,20 @@ namespace game {
     public class App : Game {
         private NetworkManager networkManager;
         private SceneManager sceneManager;
+        private MouseCursor mouseCursor;
         public App() : base(Globals.WIDTH, Globals.HEIGHT, Globals.FULLSCREEN, Globals.VSYNC, pPixelArt: Globals.PIXEL_ART, windowTitle: Globals.WINDOW_TITLE) {
             targetFps = 60;
+            ShowMouse(false);
             SetupInput();
 
             networkManager = NetworkManager.Instance;
             sceneManager = SceneManager.Instance;
-            
+            mouseCursor = MouseCursor.Instance;
+
             AddChild(networkManager);
             AddChild(sceneManager);
+            AddChild(mouseCursor);
+            
             sceneManager.LoadScene("0");
         }
         private void SetupInput() {

@@ -68,10 +68,12 @@ namespace game.ui {
                 Draw();
             } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
                 onMouseEnter?.Invoke();
+                MouseCursor.Instance.Button();
                 buttonStyle.Hover();
                 Draw();
             } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
                 onMouseLeave?.Invoke();
+                MouseCursor.Instance.Normal();
                 buttonStyle.Normal();
                 Draw();
             }

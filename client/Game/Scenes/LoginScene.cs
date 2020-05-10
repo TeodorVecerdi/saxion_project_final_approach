@@ -23,7 +23,7 @@ namespace game {
             var textFieldLabelStyle = new LabelStyle(Color.FromArgb(205, 205, 205), 14f, FontLoader.LeftCenterAlignment);
             var avatarButtonStyle = new ButtonStyle(
                 textSizeNormal: 14f, textSizeHover: 14f, textSizePressed: 14f,
-                textNormal: Color.FromArgb(93, 55, 170), textHover: Color.FromArgb(106, 52, 178), textPressed: Color.FromArgb(111, 56, 189),
+                textColorNormal: Color.FromArgb(93, 55, 170), textColorHover: Color.FromArgb(106, 52, 178), textColorPressed: Color.FromArgb(111, 56, 189),
                 fontLoaderInstance: FontLoader.SourceCodeBold);
 
             var header = new Pivot();

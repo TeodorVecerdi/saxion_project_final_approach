@@ -103,9 +103,11 @@ namespace game.ui {
                 Draw();
             } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
                 onMouseEnter?.Invoke();
+                MouseCursor.Instance.Text();
                 Draw();
             } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
                 onMouseLeave?.Invoke();
+                MouseCursor.Instance.Normal();
                 Draw();
             } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && !onTop && focused) {
                 focused = false;

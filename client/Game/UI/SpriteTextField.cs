@@ -39,7 +39,7 @@ namespace game.ui {
         private bool showCaret;
         private bool wasMouseOnTopPreviousFrame;
         private bool repeating;
-        
+
         public string Text {
             get => currentText;
             set {
@@ -48,10 +48,10 @@ namespace game.ui {
             }
         }
         public bool ShouldRepaint { private get; set; }
-        
+
         private bool IsMouseOnTop {
             get {
-                var globalBounds = TransformPoint(0,0);
+                var globalBounds = TransformPoint(0, 0);
                 return Input.mouseX >= globalBounds.x && Input.mouseX <= globalBounds.x + bounds.width && Input.mouseY >= globalBounds.y && Input.mouseY <= globalBounds.y + bounds.height;
             }
         }
@@ -106,9 +106,11 @@ namespace game.ui {
                 Draw();
             } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
                 onMouseEnter?.Invoke();
+                MouseCursor.Instance.Text();
                 Draw();
             } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
                 onMouseLeave?.Invoke();
+                MouseCursor.Instance.Normal();
                 Draw();
             } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && !onTop && focused) {
                 focused = false;
@@ -120,7 +122,7 @@ namespace game.ui {
             if (focused) {
                 if (Input.AnyKeyDown() || (repeating && repeatTimer <= 0f)) {
                     var key = Input.LastKeyDown;
-                    if(repeating) onKeyRepeat?.Invoke(key);
+                    if (repeating) onKeyRepeat?.Invoke(key);
                     else onKeyTyped?.Invoke(key);
                     oldText = currentText;
                     if (key == Key.BACKSPACE && !string.IsNullOrEmpty(currentText) && caretIndex != -1) {
@@ -169,7 +171,7 @@ namespace game.ui {
             }
 
             wasMouseOnTopPreviousFrame = onTop;
-            
+
             if (ShouldRepaint) {
                 ShouldRepaint = false;
                 Draw();
@@ -182,7 +184,7 @@ namespace game.ui {
             DrawTexture(texture, 0, 0);
 
             graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-            
+
             if (string.IsNullOrEmpty(currentText)) {
                 Fill(textFieldStyle.PlaceholderTextColor);
                 graphics.DrawString(placeholderText, textFieldStyle.PlaceholderFont, brush, textFieldStyle.LeftMargin, bounds.height / 2f, textFieldStyle.TextAlignment);
@@ -200,7 +202,7 @@ namespace game.ui {
                 var charWidth = stringWidth / (double) textLength;
                 var caretPosition = (caretIndex + 1) * charWidth - Mathf.Sqrt(textFieldStyle.TextSize);
                 var textHeight = TextHeight("A");
-                Rect((float)caretPosition + textFieldStyle.LeftMargin, bounds.height / 2f, textFieldStyle.CaretWidth, textHeight);
+                Rect((float) caretPosition + textFieldStyle.LeftMargin, bounds.height / 2f, textFieldStyle.CaretWidth, textHeight);
             }
         }
     }
