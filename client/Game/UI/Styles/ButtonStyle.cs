@@ -3,15 +3,15 @@ using game.utils;
 
 namespace game.ui {
     public struct ButtonStyle {
-        private Color textNormal;
-        private Color textHover;
-        private Color textPressed;
-        private Color backgroundNormal;
-        private Color backgroundHover;
-        private Color backgroundPressed;
-        private Color borderNormal;
-        private Color borderHover;
-        private Color borderPressed;
+        private Color textColorNormal;
+        private Color textColorHover;
+        private Color textColorPressed;
+        private Color backgroundColorNormal;
+        private Color backgroundColorHover;
+        private Color backgroundColorPressed;
+        private Color borderColorNormal;
+        private Color borderColorHover;
+        private Color borderColorPressed;
         private float borderSizeNormal;
         private float borderSizeHover;
         private float borderSizePressed;
@@ -35,9 +35,9 @@ namespace game.ui {
         public Font Font;
 
         public void Normal() {
-            TextColor = textNormal;
-            BackgroundColor = backgroundNormal;
-            BorderColor = borderNormal;
+            TextColor = textColorNormal;
+            BackgroundColor = backgroundColorNormal;
+            BorderColor = borderColorNormal;
             BorderSize = borderSizeNormal;
             TextSize = textSizeNormal;
             TextAlignment = textAlignmentNormal;
@@ -45,9 +45,9 @@ namespace game.ui {
         }
 
         public void Hover() {
-            TextColor = textHover;
-            BackgroundColor = backgroundHover;
-            BorderColor = borderHover;
+            TextColor = textColorHover;
+            BackgroundColor = backgroundColorHover;
+            BorderColor = borderColorHover;
             BorderSize = borderSizeHover;
             TextSize = textSizeHover;
             TextAlignment = textAlignmentHover;
@@ -55,25 +55,25 @@ namespace game.ui {
         }
 
         public void Press() {
-            TextColor = textPressed;
-            BackgroundColor = backgroundPressed;
-            BorderColor = borderPressed;
+            TextColor = textColorPressed;
+            BackgroundColor = backgroundColorPressed;
+            BorderColor = borderColorPressed;
             BorderSize = borderSizePressed;
             TextSize = textSizePressed;
             TextAlignment = textAlignmentPressed;
             Font = fontPressed;
         }
 
-        public ButtonStyle(Color textNormal = default, Color textHover = default, Color textPressed = default, Color backgroundNormal = default, Color backgroundHover = default, Color backgroundPressed = default, Color borderNormal = default, Color borderHover = default, Color borderPressed = default, float borderSizeNormal = default, float borderSizeHover = default, float borderSizePressed = default, float textSizeNormal = default, float textSizeHover = default, float textSizePressed = default, StringFormat textAlignmentNormal = null, StringFormat textAlignmentHover = null, StringFormat textAlignmentPressed = null, FontLoader fontLoaderInstance = null) : this() {
-            this.textNormal = textNormal == default ? Default.textNormal : textNormal;
-            this.textHover = textHover == default ? Default.textHover : textHover;
-            this.textPressed = textPressed == default ? Default.textPressed : textPressed;
-            this.backgroundNormal = backgroundNormal == default ? Default.backgroundNormal : backgroundNormal;
-            this.backgroundHover = backgroundHover == default ? Default.backgroundHover : backgroundHover;
-            this.backgroundPressed = backgroundPressed == default ? Default.backgroundPressed : backgroundPressed;
-            this.borderNormal = borderNormal == default ? Default.borderNormal : borderNormal;
-            this.borderHover = borderHover == default ? Default.borderHover : borderHover;
-            this.borderPressed = borderPressed == default ? Default.borderPressed : borderPressed;
+        public ButtonStyle(Color textColorNormal = default, Color textColorHover = default, Color textColorPressed = default, Color backgroundColorNormal = default, Color backgroundColorHover = default, Color backgroundColorPressed = default, Color borderColorNormal = default, Color borderColorHover = default, Color borderColorPressed = default, float borderSizeNormal = default, float borderSizeHover = default, float borderSizePressed = default, float textSizeNormal = default, float textSizeHover = default, float textSizePressed = default, StringFormat textAlignmentNormal = null, StringFormat textAlignmentHover = null, StringFormat textAlignmentPressed = null, FontLoader fontLoaderInstance = null) : this() {
+            this.textColorNormal = textColorNormal == default ? Default.textColorNormal : textColorNormal;
+            this.textColorHover = textColorHover == default ? Default.textColorHover : textColorHover;
+            this.textColorPressed = textColorPressed == default ? Default.textColorPressed : textColorPressed;
+            this.backgroundColorNormal = backgroundColorNormal == default ? Default.backgroundColorNormal : backgroundColorNormal;
+            this.backgroundColorHover = backgroundColorHover == default ? Default.backgroundColorHover : backgroundColorHover;
+            this.backgroundColorPressed = backgroundColorPressed == default ? Default.backgroundColorPressed : backgroundColorPressed;
+            this.borderColorNormal = borderColorNormal == default ? Default.borderColorNormal : borderColorNormal;
+            this.borderColorHover = borderColorHover == default ? Default.borderColorHover : borderColorHover;
+            this.borderColorPressed = borderColorPressed == default ? Default.borderColorPressed : borderColorPressed;
             this.borderSizeNormal = borderSizeNormal == default ? Default.borderSizeNormal : borderSizeNormal;
             this.borderSizeHover = borderSizeHover == default ? Default.borderSizeHover : borderSizeHover;
             this.borderSizePressed = borderSizePressed == default ? Default.borderSizePressed : borderSizePressed;
@@ -88,15 +88,15 @@ namespace game.ui {
         }
 
         public static ButtonStyle Default = new ButtonStyle {
-            textNormal = Color.FromArgb(255, 255, 255),
-            textHover = Color.FromArgb(245, 245, 245),
-            textPressed = Color.FromArgb(235, 235, 235),
-            backgroundNormal = Color.FromArgb(41, 41, 55),
-            backgroundHover = Color.FromArgb(51, 51, 65),
-            backgroundPressed = Color.FromArgb(61, 61, 75),
-            borderNormal = Color.FromArgb(30, 30, 45),
-            borderHover = Color.FromArgb(41, 41, 55),
-            borderPressed = Color.FromArgb(51, 51, 65),
+            textColorNormal = Color.FromArgb(255, 255, 255),
+            textColorHover = Color.FromArgb(245, 245, 245),
+            textColorPressed = Color.FromArgb(235, 235, 235),
+            backgroundColorNormal = Color.FromArgb(41, 41, 55),
+            backgroundColorHover = Color.FromArgb(51, 51, 65),
+            backgroundColorPressed = Color.FromArgb(61, 61, 75),
+            borderColorNormal = Color.FromArgb(30, 30, 45),
+            borderColorHover = Color.FromArgb(41, 41, 55),
+            borderColorPressed = Color.FromArgb(51, 51, 65),
             borderSizeNormal = 2f,
             borderSizeHover = 2f,
             borderSizePressed = 2f,

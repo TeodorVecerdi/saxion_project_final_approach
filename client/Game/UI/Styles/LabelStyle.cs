@@ -40,5 +40,17 @@ namespace game.ui {
             TextAlignment = FontLoader.LeftTopAlignment,
             Font = FontLoader.SourceCode[16f]
         };
+        
+        public static LabelStyle DefaultCheckboxLabel = new LabelStyle {
+            textColorNormal = Color.FromArgb(255,255,255,255),
+            textSizeNormal = 16f,
+            textAlignmentNormal = FontLoader.LeftCenterAlignment,
+            fontLoaderInstance = FontLoader.SourceCode,
+            
+            TextColor = Color.FromArgb(255,255,255,255),
+            TextSize = 16f,
+            TextAlignment = FontLoader.LeftCenterAlignment,
+            Font = FontLoader.SourceCode[16f]
+        };
     }
 }

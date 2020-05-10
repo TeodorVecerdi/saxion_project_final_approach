@@ -1,4 +1,5 @@
 using System;
+using GXPEngine;
 
 namespace game.utils {
     public static class MathUtils {
@@ -23,7 +24,7 @@ namespace game.utils {
             if (value.CompareTo(max) > 0) value = max;
             return value;
         }
-        
+
         /// <summary>
         /// Constrains <paramref name="value"/> to be in range [<paramref name="min"/>, <paramref name="max"/>]
         /// <para>Alias for <see cref="Clamp{T}"/></para>
@@ -35,6 +36,39 @@ namespace game.utils {
         /// <returns><paramref name="value"/> constrained to the range [<paramref name="min"/>, <paramref name="max"/>]</returns>
         public static T Constrain<T>(this T value, T min, T max) where T : IComparable {
             return value.Clamp(min, max);
+        }
+
+        /// <summary>
+        /// Returns the value from the array <paramref name="sortedValues"/> that's closest to <paramref name="value"/>
+        /// </summary>
+        /// <param name="value">The value to use when searching</param>
+        /// <param name="sortedValues">Sorted array of values to look in</param>
+        /// <returns>The value from the array <paramref name="sortedValues"/> that's closest to <paramref name="value"/></returns>
+        public static float ClosestSorted(float value, params float[] sortedValues) {
+            var closest = sortedValues[0];
+            var distance = Math.Abs(closest - value);
+            for (int i = 1; i < sortedValues.Length; i++) {
+                var newDist = Math.Abs(sortedValues[i] - value);
+                if (newDist > distance) return closest;
+                
+                if (newDist < distance) {
+                    closest = sortedValues[i];
+                    distance = newDist;
+                }
+            }
+
+            return closest;
+        }
+
+        /// <summary>
+        /// Returns the value from the array <paramref name="values"/> that's closest to <paramref name="value"/>
+        /// </summary>
+        /// <param name="value">The value to use when searching</param>
+        /// <param name="values">Array of values to look in</param>
+        /// <returns>The value from the array <paramref name="values"/> that's closest to <paramref name="value"/></returns>
+        public static float Closest(float value, params float[] values) {
+            Array.Sort(values);
+            return ClosestSorted(value, values);
         }
     }
 }
