@@ -133,7 +133,6 @@ namespace game.ui {
             Fill(checkboxStyle.BackgroundColor);
             ShapeAlign(CenterMode.Min, CenterMode.Min);
             Rect(0, 0, bounds.height, bounds.height);
-            var newBitmap = tickSprite.texture.bitmap.Tint(checkboxStyle.TickColor, 1f);
             if (isChecked) {
                 Fill(checkboxStyle.TickColor);
                 graphics.DrawString("\u2713", FontLoader.SourceCodeBold[bounds.height * 0.7f], brush, bounds.height / 2f + checkboxStyle.BorderSize, bounds.height / 2f + checkboxStyle.BorderSize, FontLoader.CenterCenterAlignment);

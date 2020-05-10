@@ -1,6 +1,4 @@
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace game.utils {
     public static class Utils {
@@ -72,28 +70,6 @@ namespace game.utils {
         public static float Closest(float value, params float[] values) {
             Array.Sort(values);
             return ClosestSorted(value, values);
-        }
-
-        public static Bitmap Tint(this Bitmap sourceBitmap, Color tintColor, float tintIntensity = 0.3f) {
-            var bmpTemp = new Bitmap(sourceBitmap.Width, sourceBitmap.Height);
-            var iaImageProps = new ImageAttributes();
-            var cmNewColors = new ColorMatrix(new[] {
-                new[] {1f, 0f, 0f, 0f, 0f},
-                new[] {0f, 1f, 0f, 0f, 0f},
-                new[] {0f, 0f, 1f, 0f, 0f},
-                new[] {0f, 0f, 0f, 1f, 0f},
-                new[] {
-                    tintColor.R / 255f * tintIntensity,
-                    tintColor.G / 255f * tintIntensity,
-                    tintColor.B / 255f * tintIntensity,
-                    0,
-                    1
-                }
-            });
-            iaImageProps.SetColorMatrix(cmNewColors);
-            var grpGraphics = Graphics.FromImage(bmpTemp);
-            grpGraphics.DrawImage(sourceBitmap, new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height), 0, 0, sourceBitmap.Width, sourceBitmap.Height, GraphicsUnit.Pixel, iaImageProps);
-            return bmpTemp;
         }
     }
 }
