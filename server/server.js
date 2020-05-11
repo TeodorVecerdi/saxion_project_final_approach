@@ -25,13 +25,10 @@ server.on("connection", socket => {
 
         socketIdToPlayerId[socket.id] = player.guid;
         playerIdToSocketId[player.guid] = socket.id;
-        
-        console.info(`Got player data: ${data}`);
     });
 
     socket.on("set_location", data => {
         let playerId = socketIdToPlayerId[socket.id];
-        console.log(playerId);
         players[playerId].location = data;
     })
 

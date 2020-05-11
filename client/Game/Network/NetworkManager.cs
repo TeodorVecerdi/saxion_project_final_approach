@@ -22,7 +22,7 @@ namespace game {
         private bool gotNewMessage;
         private ChatMessage newestMessage;
 
-        public bool RoomsReady = false;
+        public bool RoomsReady;
         public List<NetworkRoom> Rooms;
 
         private NetworkManager() { }

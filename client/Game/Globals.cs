@@ -12,7 +12,7 @@ namespace game {
         
         public const float ASPECT_RATIO = 1.7777777f;
         public const float TILE_SIZE = 92f;
-        public const string WINDOW_TITLE = "Project Final Approach";
+        public const string WINDOW_TITLE = "BarHUB";
         
         public static float[] QUAD_VERTS = {0, 0, TILE_SIZE, 0, TILE_SIZE, TILE_SIZE, 0, TILE_SIZE};
         public static float[] QUAD_UV = {0, 0, 1, 0, 1, 1, 0, 1};

@@ -5,17 +5,13 @@ using GXPEngine;
 
 namespace game.utils {
     /// <summary>
-    /// Taken from source code of game Rimworld by Ludeon Studios
+    ///     Taken from source code of game Rimworld by Ludeon Studios
     /// </summary>
     public static class Rand {
-        private static readonly Stack<ulong> stateStack = new Stack<ulong>();
-        private static readonly RandomNumberGenerator random = new RandomNumberGenerator();
-        private static uint iterations;
         private static readonly List<int> tmpRange = new List<int>();
-
-        static Rand() {
-            random.seed = (uint) DateTime.Now.GetHashCode();
-        }
+        private static readonly RandomNumberGenerator random = new RandomNumberGenerator();
+        private static readonly Stack<ulong> stateStack = new Stack<ulong>();
+        private static uint iterations;
 
         public static int Seed {
             set {
@@ -62,6 +58,10 @@ namespace game.utils {
                 random.seed = (uint) (value & uint.MaxValue);
                 iterations = (uint) ((value >> 32) & uint.MaxValue);
             }
+        }
+
+        static Rand() {
+            random.seed = (uint) DateTime.Now.GetHashCode();
         }
 
         public static void EnsureStateStackEmpty() {
@@ -249,14 +249,14 @@ namespace game.utils {
             return Value < num1;
         }
     }
-    
+
     internal class RandomNumberGenerator {
+        public uint seed = (uint) DateTime.Now.GetHashCode();
         private const uint Prime1 = 2654435761;
         private const uint Prime2 = 2246822519;
         private const uint Prime3 = 3266489917;
         private const uint Prime4 = 668265263;
         private const uint Prime5 = 374761393;
-        public uint seed = (uint) DateTime.Now.GetHashCode();
 
         public int GetInt(uint iterations) {
             return (int) GetHash((int) iterations);

@@ -4,10 +4,10 @@ using GXPEngine.Core;
 namespace game {
     public class MouseCursor : GameObject {
         private static MouseCursor instance;
-        public static MouseCursor Instance => instance ?? (instance = new MouseCursor());
-        
+
         private readonly Sprite normal, button, text;
         private Sprite active;
+        public static MouseCursor Instance => instance ?? (instance = new MouseCursor());
 
         public MouseCursor() {
             name = "Mouse Cursor";

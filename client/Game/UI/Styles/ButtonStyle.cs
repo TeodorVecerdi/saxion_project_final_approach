@@ -63,7 +63,7 @@ namespace game.ui {
             TextAlignment = textAlignmentPressed;
             Font = fontPressed;
         }
-        
+
         public ButtonStyle Alter(Color textColorNormal = default, Color textColorHover = default, Color textColorPressed = default, Color backgroundColorNormal = default, Color backgroundColorHover = default, Color backgroundColorPressed = default, Color borderColorNormal = default, Color borderColorHover = default, Color borderColorPressed = default, float borderSizeNormal = -1f, float borderSizeHover = -1f, float borderSizePressed = -1f, float textSizeNormal = -1f, float textSizeHover = -1f, float textSizePressed = -1f, StringFormat textAlignmentNormal = null, StringFormat textAlignmentHover = null, StringFormat textAlignmentPressed = null, FontLoader fontLoaderInstance = null) {
             var copy = this;
             copy.textColorNormal = textColorNormal == default ? this.textColorNormal : textColorNormal;
@@ -132,15 +132,14 @@ namespace game.ui {
             textAlignmentHover = FontLoader.CenterCenterAlignment,
             textAlignmentPressed = FontLoader.CenterCenterAlignment,
             fontLoaderInstance = FontLoader.SourceCode,
-            
-            
+
             TextColor = Color.FromArgb(255, 255, 255),
             BackgroundColor = Color.FromArgb(41, 41, 55),
             BorderColor = Color.FromArgb(30, 30, 45),
             BorderSize = 2f,
             TextSize = 16f,
             TextAlignment = FontLoader.CenterCenterAlignment,
-            Font =  FontLoader.SourceCode[16f]
+            Font = FontLoader.SourceCode[16f]
         };
     }
 }

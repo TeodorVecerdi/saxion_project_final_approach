@@ -20,7 +20,7 @@ namespace game.ui {
             TextAlignment = textAlignmentNormal;
             Font = fontNormal;
         }
-        
+
         public LabelStyle Alter(Color textColorNormal = default, float textSizeNormal = default, StringFormat textAlignmentNormal = null, FontLoader fontLoaderInstance = null) {
             var copy = this;
             copy.textColorNormal = textColorNormal == default ? this.textColorNormal : textColorNormal;
@@ -38,31 +38,31 @@ namespace game.ui {
             this.fontLoaderInstance = fontLoaderInstance ?? Default.fontLoaderInstance;
             Normal();
         }
-        
+
         public static LabelStyle Default = new LabelStyle {
-            textColorNormal = Color.FromArgb(255,0,0,0),
+            textColorNormal = Color.FromArgb(255, 0, 0, 0),
             textSizeNormal = 16f,
             textAlignmentNormal = FontLoader.LeftTopAlignment,
             fontLoaderInstance = FontLoader.SourceCode,
-            
-            TextColor = Color.FromArgb(255,0,0,0),
+
+            TextColor = Color.FromArgb(255, 0, 0, 0),
             TextSize = 16f,
             TextAlignment = FontLoader.LeftTopAlignment,
             Font = FontLoader.SourceCode[16f]
         };
-        
+
         public static LabelStyle DefaultCheckboxLabel = new LabelStyle {
-            textColorNormal = Color.FromArgb(255,255,255,255),
+            textColorNormal = Color.FromArgb(255, 255, 255, 255),
             textSizeNormal = 16f,
             textAlignmentNormal = FontLoader.LeftCenterAlignment,
             fontLoaderInstance = FontLoader.SourceCode,
-            
-            TextColor = Color.FromArgb(255,255,255,255),
+
+            TextColor = Color.FromArgb(255, 255, 255, 255),
             TextSize = 16f,
             TextAlignment = FontLoader.LeftCenterAlignment,
             Font = FontLoader.SourceCode[16f]
         };
-        
+
         public static LabelStyle DefaultChat = DefaultCheckboxLabel.Alter(textSizeNormal: 14f);
     }
 }

@@ -1,7 +1,6 @@
 using System.Drawing;
 using game.ui;
 using game.utils;
-using Debug = GXPEngine.Debug;
 
 namespace game {
     public class MapScene : Scene {

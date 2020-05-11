@@ -40,8 +40,8 @@ namespace game {
             Root.AddChild(tab2);
             Root.AddChild(tab3);
             var tab1Main = new Pivot();
-            var tab1CreatePublic = new Pivot() {x = -100000f};
-            var tab1CreatePrivate = new Pivot() {x = -100000f};
+            var tab1CreatePublic = new Pivot {x = -100000f};
+            var tab1CreatePrivate = new Pivot {x = -100000f};
             tab1.AddChild(tab1Main);
             tab1.AddChild(tab1CreatePublic);
             tab1.AddChild(tab1CreatePrivate);
@@ -150,11 +150,6 @@ namespace game {
                     }
                 }
             }
-        }
-
-        public override void Unload() {
-            Root.GetChildren().ForEach(child => child.LateDestroy());
-            IsLoaded = false;
         }
     }
 }

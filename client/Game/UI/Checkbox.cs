@@ -67,12 +67,12 @@ namespace game.ui {
             LabelText = labelText;
             this.labelStyle = labelStyle;
             this.checkboxStyle = checkboxStyle;
-            this.OnValueChanged += onValueChanged;
-            this.OnClick += onClick;
-            this.OnMouseEnter += onMouseEnter;
-            this.OnMouseLeave += onMouseLeave;
-            this.OnMousePress += onMousePress;
-            this.OnMouseRelease += onMouseRelease;
+            OnValueChanged += onValueChanged;
+            OnClick += onClick;
+            OnMouseEnter += onMouseEnter;
+            OnMouseLeave += onMouseLeave;
+            OnMousePress += onMousePress;
+            OnMouseRelease += onMouseRelease;
             isChecked = false;
 
             var closestSpriteSize = Utils.ClosestSorted(height, 32, 64, 128, 256, 512);

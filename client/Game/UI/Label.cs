@@ -5,17 +5,16 @@ using Rectangle = GXPEngine.Core.Rectangle;
 
 namespace game.ui {
     public class Label : EasyDraw {
-        private readonly Rectangle bounds;
-        private LabelStyle labelStyle;
-        
-        public bool ShouldRepaint { private get; set; }
         public string LabelText;
+        private readonly Rectangle bounds;
+        private readonly LabelStyle labelStyle;
 
+        public bool ShouldRepaint { private get; set; }
 
-        public Label(float x, float y, string labelText) 
+        public Label(float x, float y, string labelText)
             : this(x, y, Globals.WIDTH, Globals.HEIGHT, labelText, LabelStyle.Default) { }
 
-        public Label(float x, float y, string labelText, LabelStyle labelStyle) 
+        public Label(float x, float y, string labelText, LabelStyle labelStyle)
             : this(x, y, Globals.WIDTH, Globals.HEIGHT, labelText, labelStyle) { }
 
         public Label(float x, float y, float width, float height, string labelText)

@@ -2,7 +2,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Text;
 using GXPEngine;
-using GXPEngine.Core;
 using Rectangle = GXPEngine.Core.Rectangle;
 
 namespace game.ui {
@@ -12,16 +11,16 @@ namespace game.ui {
         public Action OnMouseLeave;
         public Action OnMousePress;
         public Action OnMouseRelease;
+        public Sprite Sprite;
+        public string ButtonText;
 
         private readonly Rectangle bounds;
-        private ButtonStyle buttonStyle;
-
-        private bool wasMouseOnTopPreviousFrame;
         private bool pressed;
 
+        private bool wasMouseOnTopPreviousFrame;
+        private ButtonStyle buttonStyle;
+
         public bool ShouldRepaint { private get; set; }
-        public string ButtonText;
-        public Sprite Sprite;
 
         private bool IsMouseOnTop {
             get {
@@ -40,11 +39,11 @@ namespace game.ui {
             Sprite = sprite;
             this.buttonStyle = buttonStyle;
 
-            this.OnClick += onClick;
-            this.OnMouseEnter += onMouseEnter;
-            this.OnMouseLeave += onMouseLeave;
-            this.OnMousePress += onMousePress;
-            this.OnMouseRelease += onMouseRelease;
+            OnClick += onClick;
+            OnMouseEnter += onMouseEnter;
+            OnMouseLeave += onMouseLeave;
+            OnMousePress += onMousePress;
+            OnMouseRelease += onMouseRelease;
 
             SetXY(x, y);
             Draw();

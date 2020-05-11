@@ -4,7 +4,7 @@ namespace game {
     public abstract class Scene : GameObject {
         public string SceneName;
         public readonly Pivot Root = new Pivot();
-        public bool IsLoaded = false;
+        public bool IsLoaded;
 
         protected Scene() {
             name = "Scene";

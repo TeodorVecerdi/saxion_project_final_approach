@@ -101,15 +101,15 @@ namespace game.ui {
             labelOffsetNormal = 8f,
             labelOffsetHover = 8f,
             labelOffsetPressed = 8f,
-            tickColorNormal = Color.FromArgb(255,255,255,255),
-            tickColorHover = Color.FromArgb(255,255,255,255),
-            tickColorPressed = Color.FromArgb(255,255,255,255),
+            tickColorNormal = Color.FromArgb(255, 255, 255, 255),
+            tickColorHover = Color.FromArgb(255, 255, 255, 255),
+            tickColorPressed = Color.FromArgb(255, 255, 255, 255),
 
             BackgroundColor = Color.FromArgb(41, 41, 55),
             BorderColor = Color.FromArgb(30, 30, 45),
             BorderSize = 2f,
             LabelOffset = 8f,
-            TickColor = Color.FromArgb(255,255,255,255)
+            TickColor = Color.FromArgb(255, 255, 255, 255)
         };
     }
 }

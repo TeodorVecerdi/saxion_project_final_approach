@@ -3,18 +3,17 @@ using GXPEngine.Core;
 
 namespace game {
     public class AnimatedSprite : GameObject {
-        private readonly Texture2D texture;
+        public uint Color = 0xffffffff;
+        private readonly float frameTime;
         private readonly int cols;
         private readonly int rows;
-        private readonly float frameTime;
+        private readonly Texture2D texture;
         private readonly Vector2 uvSize;
+        private float frameTimer;
 
         private int currentCol;
         private int currentRow;
-        private float frameTimer;
         private Vector2 currentUV;
-
-        public uint Color = 0xffffffff;
 
         public AnimatedSprite(Texture2D texture, int cols, int rows, float frameTime) {
             name = $"AnimatedSprite [{texture.filename}";
@@ -43,9 +42,8 @@ namespace game {
                     currentRow++;
                 }
 
-                if (currentRow == rows) {
+                if (currentRow == rows)
                     currentRow = 0;
-                }
 
                 frameTimer = frameTime;
                 SetUV();

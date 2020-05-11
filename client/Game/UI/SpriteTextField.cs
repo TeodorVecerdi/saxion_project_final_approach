@@ -8,9 +8,6 @@ using Rectangle = GXPEngine.Core.Rectangle;
 
 namespace game.ui {
     public class SpriteTextField : EasyDraw {
-        public Action<string, string> OnValueChanged;
-        public Action<int> OnKeyTyped;
-        public Action<int> OnKeyRepeat;
         public Action OnGainFocus;
         public Action OnLoseFocus;
         public Action OnMouseClick;
@@ -18,29 +15,32 @@ namespace game.ui {
         public Action OnMouseLeave;
         public Action OnMousePress;
         public Action OnMouseRelease;
-
-        private readonly Rectangle bounds;
-        private readonly string placeholderText;
-        private new readonly Texture2D texture;
-        private TextFieldStyle textFieldStyle;
-
-        private string currentText = "";
-        private string oldText = "";
+        public Action<int> OnKeyRepeat;
+        public Action<int> OnKeyTyped;
+        public Action<string, string> OnValueChanged;
 
         private const float caretTimerInitial = 0.5f;
         private const float repeatFrequency = 0.03f;
         private const float repeatStart = 0.75f;
+
+        private readonly Rectangle bounds;
+        private readonly string placeholderText;
+        private new readonly Texture2D texture;
+        private bool focused;
+        private bool pressed;
+        private bool repeating;
+        private bool showCaret;
+        private bool wasMouseOnTopPreviousFrame;
         private float caretTimer;
         private float repeatTimer;
         private int caretIndex = -1;
         private int repeatKey;
-        private bool focused;
-        private bool pressed;
-        private bool showCaret;
-        private bool wasMouseOnTopPreviousFrame;
-        private bool repeating;
 
-        public new string Text {
+        private string currentText = "";
+        private string oldText = "";
+        private TextFieldStyle textFieldStyle;
+
+        public string Text {
             get => currentText;
             set {
                 OnValueChanged?.Invoke(currentText, value);
@@ -69,16 +69,16 @@ namespace game.ui {
             this.texture = texture;
             this.textFieldStyle = textFieldStyle;
 
-            this.OnValueChanged += onValueChanged;
-            this.OnKeyTyped += onKeyTyped;
-            this.OnKeyRepeat += onKeyRepeat;
-            this.OnGainFocus += onGainFocus;
-            this.OnLoseFocus += onLoseFocus;
-            this.OnMouseClick += onMouseClick;
-            this.OnMouseEnter += onMouseEnter;
-            this.OnMouseLeave += onMouseLeave;
-            this.OnMousePress += onMousePress;
-            this.OnMouseRelease += onMouseRelease;
+            OnValueChanged += onValueChanged;
+            OnKeyTyped += onKeyTyped;
+            OnKeyRepeat += onKeyRepeat;
+            OnGainFocus += onGainFocus;
+            OnLoseFocus += onLoseFocus;
+            OnMouseClick += onMouseClick;
+            OnMouseEnter += onMouseEnter;
+            OnMouseLeave += onMouseLeave;
+            OnMousePress += onMousePress;
+            OnMouseRelease += onMouseRelease;
 
             SetXY(x, y);
             Draw();
@@ -123,7 +123,7 @@ namespace game.ui {
             }
 
             if (focused) {
-                if (Input.AnyKeyDown() || (repeating && repeatTimer <= 0f)) {
+                if (Input.AnyKeyDown() || repeating && repeatTimer <= 0f) {
                     var key = Input.LastKeyDown;
                     if (repeating) OnKeyRepeat?.Invoke(key);
                     else OnKeyTyped?.Invoke(key);
@@ -157,9 +157,8 @@ namespace game.ui {
                     repeating = true;
                     repeatTimer = repeatStart;
                     repeatKey = Input.LastKeyDown;
-                } else if (!Input.AnyKey() && repeating) {
+                } else if (!Input.AnyKey() && repeating)
                     repeating = false;
-                }
 
                 if (repeating) {
                     if (repeatTimer <= 0f) repeatTimer = repeatFrequency;
@@ -173,10 +172,10 @@ namespace game.ui {
                     Draw();
                 }
             }
-            if (repeating && repeatKey != Input.LastKey) {
+
+            if (repeating && repeatKey != Input.LastKey)
                 repeating = false;
-            }
-            
+
             wasMouseOnTopPreviousFrame = onTop;
 
             if (ShouldRepaint) {

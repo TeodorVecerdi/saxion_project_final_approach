@@ -9,6 +9,7 @@ namespace game {
         public string Location;
         public int AvatarIndex;
         public bool Consent;
+
         public NetworkPlayer(string username, string guid, string roomID, string location, int avatarIndex, bool consent) {
             Username = username;
             GUID = guid;
@@ -17,8 +18,8 @@ namespace game {
             AvatarIndex = avatarIndex;
             Consent = consent;
         }
+
         public JObject JSONObject => new JObject {["username"] = Username, ["avatar"] = AvatarIndex, ["guid"] = GUID, ["room"] = RoomID, ["location"] = Location, ["consent"] = Consent};
         public string JSONString => JSONObject.ToString(Formatting.None);
-
     }
 }

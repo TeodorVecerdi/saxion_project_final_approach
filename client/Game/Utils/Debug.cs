@@ -6,7 +6,7 @@ using GXPEngine;
 
 namespace game.utils {
     /// <summary>
-    /// Debug class with utility methods: Log, LogWarning, LogError and Assert
+    ///     Debug class with utility methods: Log, LogWarning, LogError and Assert
     /// </summary>
     public static class Debug {
         private const string LogFormat = " at {0}.{1}:{2} ({3}:line {2})";
@@ -24,7 +24,7 @@ namespace game.utils {
             var mth = stack.GetMethod();
             var fname = stack.GetFileName();
             var lineNumber = stack.GetFileLineNumber();
-            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture)+1);
+            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture) + 1);
             var className = mth.ReflectedType?.Name;
             var method = new StringBuilder();
             method.Append(mth.Name);
@@ -52,7 +52,7 @@ namespace game.utils {
             var mth = stack.GetMethod();
             var fname = stack.GetFileName();
             var lineNumber = stack.GetFileLineNumber();
-            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture)+1);
+            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture) + 1);
             var className = mth.ReflectedType?.Name;
             var method = new StringBuilder();
             method.Append(mth.Name);
@@ -82,7 +82,7 @@ namespace game.utils {
             var mth = stack.GetMethod();
             var fname = stack.GetFileName();
             var lineNumber = stack.GetFileLineNumber();
-            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture)+1);
+            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture) + 1);
             var className = mth.ReflectedType?.Name;
             var method = new StringBuilder();
             method.Append(mth.Name);
@@ -112,7 +112,7 @@ namespace game.utils {
             var stack = new StackFrame(1, true);
             var fname = stack.GetFileName();
             var lineNumber = stack.GetFileLineNumber();
-            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture)+1);
+            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture) + 1);
             Fail(message, "ASSERTION FAILED", lineNumber, fileName);
 #endif
         }
@@ -122,9 +122,9 @@ namespace game.utils {
             var stack = new StackFrame(1, true);
             var mth = stack.GetMethod();
             var fname = stack.GetFileName();
-            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture)+1);
+            var fileName = fname?.Substring(fname.LastIndexOf("\\", StringComparison.InvariantCulture) + 1);
             var className = mth.ReflectedType?.Name;
-            if(lineNumber == 0)
+            if (lineNumber == 0)
                 lineNumber = stack.GetFileLineNumber();
             var method = new StringBuilder();
             method.Append(mth.Name);

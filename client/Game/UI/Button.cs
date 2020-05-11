@@ -18,7 +18,7 @@ namespace game.ui {
         private bool wasMouseOnTopPreviousFrame;
         private bool pressed;
         
-        public bool ShouldRepaint { private get; set; } = false;
+        public bool ShouldRepaint { private get; set; }
         public string ButtonText;
         
         private bool IsMouseOnTop {
@@ -37,11 +37,11 @@ namespace game.ui {
             ButtonText = buttonText;
             this.buttonStyle = buttonStyle;
 
-            this.OnClick += onClick;
-            this.OnMouseEnter += onMouseEnter;
-            this.OnMouseLeave += onMouseLeave;
-            this.OnMousePress += onMousePress;
-            this.OnMouseRelease += onMouseRelease;
+            OnClick += onClick;
+            OnMouseEnter += onMouseEnter;
+            OnMouseLeave += onMouseLeave;
+            OnMousePress += onMousePress;
+            OnMouseRelease += onMouseRelease;
 
             SetXY(x, y);
             Draw();
