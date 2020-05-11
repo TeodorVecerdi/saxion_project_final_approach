@@ -6,7 +6,7 @@ using Rectangle = GXPEngine.Core.Rectangle;
 namespace game.ui {
     public class Image : EasyDraw {
         private readonly Rectangle bounds;
-        private readonly Texture2D texture;
+        private new readonly Texture2D texture;
         private readonly Sprite sprite;
         private readonly bool useSprite;
         

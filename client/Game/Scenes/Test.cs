@@ -7,7 +7,7 @@ using Button = game.ui.Button;
 namespace game {
     public class Test : Scene {
         public Test() {
-            SceneID = "0";
+            SceneName = "0";
         }
         
         public override void Load() {
@@ -82,11 +82,6 @@ namespace game {
             tab3.AddChild(room1);
             tab3.AddChild(room2);
             IsLoaded = true;
-        }
-
-        public override void Unload() {
-            Root.GetChildren().ForEach(child => child.LateDestroy());
-            IsLoaded = false;
         }
     }
 }
