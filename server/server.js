@@ -4,9 +4,11 @@ const server = io.listen(port);
 
 const Player = require('./models/Player');
 const Room = require('./models/Room');
+const VoteSession = require('./models/VoteSession');
 
 let players = {};
 let rooms = {};
+let activeVoteSessions = {};
 
 let socketIdToSocket = {};
 let socketIdToPlayerId = {};
@@ -30,7 +32,7 @@ server.on("connection", socket => {
     socket.on("set_location", data => {
         let playerId = socketIdToPlayerId[socket.id];
         players[playerId].location = data;
-    })
+    });
 
     socket.on("request_rooms", data => {
         socket.emit("request_rooms_success", roomsToJSON());
@@ -66,8 +68,44 @@ server.on("connection", socket => {
         }
     });
 
+    socket.on('start_voting_session', data => {
+       let voteData = JSON.parse(data);
+       let playerId = socketIdToPlayerId[socket.id];
+       let room = rooms[players[playerId].room];
+       let votes = {};
+       for(let player in room.players) {
+           votes[player] = undefined;
+       }
+       let voteSession = new VoteSession(voteData['guid'], voteData['reason'], votes);
+       activeVoteSessions[voteSession.guid] = voteSession;
+       broadcast(socket, 'started_voting_session', voteSession.toJSON(), players[playerId].room)
+    });
+
+    socket.on('voted', data => {
+       let voteData = JSON.parse(data);
+       let voteResponse = voteData['response'];
+       let voteSessionId = voteData['guid'];
+       let playerId = socketIdToPlayerId[socket.id];
+       let voteSession = activeVoteSessions[voteSessionId];
+        voteSession.votes[playerId] = voteResponse;
+       let unvotedCount = 0;
+       let yesCount = 0;
+       let noCount = 0;
+       for(let key in activeVoteSessions[voteSessionId].votes) {
+           if(voteSession.votes[key] === undefined) unvotedCount++;
+           if(voteSession.votes[key] === true) yesCount++;
+           if(voteSession.votes[key] === false) noCount++;
+       }
+       broadcast(socket, 'update_voting_session', {'voteSession': voteSession.toJSON(), 'unvotedCount': unvotedCount, 'yesCount': yesCount, 'noCount': noCount}, players[playerId].room);
+       if(unvotedCount === 0) {
+            broadcast(socket, 'finish_voting_session', {'voteSession': voteSession.toJSON(), 'unvotedCount': unvotedCount, 'yesCount': yesCount, 'noCount': noCount}, players[playerId].room);
+            socket.emit('finish_voting_session', {'voteSession': voteSession.toJSON(), 'unvotedCount': unvotedCount, 'yesCount': yesCount, 'noCount': noCount});
+            delete activeVoteSessions[voteSessionId];
+       }
+    });
+
     socket.on("send_message", data => {
-        broadcast(socket, "new_message", {'message': data, 'from': players[socketIdToPlayerId[socket.id]].toJSON()})
+        broadcast(socket, "new_message", {'message': data, 'from': players[socketIdToPlayerId[socket.id]].toJSON()}, players[socketIdToPlayerId[socket.id]].room)
     });
 
     socket.on("disconnect", data => {
