@@ -67,7 +67,7 @@ namespace game {
         public void JoinLocation(string location) {
             PlayerData.Location = location;
             socket.Emit("set_location", PlayerData.Location);
-            SceneManager.Instance.LoadScene("Menu");
+            SceneManager.Instance.LoadScene($"{location}-Menu");
         }
 
         public void SendMessage(ChatMessage message) {

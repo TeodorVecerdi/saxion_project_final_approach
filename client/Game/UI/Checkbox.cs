@@ -128,7 +128,8 @@ namespace game.ui {
         private void Draw() {
             Clear(Color.Transparent);
 
-            Stroke(checkboxStyle.BorderColor);
+            if(Math.Abs(checkboxStyle.BorderSize) < 0.0001f) NoStroke();
+            else Stroke(checkboxStyle.BorderColor);
             StrokeWeight(checkboxStyle.BorderSize);
             Fill(checkboxStyle.BackgroundColor);
             ShapeAlign(CenterMode.Min, CenterMode.Min);

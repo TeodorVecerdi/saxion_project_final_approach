@@ -48,17 +48,17 @@ namespace game.ui {
             TickColor = tickColorPressed;
         }
 
-        public CheckboxStyle Alter(Color backgroundColorNormal = default, Color borderColorNormal = default, float borderSizeNormal = default, Color backgroundColorHover = default, Color backgroundColorPressed = default, Color borderColorHover = default, Color borderColorPressed = default, float borderSizeHover = default, float borderSizePressed = default, float labelOffsetNormal = default, float labelOffsetHover = default, float labelOffsetPressed = default, Color tickColorNormal = default, Color tickColorHover = default, Color tickColorPressed = default) {
+        public CheckboxStyle Alter(Color backgroundColorNormal = default, Color borderColorNormal = default, float borderSizeNormal = -1f, Color backgroundColorHover = default, Color backgroundColorPressed = default, Color borderColorHover = default, Color borderColorPressed = default, float borderSizeHover = -1f, float borderSizePressed = -1f, float labelOffsetNormal = default, float labelOffsetHover = default, float labelOffsetPressed = default, Color tickColorNormal = default, Color tickColorHover = default, Color tickColorPressed = default) {
             var copy = this;
             copy.backgroundColorNormal = backgroundColorNormal == default ? this.backgroundColorNormal : backgroundColorNormal;
             copy.borderColorNormal = borderColorNormal == default ? this.borderColorNormal : borderColorNormal;
-            copy.borderSizeNormal = borderSizeNormal == default ? this.borderSizeNormal : borderSizeNormal;
+            copy.borderSizeNormal = borderSizeNormal == -1f ? this.borderSizeNormal : borderSizeNormal;
             copy.backgroundColorHover = backgroundColorHover == default ? this.backgroundColorHover : backgroundColorHover;
             copy.borderColorHover = borderColorHover == default ? this.borderColorHover : borderColorHover;
-            copy.borderSizeHover = borderSizeHover == default ? this.borderSizeHover : borderSizeHover;
+            copy.borderSizeHover = borderSizeHover == -1f ? this.borderSizeHover : borderSizeHover;
             copy.backgroundColorPressed = backgroundColorPressed == default ? this.backgroundColorPressed : backgroundColorPressed;
             copy.borderColorPressed = borderColorPressed == default ? this.borderColorPressed : borderColorPressed;
-            copy.borderSizePressed = borderSizePressed == default ? this.borderSizePressed : borderSizePressed;
+            copy.borderSizePressed = borderSizePressed == -1f ? this.borderSizePressed : borderSizePressed;
             copy.labelOffsetNormal = labelOffsetNormal == default ? this.labelOffsetNormal : labelOffsetNormal;
             copy.labelOffsetHover = labelOffsetHover == default ? this.labelOffsetHover : labelOffsetHover;
             copy.labelOffsetPressed = labelOffsetPressed == default ? this.labelOffsetPressed : labelOffsetPressed;

@@ -6,7 +6,7 @@ namespace game {
         public const bool VSYNC = true;
         
         public const int WIDTH = 1920;
-        private const int H_MAIN = 1000;
+        private const int H_MAIN = 1080;
         private const int H_ASPECT = (int) (WIDTH / ASPECT_RATIO);
         public static int HEIGHT => USE_ASPECT_RATIO ? H_ASPECT : H_MAIN;
         
