@@ -39,11 +39,13 @@ namespace game.ui {
         private bool repeating;
 
         public bool ShouldRepaint { private get; set; }
-        public string Text {
+        public new string Text {
             get => currentText;
             set {
+                OnValueChanged?.Invoke(currentText, value);
                 currentText = value;
                 caretIndex = caretIndex.Constrain(-1, currentText.Length - 1);
+                Draw();
             }
         }
 
