@@ -8,12 +8,12 @@ using Utils = game.utils.Utils;
 
 namespace game.ui {
     public class Checkbox : EasyDraw {
-        private readonly Action<bool, bool> onValueChanged;
-        private readonly Action onClick;
-        private readonly Action onMouseEnter;
-        private readonly Action onMouseLeave;
-        private readonly Action onMousePress;
-        private readonly Action onMouseRelease;
+        public Action<bool, bool> OnValueChanged;
+        public Action OnClick;
+        public Action OnMouseEnter;
+        public Action OnMouseLeave;
+        public Action OnMousePress;
+        public Action OnMouseRelease;
 
         private readonly Rectangle bounds;
         private readonly Sprite tickSprite;
@@ -67,12 +67,12 @@ namespace game.ui {
             LabelText = labelText;
             this.labelStyle = labelStyle;
             this.checkboxStyle = checkboxStyle;
-            this.onValueChanged += onValueChanged;
-            this.onClick += onClick;
-            this.onMouseEnter += onMouseEnter;
-            this.onMouseLeave += onMouseLeave;
-            this.onMousePress += onMousePress;
-            this.onMouseRelease += onMouseRelease;
+            this.OnValueChanged += onValueChanged;
+            this.OnClick += onClick;
+            this.OnMouseEnter += onMouseEnter;
+            this.OnMouseLeave += onMouseLeave;
+            this.OnMousePress += onMousePress;
+            this.OnMouseRelease += onMouseRelease;
             isChecked = false;
 
             var closestSpriteSize = Utils.ClosestSorted(height, 32, 64, 128, 256, 512);
@@ -89,29 +89,29 @@ namespace game.ui {
 
             // Check for button states and apply style
             if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
-                onMouseRelease?.Invoke();
-                onValueChanged?.Invoke(isChecked, !isChecked);
+                OnMouseRelease?.Invoke();
+                OnValueChanged?.Invoke(isChecked, !isChecked);
                 isChecked = !isChecked;
                 if (onTop) checkboxStyle.Hover();
                 else checkboxStyle.Normal();
                 pressed = false;
                 Draw();
             } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
-                onClick?.Invoke();
+                OnClick?.Invoke();
                 checkboxStyle.Press();
                 pressed = true;
                 Draw();
             } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
-                onMousePress?.Invoke();
+                OnMousePress?.Invoke();
                 checkboxStyle.Press();
                 Draw();
             } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
-                onMouseEnter?.Invoke();
+                OnMouseEnter?.Invoke();
                 MouseCursor.Instance.Button();
                 checkboxStyle.Hover();
                 Draw();
             } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
-                onMouseLeave?.Invoke();
+                OnMouseLeave?.Invoke();
                 MouseCursor.Instance.Normal();
                 checkboxStyle.Normal();
                 Draw();

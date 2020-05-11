@@ -7,11 +7,11 @@ using Rectangle = GXPEngine.Core.Rectangle;
 
 namespace game.ui {
     public class SpriteButton : EasyDraw {
-        private readonly Action onClick;
-        private readonly Action onMouseEnter;
-        private readonly Action onMouseLeave;
-        private readonly Action onMousePress;
-        private readonly Action onMouseRelease;
+        public Action OnClick;
+        public Action OnMouseEnter;
+        public Action OnMouseLeave;
+        public Action OnMousePress;
+        public Action OnMouseRelease;
 
         private readonly Rectangle bounds;
         private ButtonStyle buttonStyle;
@@ -40,11 +40,11 @@ namespace game.ui {
             Sprite = sprite;
             this.buttonStyle = buttonStyle;
 
-            this.onClick += onClick;
-            this.onMouseEnter += onMouseEnter;
-            this.onMouseLeave += onMouseLeave;
-            this.onMousePress += onMousePress;
-            this.onMouseRelease += onMouseRelease;
+            this.OnClick += onClick;
+            this.OnMouseEnter += onMouseEnter;
+            this.OnMouseLeave += onMouseLeave;
+            this.OnMousePress += onMousePress;
+            this.OnMouseRelease += onMouseRelease;
 
             SetXY(x, y);
             Draw();
@@ -55,27 +55,27 @@ namespace game.ui {
 
             // Check for button states and setup style
             if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
-                onMouseRelease?.Invoke();
+                OnMouseRelease?.Invoke();
                 if (onTop) buttonStyle.Hover();
                 else buttonStyle.Normal();
                 pressed = false;
                 Draw();
             } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
-                onClick?.Invoke();
+                OnClick?.Invoke();
                 buttonStyle.Press();
                 pressed = true;
                 Draw();
             } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
-                onMousePress?.Invoke();
+                OnMousePress?.Invoke();
                 buttonStyle.Press();
                 Draw();
             } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
-                onMouseEnter?.Invoke();
+                OnMouseEnter?.Invoke();
                 MouseCursor.Instance.Button();
                 buttonStyle.Hover();
                 Draw();
             } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
-                onMouseLeave?.Invoke();
+                OnMouseLeave?.Invoke();
                 MouseCursor.Instance.Normal();
                 buttonStyle.Normal();
                 Draw();

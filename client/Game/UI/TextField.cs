@@ -7,16 +7,16 @@ using Rectangle = GXPEngine.Core.Rectangle;
 
 namespace game.ui {
     public class TextField : EasyDraw {
-        private readonly Action<string, string> onValueChanged;
-        private readonly Action<int> onKeyTyped;
-        private readonly Action<int> onKeyRepeat;
-        private readonly Action onGainFocus;
-        private readonly Action onLoseFocus;
-        private readonly Action onMouseClick;
-        private readonly Action onMouseEnter;
-        private readonly Action onMouseLeave;
-        private readonly Action onMousePress;
-        private readonly Action onMouseRelease;
+        public Action<string, string> OnValueChanged;
+        public Action<int> OnKeyTyped;
+        public Action<int> OnKeyRepeat;
+        public Action OnGainFocus;
+        public Action OnLoseFocus;
+        public Action OnMouseClick;
+        public Action OnMouseEnter;
+        public Action OnMouseLeave;
+        public Action OnMousePress;
+        public Action OnMouseRelease;
 
         private readonly Rectangle bounds;
         private readonly string placeholderText;
@@ -63,16 +63,16 @@ namespace game.ui {
             this.placeholderText = placeholderText;
             this.textFieldStyle = textFieldStyle;
 
-            this.onValueChanged += onValueChanged;
-            this.onKeyTyped += onKeyTyped;
-            this.onKeyRepeat += onKeyRepeat;
-            this.onGainFocus += onGainFocus;
-            this.onLoseFocus += onLoseFocus;
-            this.onMouseClick += onMouseClick;
-            this.onMouseEnter += onMouseEnter;
-            this.onMouseLeave += onMouseLeave;
-            this.onMousePress += onMousePress;
-            this.onMouseRelease += onMouseRelease;
+            this.OnValueChanged += onValueChanged;
+            this.OnKeyTyped += onKeyTyped;
+            this.OnKeyRepeat += onKeyRepeat;
+            this.OnGainFocus += onGainFocus;
+            this.OnLoseFocus += onLoseFocus;
+            this.OnMouseClick += onMouseClick;
+            this.OnMouseEnter += onMouseEnter;
+            this.OnMouseLeave += onMouseLeave;
+            this.OnMousePress += onMousePress;
+            this.OnMouseRelease += onMouseRelease;
 
             SetXY(x, y);
             Draw();
@@ -83,14 +83,14 @@ namespace game.ui {
 
             // Check for button states and apply style
             if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
-                onMouseRelease?.Invoke();
+                OnMouseRelease?.Invoke();
                 pressed = false;
                 Draw();
             } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
-                onMouseClick?.Invoke();
+                OnMouseClick?.Invoke();
                 pressed = true;
                 if (!focused) {
-                    onGainFocus?.Invoke();
+                    OnGainFocus?.Invoke();
                     focused = true;
                     caretTimer = caretTimerInitial;
                     showCaret = true;
@@ -99,19 +99,19 @@ namespace game.ui {
                 textFieldStyle.Focus();
                 Draw();
             } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
-                onMousePress?.Invoke();
+                OnMousePress?.Invoke();
                 Draw();
             } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
-                onMouseEnter?.Invoke();
+                OnMouseEnter?.Invoke();
                 MouseCursor.Instance.Text();
                 Draw();
             } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
-                onMouseLeave?.Invoke();
+                OnMouseLeave?.Invoke();
                 MouseCursor.Instance.Normal();
                 Draw();
             } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && !onTop && focused) {
                 focused = false;
-                onLoseFocus?.Invoke();
+                OnLoseFocus?.Invoke();
                 textFieldStyle.Normal();
                 Draw();
             }
@@ -119,8 +119,8 @@ namespace game.ui {
             if (focused) {
                 if (Input.AnyKeyDown() || (repeating && repeatTimer <= 0f)) {
                     var key = Input.LastKeyDown;
-                    if (repeating) onKeyRepeat?.Invoke(key);
-                    else onKeyTyped?.Invoke(key);
+                    if (repeating) OnKeyRepeat?.Invoke(key);
+                    else OnKeyTyped?.Invoke(key);
                     oldText = currentText;
                     if (key == Key.BACKSPACE && !string.IsNullOrEmpty(currentText) && caretIndex != -1) {
                         currentText = currentText.Remove(caretIndex, 1);
@@ -145,7 +145,7 @@ namespace game.ui {
                         }
                     }
 
-                    onValueChanged?.Invoke(oldText, currentText);
+                    OnValueChanged?.Invoke(oldText, currentText);
                     Draw();
                 } else if (Input.AnyKey() && !repeating) {
                     repeating = true;

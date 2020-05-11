@@ -56,5 +56,13 @@ namespace game.ui {
 
             return roomContainer;
         }
+
+        public static SpriteButton CreateAvatarSelectionEntry(float x, float y, string fileName, SpriteButton avatarButton, Pivot avatarContainer, ButtonStyle avatarButtonStyle) {
+            return new SpriteButton(x, y, 128, 128, "", new Sprite(fileName, true), avatarButtonStyle, () => {
+                avatarButton.Sprite = new Sprite(fileName, true);
+                avatarButton.ShouldRepaint = true;
+                avatarContainer.x = -100000f;
+            });
+        }
     }
 }
