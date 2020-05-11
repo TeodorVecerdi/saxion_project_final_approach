@@ -62,5 +62,7 @@ namespace game.ui {
             TextAlignment = FontLoader.LeftCenterAlignment,
             Font = FontLoader.SourceCode[16f]
         };
+        
+        public static LabelStyle DefaultChat = DefaultCheckboxLabel.Alter(textSizeNormal: 14f);
     }
 }

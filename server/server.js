@@ -64,7 +64,7 @@ server.on("connection", socket => {
         else {
             room.players.push(player.guid);
             player.room = room.guid;
-            socket.emit("join_room_success", {'guid': room.guid});
+            socket.emit("join_room_success", room.toJSON());
             broadcast(socket, 'client_joined', player.toJSON(), room.guid);
         }
     });

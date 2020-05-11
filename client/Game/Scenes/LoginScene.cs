@@ -12,7 +12,7 @@ namespace game {
         private bool consent;
 
         public LoginScene() {
-            SceneID = "Login";
+            SceneName = "Login";
         }
 
         public override void Load() {
@@ -91,11 +91,6 @@ namespace game {
                 SceneManager.Instance.LoadScene("Loading");
             }));
             IsLoaded = true;
-        }
-
-        public override void Unload() {
-            Root.GetChildren().ForEach(child => child.LateDestroy());
-            IsLoaded = false;
         }
     }
 }

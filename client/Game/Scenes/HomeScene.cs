@@ -23,7 +23,7 @@ namespace game {
         private AnimatedSprite loadingPublicRooms;
 
         public HomeScene() {
-            SceneID = "Home";
+            SceneName = "Home";
         }
         
         public override void Load() {
@@ -135,7 +135,7 @@ namespace game {
                 var iPrivate = 0;
                 var iPublic = 0;
                 foreach (var room in NetworkManager.Instance.Rooms) {
-                    if(room.Type != NetworkManager.Instance.playerData.Location) 
+                    if(room.Type != NetworkManager.Instance.PlayerData.Location) 
                         continue;
                     if (room.IsPublic) {
                         var roomUIElement = UIFactory.CreateJoinPublicRoomEntry(room);

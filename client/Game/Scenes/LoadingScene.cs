@@ -7,7 +7,7 @@ namespace game {
     public class LoadingScene : Scene {
 
         public LoadingScene() {
-            SceneID = "Loading";
+            SceneName = "Loading";
         }
         
         public override void Load() {
@@ -19,11 +19,6 @@ namespace game {
             var animSprite = new AnimatedSprite(Texture2D.GetInstance("data/sprites/spinner.png"), 12, 1, 0.083F) {x = Globals.WIDTH / 2f - 64f, y = Globals.HEIGHT / 2f - 64f};
             Root.AddChild(animSprite);
             IsLoaded = true;
-        }
-
-        public override void Unload() {
-            Root.GetChildren().ForEach(child => child.LateDestroy());
-            IsLoaded = false;
         }
     }
 }

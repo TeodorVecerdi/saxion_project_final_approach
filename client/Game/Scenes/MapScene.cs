@@ -6,7 +6,7 @@ using Debug = GXPEngine.Debug;
 namespace game {
     public class MapScene : Scene {
         public MapScene() {
-            SceneID = "Map";
+            SceneName = "Map";
         }
         
         public override void Load() {
@@ -22,11 +22,6 @@ namespace game {
                 NetworkManager.Instance.JoinLocation("Coffee Fellows");
             }));
             IsLoaded = true;
-        }
-
-        public override void Unload() {
-            IsLoaded = false;
-            Root.GetChildren().ForEach(child => child.LateDestroy());
         }
     }
 }

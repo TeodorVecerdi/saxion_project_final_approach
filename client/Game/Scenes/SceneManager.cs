@@ -20,11 +20,12 @@ namespace game {
             AddScene(new LoadingScene());
             AddScene(new HomeScene());
             AddScene(new MapScene());
+            AddScene(new TestChatScene());
             AddScene(new Test());
         }
 
         private void AddScene(Scene scene) {
-            scenes.Add(scene.SceneID, scene);
+            scenes.Add(scene.SceneName, scene);
         }
 
         public void LoadScene(string sceneID) {

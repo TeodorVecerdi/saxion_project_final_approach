@@ -1,8 +1,6 @@
 using System.Drawing;
 using game.utils;
 using GXPEngine;
-using Newtonsoft.Json.Linq;
-using Debug = GXPEngine.Debug;
 
 namespace game.ui {
     public static class UIFactory {
@@ -20,9 +18,7 @@ namespace game.ui {
             roomContainer.AddChild(new Label(40, 0, Globals.WIDTH / 3f - 80f, 20, roomName, RoomTitleStyle));
             roomContainer.AddChild(new Label(40, 30, Globals.WIDTH / 3f - 80f, 90f, roomDesc, RoomDescStyle));
             roomContainer.AddChild(new Button(40, 0, Globals.WIDTH / 3f - 80f, 130, "", RoomButtonStyle, onClick: () => {
-                Debug.LogWarning($"Attempting to join room with id {roomId}. Not implemented yet");
-
-                // NetworkManager.Instance.JoinRoom(roomId);
+                NetworkManager.Instance.JoinRoom(roomId, "");
             }));
             if (isNSFW) {
                 roomContainer.AddChild(new Image(Globals.WIDTH / 3f - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
@@ -45,9 +41,7 @@ namespace game.ui {
             roomContainer.AddChild(textfield = new TextField(40f, 130f, Globals.WIDTH / 3f - 80f, 40, "Enter room code"));
             roomContainer.AddChild(new Button(40, 0, Globals.WIDTH / 3f - 80f, 130, "", RoomButtonStyle, onClick: () => {
                 if (textfield.Text != roomCode) return;
-                Debug.LogWarning($"Attempting to join room with id {roomId}. Not implemented yet");
-
-                // NetworkManager.Instance.JoinRoom(roomId);
+                NetworkManager.Instance.JoinRoom(roomId, roomCode);
             }));
             if (isNSFW) {
                 roomContainer.AddChild(new Image(Globals.WIDTH / 3f - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
