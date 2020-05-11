@@ -6,7 +6,7 @@ using GXPEngine.Core;
 using Button = game.ui.Button;
 
 namespace game {
-    public class HomeScene : Scene {
+    public class MenuScene : Scene {
         private TextField publicRoomNameTextField;
         private TextField publicRoomDescriptionTextField;
         private Checkbox publicRoomNSFWCheckbox;
@@ -22,8 +22,8 @@ namespace game {
         private AnimatedSprite loadingPrivateRooms;
         private AnimatedSprite loadingPublicRooms;
 
-        public HomeScene() {
-            SceneName = "Home";
+        public MenuScene() {
+            SceneName = "Menu";
         }
         
         public override void Load() {

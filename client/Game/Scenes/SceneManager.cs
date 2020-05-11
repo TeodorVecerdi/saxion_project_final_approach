@@ -18,7 +18,7 @@ namespace game {
         private void SetupScenes() {
             AddScene(new LoginScene());
             AddScene(new LoadingScene());
-            AddScene(new HomeScene());
+            AddScene(new MenuScene());
             AddScene(new MapScene());
             AddScene(new TestChatScene());
             AddScene(new Test());

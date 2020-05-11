@@ -1,4 +1,4 @@
-module.exports = class VoteSession {
+module.exports = class VotingSession {
     constructor(guid, reason, votes) {
         this.guid = guid;
         this.reason = reason;

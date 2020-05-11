@@ -12,12 +12,16 @@ namespace game {
         public static NetworkManager Instance => instance ?? (instance = new NetworkManager());
 
         public NetworkPlayer PlayerData;
-        private NetworkRoom activeRoom;
+        public NetworkRoom ActiveRoom;
+        public Dictionary<string, NetworkVotingSession> ActiveVotingSessions;
 
         private Socket socket;
         private bool initialized;
         private bool clientLoggedIn;
         private bool joinRoomSuccess;
+        
+        private bool votingSessionDone;
+        private string finishedVotingSessionGUID;
 
         private bool gotNewMessage;
         private ChatMessage newestMessage;
@@ -25,7 +29,9 @@ namespace game {
         public bool RoomsReady;
         public List<NetworkRoom> Rooms;
 
-        private NetworkManager() { }
+        private NetworkManager() {
+            ActiveVotingSessions = new Dictionary<string, NetworkVotingSession>();
+        }
 
         public void Initialize(string username, int avatarIndex, bool consent) {
             PlayerData = new NetworkPlayer(username, Guid.NewGuid().ToString(), "none", "none", avatarIndex, consent);
@@ -42,9 +48,10 @@ namespace game {
         }
 
         public void CreateAndJoinRoom(string roomName, string roomDesc, string code, bool isNSFW, bool isPublic) {
-            activeRoom = new NetworkRoom(roomName, roomDesc, Guid.NewGuid().ToString(), code, PlayerData.Location, isPublic, isNSFW);
-            PlayerData.RoomID = activeRoom.GUID;
-            socket.Emit("create_room", activeRoom.JSONString);
+            ActiveRoom = new NetworkRoom(roomName, roomDesc, Guid.NewGuid().ToString(), code, PlayerData.Location, isPublic, isNSFW);
+            ActiveRoom.Players.Add(PlayerData.GUID);
+            PlayerData.RoomID = ActiveRoom.GUID;
+            socket.Emit("create_room", ActiveRoom.JSONString);
             SceneManager.Instance.LoadScene("Chat");
         }
 
@@ -60,7 +67,7 @@ namespace game {
         public void JoinLocation(string location) {
             PlayerData.Location = location;
             socket.Emit("set_location", PlayerData.Location);
-            SceneManager.Instance.LoadScene("Home");
+            SceneManager.Instance.LoadScene("Menu");
         }
 
         public void SendMessage(ChatMessage message) {
@@ -69,6 +76,15 @@ namespace game {
 
         public void ReceivedMessage(ChatMessage message) {
             ChatElement.ActiveChat.ReceiveMessage(message);
+        }
+
+        public void StartVotingSession(string reason) {
+            var votingSession = new NetworkVotingSession(Guid.NewGuid().ToString(), reason, ActiveRoom);
+            socket.Emit("start_voting_session", votingSession.JSONString);
+        }
+
+        private void FinishVotingSession(NetworkVotingSession votingSession) {
+            ActiveVotingSessions.Remove(finishedVotingSessionGUID);
         }
 
         private void Update() {
@@ -85,6 +101,11 @@ namespace game {
             if (joinRoomSuccess) {
                 SceneManager.Instance.LoadScene("Chat");
                 joinRoomSuccess = false;
+            }
+
+            if (votingSessionDone) {
+                FinishVotingSession(ActiveVotingSessions[finishedVotingSessionGUID]);
+                votingSessionDone = false;
             }
         }
 
@@ -112,13 +133,16 @@ namespace game {
             socket.On("join_room_failed", data => { Debug.LogWarning("Socket.IO response not implemented for 'join_room_failed'"); });
             socket.On("join_room_success", data => {
                 var roomData = (JObject) data;
-                activeRoom = new NetworkRoom(roomData.Value<string>("name"), roomData.Value<string>("desc"), roomData.Value<string>("guid"), roomData.Value<string>("code"), roomData.Value<string>("type"), roomData.Value<bool>("pub"), roomData.Value<bool>("nsfw"));
+                ActiveRoom = new NetworkRoom(roomData.Value<string>("name"), roomData.Value<string>("desc"), roomData.Value<string>("guid"), roomData.Value<string>("code"), roomData.Value<string>("type"), roomData.Value<bool>("pub"), roomData.Value<bool>("nsfw"));
+                ActiveRoom.Players.Add(PlayerData.GUID);
+                PlayerData.RoomID = ActiveRoom.GUID;
                 joinRoomSuccess = true;
             });
 
             socket.On("client_joined", data => {
                 var playerData = (JObject) data;
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` joined the room!");
+                ActiveRoom.Players.Add(playerData.Value<string>("guid"));
                 gotNewMessage = true;
             });
             socket.On("new_message", data => {
@@ -129,7 +153,38 @@ namespace game {
                 var playerData = (JObject) data;
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` left the room!");
                 gotNewMessage = true;
-                
+            });
+
+            socket.On("started_voting_session", data => {
+                Debug.LogWarning("Socket.IO response not implemented for 'started_voting_session'");
+                var voteData = (JObject) data;
+                var votingSession = new NetworkVotingSession(voteData.Value<string>("guid"), voteData.Value<string>("reason"), ActiveRoom);
+                ActiveVotingSessions.Add(votingSession.GUID, votingSession);
+            });
+            
+            socket.On("update_voting_session", data => {
+                var voteData = (JObject) data;
+                var votingSessionData = voteData["voteSession"];
+                var votingSessionGUID = votingSessionData.Value<string>("guid");
+                if (!ActiveVotingSessions.ContainsKey(votingSessionGUID)) {
+                    return;
+                }
+                var votes = (JObject) votingSessionData["votes"];
+                foreach (var prop in votes.Properties()) {
+                    var vote = votes.Value<int>(prop.Name);
+                    if (vote != -1) {
+                        ActiveVotingSessions[votingSessionGUID].Votes[prop.Name] = vote == 1 ? Vote.Yes : Vote.No;
+                    }
+                }
+            });
+            
+            socket.On("finish_voting_session", data => {
+                Debug.LogWarning("Socket.IO response not implemented for 'finish_voting_session'");
+                var voteData = (JObject) data;
+                var votingSessionData = voteData["voteSession"];
+                var votingSessionGUID = votingSessionData.Value<string>("guid");
+                votingSessionDone = true;
+                finishedVotingSessionGUID = votingSessionGUID;
             });
         }
     }
