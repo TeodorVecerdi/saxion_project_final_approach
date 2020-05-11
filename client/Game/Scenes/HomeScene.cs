@@ -135,6 +135,8 @@ namespace game {
                 var iPrivate = 0;
                 var iPublic = 0;
                 foreach (var room in NetworkManager.Instance.Rooms) {
+                    if(room.Type != NetworkManager.Instance.playerData.Location) 
+                        continue;
                     if (room.IsPublic) {
                         var roomUIElement = UIFactory.CreateJoinPublicRoomEntry(room);
                         roomUIElement.y = iPublic * 150 + 100;

@@ -10,7 +10,7 @@ namespace game {
         private static NetworkManager instance;
         public static NetworkManager Instance => instance ?? (instance = new NetworkManager());
 
-        private NetworkPlayer playerData;
+        public NetworkPlayer playerData;
         private NetworkRoom activeRoom;
 
         private Socket socket;
