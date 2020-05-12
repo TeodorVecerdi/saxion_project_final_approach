@@ -1,6 +1,6 @@
 namespace game {
     public static class Globals {
-        public const bool FULLSCREEN = false;
+        public const bool FULLSCREEN = true;
         public const bool PIXEL_ART = false;
         public const bool USE_ASPECT_RATIO = false;
         public const bool VSYNC = true;

@@ -5,7 +5,7 @@ using System.Drawing.Text;
 using GXPEngine;
 using Rectangle = GXPEngine.Core.Rectangle;
 
-namespace game.ui.Custom {
+namespace game.ui {
     public class ChatElement : EasyDraw {
         public static ChatElement ActiveChat = null;
         

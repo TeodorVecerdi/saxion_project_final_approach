@@ -73,7 +73,10 @@ namespace game {
                 tab1Main.x = -100000f;
                 backgroundImage1.x = -100000f;
             }));
-            tab1Main.AddChild(new Button(253, 851, 168, 65, "Back", transparentButtonStyle, () => { Debug.LogWarning("Main back button is not implemented yet!"); }));
+            tab1Main.AddChild(new Button(253, 851, 168, 65, "Back", transparentButtonStyle, () => {
+                NetworkManager.Instance.JoinLocation("none", false);
+                SceneManager.Instance.LoadScene("Map");
+            }));
             tab1CreatePublic.AddChild(publicRoomNameTextField = new TextField(103, 284, 518, 40, "", textFieldStyle));
             tab1CreatePublic.AddChild(publicRoomDescriptionTextField = new TextField(103, 422, 518, 40, "", textFieldStyle));
             tab1CreatePublic.AddChild(publicRoomNSFWCheckbox = new Checkbox(103-16f, 507, 518+16f, 40, "", checkboxStyle));

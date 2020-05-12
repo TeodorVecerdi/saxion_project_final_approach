@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using game.ui.Custom;
+using game.ui;
 using GXPEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -52,10 +52,10 @@ namespace game {
             ActiveRoom.Players.Add(PlayerData.GUID);
             PlayerData.RoomID = ActiveRoom.GUID;
             socket.Emit("create_room", ActiveRoom.JSONString);
-            SceneManager.Instance.LoadScene("Chat");
+            SceneManager.Instance.LoadScene($"{PlayerData.Location}-Bar");
         }
 
-        public void JoinRoom(string roomGuid, string roomCode) {
+        public void TryJoinRoom(string roomGuid, string roomCode) {
             var roomData = new JObject {["guid"] = roomGuid, ["code"] = roomCode};
             socket.Emit("join_room", roomData.ToString(Formatting.None));
         }
@@ -64,7 +64,7 @@ namespace game {
             socket.Emit("request_rooms");
         }
 
-        public void JoinLocation(string location) {
+        public void JoinLocation(string location, bool alsoSwitchScene = true) {
             PlayerData.Location = location;
             socket.Emit("set_location", PlayerData.Location);
             SceneManager.Instance.LoadScene($"{location}-Menu");
@@ -99,7 +99,7 @@ namespace game {
             }
 
             if (joinRoomSuccess) {
-                SceneManager.Instance.LoadScene("Chat");
+                SceneManager.Instance.LoadScene($"{PlayerData.Location}-Bar");
                 joinRoomSuccess = false;
             }
 
@@ -152,6 +152,7 @@ namespace game {
             socket.On("client_disconnected", data => {
                 var playerData = (JObject) data;
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` left the room!");
+                ActiveRoom.Players.Remove(playerData.Value<string>("guid"));
                 gotNewMessage = true;
             });
 

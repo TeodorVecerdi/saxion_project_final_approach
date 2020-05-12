@@ -17,7 +17,7 @@ namespace game.ui {
             roomContainer.name = $"ROOM: {roomId}";
             roomContainer.AddChild(new Label(40, 0, Globals.WIDTH / 3f - 80f, 20, roomName, RoomTitleStyle));
             roomContainer.AddChild(new Label(40, 30, Globals.WIDTH / 3f - 80f, 90f, roomDesc, RoomDescStyle));
-            roomContainer.AddChild(new Button(40, 0, Globals.WIDTH / 3f - 80f, 130, "", RoomButtonStyle, () => { NetworkManager.Instance.JoinRoom(roomId, ""); }));
+            roomContainer.AddChild(new Button(40, 0, Globals.WIDTH / 3f - 80f, 130, "", RoomButtonStyle, () => { NetworkManager.Instance.TryJoinRoom(roomId, ""); }));
             if (isNSFW) {
                 roomContainer.AddChild(new Image(Globals.WIDTH / 3f - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
                 roomContainer.AddChild(new Label(Globals.WIDTH / 3f - 32 - 40 - 32 - 24, 0, 50, 32, "NSFW", RoomDescStyle.Alter(textAlignmentNormal: FontLoader.RightCenterAlignment)));
@@ -39,7 +39,7 @@ namespace game.ui {
             roomContainer.AddChild(textfield = new TextField(40f, 130f, Globals.WIDTH / 3f - 80f, 40, "Enter room code"));
             roomContainer.AddChild(new Button(40, 0, Globals.WIDTH / 3f - 80f, 130, "", RoomButtonStyle, () => {
                 if (textfield.Text != roomCode) return;
-                NetworkManager.Instance.JoinRoom(roomId, roomCode);
+                NetworkManager.Instance.TryJoinRoom(roomId, roomCode);
             }));
             if (isNSFW) {
                 roomContainer.AddChild(new Image(Globals.WIDTH / 3f - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));

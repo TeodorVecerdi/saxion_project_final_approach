@@ -20,8 +20,11 @@ namespace game {
             AddScene(new LoadingScene());
             AddScene(new FelliniMenuScene());
             AddScene(new CoffeeMenuScene());
+            AddScene(new RocksMenuScene());
+            AddScene(new FelliniBarScene());
+            AddScene(new CoffeeBarScene());
+            AddScene(new RocksBarScene());
             AddScene(new MapScene());
-            AddScene(new TestChatScene());
             AddScene(new Test());
         }
 
