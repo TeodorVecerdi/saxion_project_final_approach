@@ -6,9 +6,8 @@ using Rectangle = GXPEngine.Core.Rectangle;
 using game.utils;
 
 namespace game.ui {
-    public class Minigame1Element : EasyDraw {
+    public class Minigame1Element : GameObject {
         public static Minigame1Element ActiveMinigame;
-        public bool IsActive = false;
 
         private readonly Rectangle bounds;
         private LabelStyle questionStyle;
@@ -28,8 +27,7 @@ namespace game.ui {
         private Button nextQuestionButton;
         private Pivot RootElement;
 
-        public Minigame1Element(float x, float y, float width, float height, LabelStyle questionStyle, LabelStyle remainingVotesStyle, LabelStyle playerNameStyle, LabelStyle resultStyle, LabelStyle alertStyle,ButtonStyle buttonStyle)
-            : base(Mathf.Ceiling(width), Mathf.Ceiling(height), false) {
+        public Minigame1Element(float x, float y, float width, float height, LabelStyle questionStyle, LabelStyle remainingVotesStyle, LabelStyle playerNameStyle, LabelStyle resultStyle, LabelStyle alertStyle,ButtonStyle buttonStyle) {
             bounds = new Rectangle(x, y, width, height);
             this.questionStyle = questionStyle;
             this.remainingVotesStyle = remainingVotesStyle;
@@ -125,7 +123,6 @@ namespace game.ui {
 
         private static List<string> questionList;
         private static bool isQuestionListInitialized;
-
         public static string GetQuestion(int questionIndex) {
             if (!isQuestionListInitialized) InitializeQuestionList();
             return questionList[questionIndex];

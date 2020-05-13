@@ -146,7 +146,6 @@
         <Compile Include="Network\NetworkMostLikelyTo.cs" />
         <Compile Include="Network\NetworkPlayer.cs" />
         <Compile Include="Network\NetworkRoom.cs" />
-        <Compile Include="Network\NetworkVotingSession.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Scenes\CoffeeBarScene.cs" />
         <Compile Include="Scenes\CoffeeMenuScene.cs" />

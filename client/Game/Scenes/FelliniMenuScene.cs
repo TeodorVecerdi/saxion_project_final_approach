@@ -74,7 +74,6 @@ namespace game {
             }));
             tab1Main.AddChild(new Button(253, 900, 210, 95, "Back", ButtonStyle.Transparent, () => {
                 NetworkManager.Instance.JoinLocation("none", false);
-                SceneManager.Instance.LoadScene("Map");
             }));
             tab1CreatePublic.AddChild(publicRoomNameTextField = new TextField(99, 341-2, 540, 52, "", textFieldStyle));
             tab1CreatePublic.AddChild(publicRoomDescriptionTextField = new TextField(99, 562-2, 540, 52, "", textFieldStyle));

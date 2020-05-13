@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using game.ui;
-using game.utils;
 using GXPEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,8 +14,6 @@ namespace game {
 
         public NetworkPlayer PlayerData;
         public NetworkRoom ActiveRoom;
-        public Dictionary<string, NetworkVotingSession> ActiveVotingSessions;
-        public Dictionary<string, NetworkVotingSession> FinishedVotingSessions;
         public NetworkMostLikelyTo ActiveMinigame1;
 
         private Socket socket;
@@ -30,9 +26,6 @@ namespace game {
         private bool finishedMinigame1;
         private bool showResultsMinigame1;
 
-        private bool votingSessionDone;
-        private string finishedVotingSessionGUID;
-
         private bool gotNewMessage;
         private ChatMessage newestMessage;
 
@@ -40,8 +33,6 @@ namespace game {
         public List<NetworkRoom> Rooms;
 
         private NetworkManager() {
-            ActiveVotingSessions = new Dictionary<string, NetworkVotingSession>();
-            FinishedVotingSessions = new Dictionary<string, NetworkVotingSession>();
         }
 
         public void Initialize(string username, int avatarIndex, bool consent) {
@@ -75,10 +66,10 @@ namespace game {
             socket.Emit("request_rooms");
         }
 
-        public void JoinLocation(string location, bool alsoSwitchScene = true) {
+        public void JoinLocation(string location, bool joiningLocation = true) {
             PlayerData.Location = location;
             socket.Emit("set_location", PlayerData.Location);
-            SceneManager.Instance.LoadScene($"{location}-Menu");
+            SceneManager.Instance.LoadScene(joiningLocation ? $"{location}-Menu" : "Map");
         }
 
         public void SendMessage(ChatMessage message) {
@@ -87,17 +78,6 @@ namespace game {
 
         private void ReceivedMessage(ChatMessage message) {
             ChatElement.ActiveChat.ReceiveMessage(message);
-        }
-
-        public void StartVotingSession(string reason) {
-            var votingSession = new NetworkVotingSession(Guid.NewGuid().ToString(), PlayerData.GUID, reason, ActiveRoom);
-            ActiveVotingSessions.Add(votingSession.GUID, votingSession);
-            socket.Emit("start_voting_session", votingSession.JSONString);
-        }
-
-        private void FinishVotingSession(NetworkVotingSession votingSession) {
-            ActiveVotingSessions.Remove(votingSession.GUID);
-            FinishedVotingSessions.Add(votingSession.GUID, votingSession);
         }
 
         public void NextQuestionMinigame1() {
@@ -142,11 +122,6 @@ namespace game {
             if (joinRoomSuccess) {
                 SceneManager.Instance.LoadScene($"{PlayerData.Location}-Bar");
                 joinRoomSuccess = false;
-            }
-
-            if (votingSessionDone) {
-                FinishVotingSession(ActiveVotingSessions[finishedVotingSessionGUID]);
-                votingSessionDone = false;
             }
 
             if (startedMinigame1) {
@@ -227,39 +202,6 @@ namespace game {
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` left the room!");
                 ActiveRoom.Players.Remove(playerData.Value<string>("guid"));
                 gotNewMessage = true;
-            });
-
-            socket.On("started_voting_session", data => {
-                Debug.LogWarning("Socket.IO response not implemented for 'started_voting_session'");
-                var voteData = (JObject) data;
-                var votingSession = new NetworkVotingSession(voteData.Value<string>("guid"), voteData.Value<string>("creator"), voteData.Value<string>("reason"), ActiveRoom);
-                ActiveVotingSessions.Add(votingSession.GUID, votingSession);
-            });
-
-            socket.On("update_voting_session", data => {
-                var voteData = (JObject) data;
-                var votingSessionData = voteData["voteSession"];
-                var votingSessionGUID = votingSessionData.Value<string>("guid");
-                if (!ActiveVotingSessions.ContainsKey(votingSessionGUID)) {
-                    return;
-                }
-
-                var votes = (JObject) votingSessionData["votes"];
-                foreach (var prop in votes.Properties()) {
-                    var vote = votes.Value<int>(prop.Name);
-                    if (vote != -1) {
-                        ActiveVotingSessions[votingSessionGUID].Votes[prop.Name] = vote == 1 ? Vote.Yes : Vote.No;
-                    }
-                }
-            });
-
-            socket.On("finish_voting_session", data => {
-                Debug.LogWarning("Socket.IO response not implemented for 'finish_voting_session'");
-                var voteData = (JObject) data;
-                var votingSessionData = voteData["voteSession"];
-                var votingSessionGUID = votingSessionData.Value<string>("guid");
-                votingSessionDone = true;
-                finishedVotingSessionGUID = votingSessionGUID;
             });
 
             socket.On("started_minigame_1", data => {
