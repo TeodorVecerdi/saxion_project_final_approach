@@ -10,14 +10,16 @@ namespace game {
     }
     public struct NetworkVotingSession {
         public string GUID;
+        public string Creator;
         public string Reason;
         public Dictionary<string, Vote> Votes;
 
-        public NetworkVotingSession(string guid, string reason, NetworkRoom room) {
+        public NetworkVotingSession(string guid, string creator, string reason, NetworkRoom room) {
             GUID = guid;
+            Creator = creator;
             Reason = reason;
             Votes = new Dictionary<string, Vote>();
-            foreach (var playerId in room.Players) {
+            foreach (var playerId in room.Players.Keys) {
                 Votes.Add(playerId, Vote.Unvoted);
             }
         }

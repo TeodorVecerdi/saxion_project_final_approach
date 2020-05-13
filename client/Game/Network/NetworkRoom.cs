@@ -11,7 +11,7 @@ namespace game {
         public string Type;
         public bool IsPublic;
         public bool IsNSFW;
-        public List<string> Players;
+        public Dictionary<string, NetworkPlayer> Players;
 
         public NetworkRoom(string name, string description, string guid, string code, string type, bool isPublic, bool isNSFW) {
             Name = name;
@@ -21,7 +21,7 @@ namespace game {
             Type = type;
             IsPublic = isPublic;
             IsNSFW = isNSFW;
-            Players = new List<string>();
+            Players = new Dictionary<string, NetworkPlayer>();
         }
 
         public JObject JSONObject => new JObject {["name"] = Name, ["desc"] = Description, ["type"] = Type, ["code"] = Code, ["nsfw"] = IsNSFW, ["pub"] = IsPublic, ["guid"] = GUID};

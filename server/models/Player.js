@@ -1,12 +1,12 @@
 module.exports = class Player {
-    constructor(username, avatar, guid, socketId, consent, location = "", room = "") {
+    constructor(username, avatar, guid, socketId, consent, room = "", location = "") {
         this.username = username;
         this.avatar = avatar;
         this.guid = guid;
         this.socketId = socketId;
         this.consent = consent;
-        this.location = location;
         this.room = room;
+        this.location = location;
     }
 
     toJSON() {
@@ -16,8 +16,8 @@ module.exports = class Player {
             'guid': this.guid,
             'socketId': this.socketId,
             'consent': this.consent,
-            'location': this.location,
-            'room': this.room
+            'room': this.room,
+            'location': this.location
         };
     }
 };

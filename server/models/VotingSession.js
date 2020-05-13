@@ -1,6 +1,7 @@
 module.exports = class VotingSession {
-    constructor(guid, reason, votes) {
+    constructor(guid, creator, reason, votes) {
         this.guid = guid;
+        this.creator = creator;
         this.reason = reason;
         this.votes = votes;
     }
@@ -8,6 +9,7 @@ module.exports = class VotingSession {
     toJSON() {
         return {
             'guid': this.guid,
+            'creator': this.creator,
             'reason': this.reason,
             'votes': this.votes
         }

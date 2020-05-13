@@ -5,10 +5,12 @@ const server = io.listen(port);
 const Player = require('./models/Player');
 const Room = require('./models/Room');
 const VotingSession = require('./models/VotingSession');
+const MostLikelyToMinigame = require('./models/MostLikelyToMinigame');
 
 let players = {};
 let rooms = {};
 let activeVotingSessions = {};
+let activeMostLikelyToMinigames = {};
 
 let socketIdToSocket = {};
 let socketIdToPlayerId = {};
@@ -45,7 +47,7 @@ server.on("connection", socket => {
         if (room.pub === false) {
             room.code = roomData['code'];
         }
-        room.players.push(player);
+        room.players.push(player.guid);
         player.room = room.guid;
         rooms[room.guid] = room;
         socket.emit("create_room_success", roomData);
@@ -55,11 +57,11 @@ server.on("connection", socket => {
         let roomData = JSON.parse(data);
         let room = rooms[roomData['guid']];
         let player = players[socketIdToPlayerId[socket.id]];
-
+        
         if (room === undefined)
-            socket.emit("join_room_failed", {'code': 0, 'message': 'Room does not exist.'});
+        socket.emit("join_room_failed", {'code': 0, 'message': 'Room does not exist.'});
         else if (room.pub === false && roomData['code'] !== room.code)
-            socket.emit("join_room_failed", {'code': 1, 'message': 'Invalid room code.'});
+        socket.emit("join_room_failed", {'code': 1, 'message': 'Invalid room code.'});
         else {
             room.players.push(player.guid);
             player.room = room.guid;
@@ -73,18 +75,24 @@ server.on("connection", socket => {
         let player = players[playerId];
         broadcast(socket, 'client_disconnected', player.toJSON(), player.room);
         player.room = "none";
-        let roomsToDelete = [];
-        for (let guid in rooms) {
-            let room = rooms[guid];
-            room.players = room.players.filter(player => player.guid !== playerId);
-            if (!room.players || !room.players.length) {
-                roomsToDelete.push(guid);
+        // clean-up
+        rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId));
+        if (!rooms[players[playerId].room].players || !rooms[players[playerId].room].players.length) {
+            delete rooms[players[playerId].room];
+        }
+    });
+
+    socket.on('request_players', data => {
+        let requestedPlayers = {};
+        let playerId = socketIdToPlayerId[socket.id];
+        let room = rooms[players[playerId].room];
+        for(let i = 0; i < room.players.length; i++) {
+            let player = room.players[i];
+            if(player !== playerId) {
+                requestedPlayers[player] = players[player].toJSON();
             }
         }
-        for (let guid in roomsToDelete) {
-            // noinspection JSUnfilteredForInLoop
-            delete rooms[guid];
-        }
+        socket.emit('request_players_success', requestedPlayers);
     });
 
     socket.on('start_voting_session', data => {
@@ -95,7 +103,7 @@ server.on("connection", socket => {
        for(let player in room.players) {
            votes[player] = -1;
        }
-       let votingSession = new VotingSession(voteData['guid'], voteData['reason'], votes);
+       let votingSession = new VotingSession(voteData['guid'], voteData['creator'], voteData['reason'], votes);
        activeVotingSessions[votingSession.guid] = votingSession;
        broadcast(socket, 'started_voting_session', votingSession.toJSON(), players[playerId].room)
     });
@@ -123,6 +131,35 @@ server.on("connection", socket => {
        }
     });
 
+    socket.on('start_minigame_1', data => {
+        let minigameData = JSON.parse(data);
+        let minigame = new MostLikelyToMinigame(minigameData['gameGuid'], minigameData['roomGuid'], minigameData['ownerGuid']);
+        let playerId = socketIdToPlayerId[socket.id];
+        activeMostLikelyToMinigames[minigame.gameGuid] = minigame;
+        broadcast(socket, 'started_minigame_1', minigame.toJSON(), players[playerId].room);
+    });
+    socket.on('voted_minigame_1', data => {
+        let playerId = socketIdToPlayerId[socket.id];
+        broadcast(socket, 'voted_minigame_1', JSON.parse(data), players[playerId].room);
+    });
+    socket.on('request_minigame_1', data => {
+        let minigameData = JSON.parse(data);
+        let question = activeMostLikelyToMinigames[minigameData['gameGuid']].getQuestion();
+        let playerId = socketIdToPlayerId[socket.id];
+        socket.emit('request_minigame_1', {'question': question, 'gameGuid': minigameData['gameGuid']});
+        broadcast(socket, 'request_minigame_1', {'question': question, 'gameGuid': minigameData['gameGuid']}, players[playerId].room);
+    });
+    socket.on('results_minigame_1', data => {
+        let playerId = socketIdToPlayerId[socket.id];
+        broadcast(socket, 'results_minigame_1', data, players[playerId].room);
+    });
+    socket.on('finish_minigame_1', data => {
+        let minigameData = JSON.parse(data);
+        let playerId = socketIdToPlayerId[socket.id];
+        delete activeMostLikelyToMinigames[minigameData['gameGuid']];
+        broadcast(socket, 'finished_minigame_1', minigameData, players[playerId].room);
+    });
+
     socket.on("send_message", data => {
         broadcast(socket, "new_message", {'message': data, 'from': players[socketIdToPlayerId[socket.id]].toJSON()}, players[socketIdToPlayerId[socket.id]].room)
     });
@@ -133,23 +170,17 @@ server.on("connection", socket => {
         let playerId = socketIdToPlayerId[socketId];
         broadcast(socket, 'client_disconnected', players[playerId].toJSON(), players[playerId].room);
 
+        // clean-up
+        rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId),1);
+        if (rooms[players[playerId].room].players.length == 0) {
+            console.info(`Deleted room with guid ${players[playerId].room}`);
+            delete rooms[players[playerId].room];
+        }
+
         delete players[playerId];
         delete socketIdToPlayerId[socketId];
         delete socketIdToSocket[socketId];
         delete playerIdToSocketId[playerId];
-
-        let roomsToDelete = [];
-        for (let guid in rooms) {
-            let room = rooms[guid];
-            room.players = room.players.filter(player => player.guid !== playerId);
-            if (!room.players || !room.players.length) {
-                roomsToDelete.push(guid);
-            }
-        }
-        for (let guid in roomsToDelete) {
-            // noinspection JSUnfilteredForInLoop
-            delete rooms[guid];
-        }
     });
 });
 

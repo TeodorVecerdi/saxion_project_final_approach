@@ -67,7 +67,7 @@ namespace game.ui {
             
             Clear(Color.Transparent);
             NoStroke();
-            Fill(Color.Bisque, 204);
+            Fill(Color.Black, 204);
             ShapeAlign(CenterMode.Min, CenterMode.Min);
             Rect(0, 0, bounds.width, bounds.height);
             

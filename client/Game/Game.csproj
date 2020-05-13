@@ -143,6 +143,7 @@
         <Compile Include="MouseCursor.cs" />
         <Compile Include="Network\ChatMessage.cs" />
         <Compile Include="Network\NetworkManager.cs" />
+        <Compile Include="Network\NetworkMostLikelyTo.cs" />
         <Compile Include="Network\NetworkPlayer.cs" />
         <Compile Include="Network\NetworkRoom.cs" />
         <Compile Include="Network\NetworkVotingSession.cs" />
@@ -162,6 +163,9 @@
         <Compile Include="UI\Button.cs" />
         <Compile Include="UI\Checkbox.cs" />
         <Compile Include="UI\Custom\ChatElement.cs" />
+        <Compile Include="UI\Custom\Minigame1Element.cs" />
+        <Compile Include="UI\Custom\PlayerAvatarElement.cs" />
+        <Compile Include="UI\Custom\RectangleElement.cs" />
         <Compile Include="UI\Image.cs" />
         <Compile Include="UI\Label.cs" />
         <Compile Include="UI\SpriteButton.cs" />
@@ -173,6 +177,7 @@
         <Compile Include="UI\TextField.cs" />
         <Compile Include="UI\UIFactory.cs" />
         <Compile Include="Utils\Debug.cs" />
+        <Compile Include="Utils\Extensions.cs" />
         <Compile Include="Utils\FontLoader.cs" />
         <Compile Include="Utils\Utils.cs" />
         <Compile Include="Utils\Rand.cs" />
