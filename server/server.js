@@ -34,7 +34,6 @@ server.on("connection", socket => {
         players[socketIdToPlayerId[socket.id]].username = accountData['username'];
         players[socketIdToPlayerId[socket.id]].avatar = accountData['avatar'];
         players[socketIdToPlayerId[socket.id]].consent = accountData['consent'];
-        players[socketIdToPlayerId[socket.id]].completedInitialisation = true;
     })
 
     socket.on("set_location", data => {
@@ -80,14 +79,15 @@ server.on("connection", socket => {
         let playerId = socketIdToPlayerId[socket.id];
         let player = players[playerId];
         broadcast(socket, 'client_disconnected', player.toJSON(), player.room);
-        player.room = "none";
+
         // clean-up
-        if (player.completedInitialisation === true) {
+        if (players[playerId].room !== "none") {
             rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId));
             if (!rooms[players[playerId].room].players || !rooms[players[playerId].room].players.length) {
                 delete rooms[players[playerId].room];
             }
         }
+        players[playerId].room = "none";
     });
 
     socket.on('request_players', data => {
@@ -151,10 +151,9 @@ server.on("connection", socket => {
         broadcast(socket, 'client_disconnected', players[playerId].toJSON(), players[playerId].room);
 
         // clean-up
-        if (players[playerId].completedInitialisation === true) {
-            rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId), 1);
-            if (rooms[players[playerId].room].players.length == 0) {
-                console.info(`Deleted room with guid ${players[playerId].room}`);
+        if (players[playerId].room !== "none") {
+            rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId));
+            if (!rooms[players[playerId].room].players || !rooms[players[playerId].room].players.length) {
                 delete rooms[players[playerId].room];
             }
         }
