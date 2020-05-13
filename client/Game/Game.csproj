@@ -149,6 +149,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Scenes\CoffeeBarScene.cs" />
         <Compile Include="Scenes\CoffeeMenuScene.cs" />
+        <Compile Include="Scenes\FakeLoadingScene.cs" />
         <Compile Include="Scenes\FelliniBarScene.cs" />
         <Compile Include="Scenes\FelliniMenuScene.cs" />
         <Compile Include="Scenes\LoadingScene.cs" />

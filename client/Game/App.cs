@@ -23,7 +23,7 @@ namespace game {
             AddChild(soundManager);
             AddChild(mouseCursor);
 
-            sceneManager.LoadScene("Login");
+            sceneManager.LoadScene("Loading");
         }
 
         private void SetupInput() {

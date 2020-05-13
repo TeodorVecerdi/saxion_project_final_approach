@@ -6,7 +6,7 @@ using Rectangle = GXPEngine.Core.Rectangle;
 namespace game.ui {
     public class RectangleElement : EasyDraw {
         private readonly Rectangle bounds;
-        private Color fillColor;
+        public Color FillColor;
         private Color strokeColor;
         private float strokeWeight;
         public bool ShouldRepaint { private get; set; }
@@ -14,7 +14,7 @@ namespace game.ui {
         public RectangleElement(float x, float y, float width, float height, Color fillColor, Color strokeColor, float strokeWeight)
             : base(Mathf.Ceiling(width), Mathf.Ceiling(height), false) {
             bounds = new Rectangle(x, y, width, height);
-            this.fillColor = fillColor;
+            this.FillColor = fillColor;
             this.strokeColor = strokeColor;
             this.strokeWeight = strokeWeight;
             SetXY(x, y);
@@ -31,7 +31,7 @@ namespace game.ui {
         private void Draw() {
             Clear(Color.Transparent);
             ShapeAlign(CenterMode.Min, CenterMode.Min);
-            Fill(fillColor);
+            Fill(FillColor);
             Stroke(strokeColor);
             if(Math.Abs(strokeWeight) < 0.00001f) NoStroke();
             else StrokeWeight(strokeWeight);

@@ -29,6 +29,14 @@ server.on("connection", socket => {
         playerIdToSocketId[player.guid] = socket.id;
     });
 
+    socket.on('update_account', data => {
+        let accountData = JSON.parse(data);
+        players[socketIdToPlayerId[socket.id]].username = accountData['username'];
+        players[socketIdToPlayerId[socket.id]].avatar = accountData['avatar'];
+        players[socketIdToPlayerId[socket.id]].consent = accountData['consent'];
+        players[socketIdToPlayerId[socket.id]].completedInitialisation = true;
+    })
+
     socket.on("set_location", data => {
         let playerId = socketIdToPlayerId[socket.id];
         players[playerId].location = data;
@@ -55,11 +63,11 @@ server.on("connection", socket => {
         let roomData = JSON.parse(data);
         let room = rooms[roomData['guid']];
         let player = players[socketIdToPlayerId[socket.id]];
-        
+
         if (room === undefined)
-        socket.emit("join_room_failed", {'code': 0, 'message': 'Room does not exist.'});
+            socket.emit("join_room_failed", { 'code': 0, 'message': 'Room does not exist.' });
         else if (room.pub === false && roomData['code'] !== room.code)
-        socket.emit("join_room_failed", {'code': 1, 'message': 'Invalid room code.'});
+            socket.emit("join_room_failed", { 'code': 1, 'message': 'Invalid room code.' });
         else {
             room.players.push(player.guid);
             player.room = room.guid;
@@ -74,9 +82,11 @@ server.on("connection", socket => {
         broadcast(socket, 'client_disconnected', player.toJSON(), player.room);
         player.room = "none";
         // clean-up
-        rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId));
-        if (!rooms[players[playerId].room].players || !rooms[players[playerId].room].players.length) {
-            delete rooms[players[playerId].room];
+        if (player.completedInitialisation === true) {
+            rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId));
+            if (!rooms[players[playerId].room].players || !rooms[players[playerId].room].players.length) {
+                delete rooms[players[playerId].room];
+            }
         }
     });
 
@@ -84,9 +94,9 @@ server.on("connection", socket => {
         let requestedPlayers = {};
         let playerId = socketIdToPlayerId[socket.id];
         let room = rooms[players[playerId].room];
-        for(let i = 0; i < room.players.length; i++) {
+        for (let i = 0; i < room.players.length; i++) {
             let player = room.players[i];
-            if(player !== playerId) {
+            if (player !== playerId) {
                 requestedPlayers[player] = players[player].toJSON();
             }
         }
@@ -108,8 +118,8 @@ server.on("connection", socket => {
         let minigameData = JSON.parse(data);
         let question = activeMostLikelyToMinigames[minigameData['gameGuid']].getQuestion();
         let playerId = socketIdToPlayerId[socket.id];
-        socket.emit('request_minigame_1', {'question': question, 'gameGuid': minigameData['gameGuid']});
-        broadcast(socket, 'request_minigame_1', {'question': question, 'gameGuid': minigameData['gameGuid']}, players[playerId].room);
+        socket.emit('request_minigame_1', { 'question': question, 'gameGuid': minigameData['gameGuid'] });
+        broadcast(socket, 'request_minigame_1', { 'question': question, 'gameGuid': minigameData['gameGuid'] }, players[playerId].room);
     });
     socket.on('results_minigame_1', data => {
         let playerId = socketIdToPlayerId[socket.id];
@@ -131,7 +141,7 @@ server.on("connection", socket => {
     });
 
     socket.on("send_message", data => {
-        broadcast(socket, "new_message", {'message': data, 'from': players[socketIdToPlayerId[socket.id]].toJSON()}, players[socketIdToPlayerId[socket.id]].room)
+        broadcast(socket, "new_message", { 'message': data, 'from': players[socketIdToPlayerId[socket.id]].toJSON() }, players[socketIdToPlayerId[socket.id]].room)
     });
 
     socket.on("disconnect", data => {
@@ -141,10 +151,12 @@ server.on("connection", socket => {
         broadcast(socket, 'client_disconnected', players[playerId].toJSON(), players[playerId].room);
 
         // clean-up
-        rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId),1);
-        if (rooms[players[playerId].room].players.length == 0) {
-            console.info(`Deleted room with guid ${players[playerId].room}`);
-            delete rooms[players[playerId].room];
+        if (players[playerId].completedInitialisation === true) {
+            rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId), 1);
+            if (rooms[players[playerId].room].players.length == 0) {
+                console.info(`Deleted room with guid ${players[playerId].room}`);
+                delete rooms[players[playerId].room];
+            }
         }
 
         delete players[playerId];

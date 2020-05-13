@@ -53,6 +53,7 @@ namespace game.ui {
             return new SpriteButton(x, y, 128, 128, "", new Sprite(fileName, true), avatarButtonStyle, () => {
                 avatarButton.Sprite = new Sprite(fileName, true);
                 avatarButton.ShouldRepaint = true;
+                avatarButton.x = 856f;
                 avatarContainer.x = -100000f;
             });
         }

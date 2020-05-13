@@ -35,13 +35,19 @@ namespace game {
 
         private NetworkManager() { }
 
-        public void Initialize(string username, int avatarIndex, bool consent) {
-            PlayerData = new NetworkPlayer(username, Guid.NewGuid().ToString(), "none", "none", avatarIndex, consent);
-
+        public void Initialize() {
+            PlayerData = new NetworkPlayer("", Guid.NewGuid().ToString(), "none", "none", -1, false);
             // Remote URL: "https://saxion-0.ey.r.appspot.com"
             socket = IO.Socket("http://localhost:8080");
 
             SetupSocket();
+        }
+
+        public void CreateAccount(string username, int avatarIndex, bool consent) {
+            PlayerData.Username = username;
+            PlayerData.AvatarIndex = avatarIndex;
+            PlayerData.Consent = consent;
+            socket.Emit("update_account", PlayerData.JSONString);
         }
 
         public void CreateAndJoinRoom(string roomName, string roomDesc, string code, bool isNSFW, bool isPublic) {
@@ -118,7 +124,7 @@ namespace game {
 
         private void Update() {
             if (clientLoggedIn) {
-                SceneManager.Instance.LoadScene("Map");
+                SceneManager.Instance.LoadScene("FakeLoading");
                 clientLoggedIn = false;
             }
 

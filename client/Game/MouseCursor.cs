@@ -9,6 +9,8 @@ namespace game {
         private Sprite active;
         public static MouseCursor Instance => instance ?? (instance = new MouseCursor());
 
+        public bool PreventMouseClickPropagation;
+
         public MouseCursor() {
             name = "Mouse Cursor";
             normal = new Sprite("data/sprites/cursors/cursor_normal.png") {scale = 0.05f};
@@ -26,6 +28,9 @@ namespace game {
 
         private void Update() {
             SetXY(Input.mouseX, Input.mouseY);
+            if (PreventMouseClickPropagation) {
+                PreventMouseClickPropagation = false;
+            }
         }
 
         protected override void RenderSelf(GLContext glContext) {

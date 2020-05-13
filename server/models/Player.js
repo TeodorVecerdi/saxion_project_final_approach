@@ -7,6 +7,7 @@ module.exports = class Player {
         this.consent = consent;
         this.room = room;
         this.location = location;
+        this.completedInitialisation = false;
     }
 
     toJSON() {
