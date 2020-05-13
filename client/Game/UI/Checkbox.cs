@@ -4,7 +4,6 @@ using System.Drawing.Text;
 using game.utils;
 using GXPEngine;
 using Rectangle = GXPEngine.Core.Rectangle;
-using Utils = game.utils.Utils;
 
 namespace game.ui {
     public class Checkbox : EasyDraw {
@@ -16,7 +15,6 @@ namespace game.ui {
         public Action OnMouseRelease;
 
         private readonly Rectangle bounds;
-        private readonly Sprite tickSprite;
         private LabelStyle labelStyle;
         private CheckboxStyle checkboxStyle;
         private bool isChecked;
@@ -74,12 +72,6 @@ namespace game.ui {
             OnMousePress += onMousePress;
             OnMouseRelease += onMouseRelease;
             isChecked = false;
-
-            var closestSpriteSize = Utils.ClosestSorted(height, 32, 64, 128, 256, 512);
-            var spriteScale = height / closestSpriteSize;
-            tickSprite = new Sprite($"data/sprites/ui/checkbox_tick_{closestSpriteSize}.png");
-            tickSprite.SetScaleXY(spriteScale, spriteScale);
-
             SetXY(x, y);
             Draw();
         }

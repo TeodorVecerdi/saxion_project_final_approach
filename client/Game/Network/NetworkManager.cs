@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using game.ui;
 using game.utils;
 using GXPEngine;
@@ -37,8 +38,11 @@ namespace game {
 
         public void Initialize() {
             PlayerData = new NetworkPlayer("", Guid.NewGuid().ToString(), "none", "none", -1, false);
-            // Remote URL: "https://saxion-0.ey.r.appspot.com"
-            socket = IO.Socket("http://localhost:8080");
+
+            if (File.ReadAllText("data/hosted.txt") == "1")
+                socket = IO.Socket("https://saxion-0.ey.r.appspot.com");
+            else
+                socket = IO.Socket("http://localhost:8080");
 
             SetupSocket();
         }
@@ -80,7 +84,7 @@ namespace game {
 
         private void ReceivedMessage(ChatMessage message) {
             ChatElement.ActiveChat.ReceiveMessage(message);
-            if(message.SenderGUID != "00000000-0000-0000-0000-000000000000")
+            if (message.SenderGUID != "00000000-0000-0000-0000-000000000000")
                 SoundManager.Instance.PlaySound("new_message");
         }
 
