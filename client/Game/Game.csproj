@@ -163,6 +163,7 @@
         <Compile Include="UI\Button.cs" />
         <Compile Include="UI\Checkbox.cs" />
         <Compile Include="UI\Custom\ChatElement.cs" />
+        <Compile Include="UI\Custom\JukeboxElement.cs" />
         <Compile Include="UI\Custom\Minigame1Element.cs" />
         <Compile Include="UI\Custom\PlayerAvatarElement.cs" />
         <Compile Include="UI\Custom\RectangleElement.cs" />

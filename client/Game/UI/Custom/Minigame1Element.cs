@@ -25,7 +25,7 @@ namespace game.ui {
         private Label resultLabel;
         private Button stopPlayingButton;
         private Button nextQuestionButton;
-        private Pivot RootElement;
+        private readonly Pivot rootElement;
 
         public Minigame1Element(float x, float y, float width, float height, LabelStyle questionStyle, LabelStyle remainingVotesStyle, LabelStyle playerNameStyle, LabelStyle resultStyle, LabelStyle alertStyle,ButtonStyle buttonStyle) {
             bounds = new Rectangle(x, y, width, height);
@@ -35,13 +35,13 @@ namespace game.ui {
             this.resultStyle = resultStyle;
             this.alertStyle = alertStyle;
             this.buttonStyle = buttonStyle;
-            RootElement = new Pivot();
-            AddChild(RootElement);
+            rootElement = new Pivot();
+            AddChild(rootElement);
             SetXY(x, y);
         }
 
         public void Deinitialize() {
-            RootElement.GetChildren().ForEach(obj => obj.Destroy());
+            rootElement.GetChildren().ForEach(obj => obj.Destroy());
         }
 
         public void Initialize(int state) {
@@ -50,13 +50,13 @@ namespace game.ui {
             var backgroundPath = "data/sprites/minigames/1/background";
             backgroundPath += (isOwner ? "_owner" : "") + ".png";
             var topOffset = isOwner ? 0f : 50;
-            RootElement.AddChild(new Image(0, 0, bounds.width, bounds.height, new Sprite(backgroundPath, true, false)));
+            rootElement.AddChild(new Image(0, 0, bounds.width, bounds.height, new Sprite(backgroundPath, true, false)));
 
             //title
 
             // question
             questionLabel = new Label(0, 100, bounds.width, 60, NetworkManager.Instance.ActiveMinigame1.ActiveQuestion, questionStyle);
-            RootElement.AddChild(questionLabel);
+            rootElement.AddChild(questionLabel);
             if (state == 0) {
                 playerAvatars = new List<PlayerAvatarElement>();
                 var players = NetworkManager.Instance.ActiveRoom.Players;
@@ -76,27 +76,27 @@ namespace game.ui {
                     playerAvatars.Add(playerAvatar);
                 }
 
-                playerAvatars.ForEach(avatar => RootElement.AddChild(avatar));
+                playerAvatars.ForEach(avatar => rootElement.AddChild(avatar));
             } else if (state == 1) {
                 var votedGUID = NetworkManager.Instance.ActiveMinigame1.ActiveQuestionVotes[NetworkManager.Instance.PlayerData.GUID];
                 var voted = NetworkManager.Instance.ActiveRoom.Players[votedGUID];
                 votedPlayer = new PlayerAvatarElement(bounds.width / 4f - 64f, bounds.height / 2f - 64f + topOffset, voted.Username, voted.AvatarIndex, playerNameStyle);
-                RootElement.AddChild(votedPlayer);
+                rootElement.AddChild(votedPlayer);
                 var totalVotes = NetworkManager.Instance.ActiveRoom.Players.Count;
                 var remainingVotes = NetworkManager.Instance.ActiveMinigame1.RemainingVotes;
                 var totalVoted = totalVotes - remainingVotes;
                 remainingVotesLabel = new Label(bounds.width / 2f, bounds.height / 2f + topOffset, bounds.width / 2f, 170, $"Voted: {totalVoted}/{totalVotes} ({remainingVotes} remaining)", remainingVotesStyle);
-                RootElement.AddChild(remainingVotesLabel);
+                rootElement.AddChild(remainingVotesLabel);
             } else {
                 var totalVotes = NetworkManager.Instance.ActiveRoom.Players.Count;
                 var (winnerGuid, winnerVotes) = NetworkManager.Instance.ActiveMinigame1.Result();
                 var winner = NetworkManager.Instance.ActiveRoom.Players[winnerGuid];
                 resultPlayer = new PlayerAvatarElement(20, bounds.height / 2f - 64f + topOffset, winner.Username, winner.AvatarIndex, playerNameStyle);
-                RootElement.AddChild(resultPlayer);
+                rootElement.AddChild(resultPlayer);
                 resultLabel = new Label(168f, 100 + topOffset, bounds.width / 2f, 250, $"WINNER\nWith {winnerVotes}/{totalVotes} votes", resultStyle);
-                RootElement.AddChild(resultLabel);
+                rootElement.AddChild(resultLabel);
                 if (!isOwner) {
-                    RootElement.AddChild(new Label(bounds.width/2f, 100 + topOffset, bounds.width/2f, 250, "WAITING FOR CREATOR TO MOVE ON TO THE NEXT QUESTION", alertStyle));
+                    rootElement.AddChild(new Label(bounds.width/2f, 100 + topOffset, bounds.width/2f, 250, "WAITING FOR CREATOR TO MOVE ON TO THE NEXT QUESTION", alertStyle));
                 }
             }
 
@@ -104,8 +104,8 @@ namespace game.ui {
                 return;
             nextQuestionButton = new Button(0, 350, bounds.width / 2f, 100, "NEXT QUESTION", buttonStyle, OnNextQuestionClicked);
             stopPlayingButton = new Button(bounds.width / 2f, 350, bounds.width / 2f, 100, "STOP PLAYING", buttonStyle, OnStopPlayingClicked);
-            RootElement.AddChild(nextQuestionButton);
-            RootElement.AddChild(stopPlayingButton);
+            rootElement.AddChild(nextQuestionButton);
+            rootElement.AddChild(stopPlayingButton);
         }
 
         private void OnNextQuestionClicked() {
