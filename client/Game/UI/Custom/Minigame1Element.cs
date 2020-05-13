@@ -13,7 +13,6 @@ namespace game.ui {
         public bool IsActive = false;
 
         private readonly Rectangle bounds;
-        private LabelStyle titleStyle;
         private LabelStyle questionStyle;
         private LabelStyle remainingVotesStyle;
         private LabelStyle playerNameStyle;
@@ -24,7 +23,6 @@ namespace game.ui {
         private List<PlayerAvatarElement> playerAvatars;
         private PlayerAvatarElement votedPlayer;
         private PlayerAvatarElement resultPlayer;
-        private Label titleLabel;
         private Label questionLabel;
         private Label remainingVotesLabel;
         private Label resultLabel;
@@ -32,10 +30,9 @@ namespace game.ui {
         private Button nextQuestionButton;
         private Pivot RootElement;
 
-        public Minigame1Element(float x, float y, float width, float height, LabelStyle titleStyle, LabelStyle questionStyle, LabelStyle remainingVotesStyle, LabelStyle playerNameStyle, LabelStyle resultStyle, LabelStyle alertStyle,ButtonStyle buttonStyle)
+        public Minigame1Element(float x, float y, float width, float height, LabelStyle questionStyle, LabelStyle remainingVotesStyle, LabelStyle playerNameStyle, LabelStyle resultStyle, LabelStyle alertStyle,ButtonStyle buttonStyle)
             : base(Mathf.Ceiling(width), Mathf.Ceiling(height), false) {
             bounds = new Rectangle(x, y, width, height);
-            this.titleStyle = titleStyle;
             this.questionStyle = questionStyle;
             this.remainingVotesStyle = remainingVotesStyle;
             this.playerNameStyle = playerNameStyle;
@@ -53,14 +50,13 @@ namespace game.ui {
 
         public void Initialize(int state) {
             Deinitialize();
-            var isOwner = NetworkManager.Instance.PlayerData.GUID != NetworkManager.Instance.ActiveMinigame1.Owner;
+            var isOwner = NetworkManager.Instance.PlayerData.GUID == NetworkManager.Instance.ActiveMinigame1.Owner;
+            var backgroundPath = "data/sprites/minigames/1/background";
+            backgroundPath += (isOwner ? "_owner" : "") + ".png";
             var topOffset = isOwner ? 0f : 50;
-            RootElement.AddChild(new RectangleElement(0, 0, bounds.width, bounds.height, Color.FromArgb(255, 227, 227, 222), Color.Transparent, 0f));
+            RootElement.AddChild(new Image(0, 0, bounds.width, bounds.height, new Sprite(backgroundPath, true, false)));
 
             //title
-            titleLabel = new Label(0, 0, bounds.width, 100, "WHO IS MOST LIKELY TO", titleStyle);
-            RootElement.AddChild(new RectangleElement(0, 0, bounds.width, 100, Color.FromArgb(255, 73, 65, 54), Color.Transparent, 0f));
-            RootElement.AddChild(titleLabel);
 
             // question
             questionLabel = new Label(0, 100, bounds.width, 60, NetworkManager.Instance.ActiveMinigame1.ActiveQuestion, questionStyle);
