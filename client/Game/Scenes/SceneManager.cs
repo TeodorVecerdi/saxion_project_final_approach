@@ -33,6 +33,7 @@ namespace game {
         }
 
         public void LoadScene(string sceneID) {
+            MouseCursor.Instance.Normal();
             if (scenes.ContainsKey(activeSceneID)) {
                 Debug.LogInfo($"Unloaded scene `{activeSceneID}`.");
                 scenes[activeSceneID].Unload();
