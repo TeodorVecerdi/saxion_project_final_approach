@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using GXPEngine;
 using Rectangle = GXPEngine.Core.Rectangle;
+using game.utils;
 
 namespace game.ui {
     public class Minigame1Element : EasyDraw {
@@ -72,7 +70,8 @@ namespace game.ui {
                     spacing = 11f;
                 }
 
-                foreach (var player in players.Values) {
+                foreach (var playerGUID in players.Keys.ToList().Sorted()) {
+                    var player = players[playerGUID];
                     var x = index * spriteSize + (index == 0 ? 0 : spacing);
                     var playerAvatar = new PlayerAvatarElement(x, bounds.height / 2f - spriteSize / 2f + topOffset, player.Username, player.AvatarIndex, playerNameStyle, () => { OnVoteClicked(player.GUID); }, spriteSize);
                     index++;
