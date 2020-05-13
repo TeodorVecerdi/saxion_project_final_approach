@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using game.ui;
+using game.utils;
 using GXPEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -106,6 +107,16 @@ namespace game {
             jsonData["roomGuid"] = ActiveRoom.GUID;
             socket.Emit("start_minigame_1", jsonData.ToString(Formatting.None));
             socket.Emit("request_minigame_1", jsonData.ToString(Formatting.None));
+        }
+
+        public void PlaySound(string soundId, bool stopAlreadyPlaying) {
+            socket.Emit("play_sound", new JObject{["soundId"] = soundId, ["stopAlreadyPlaying"]= stopAlreadyPlaying}.ToString(Formatting.None));
+            SoundManager.Instance.PlaySound(soundId, stopAlreadyPlaying);
+        }
+        
+        public void StopPlayingSound(string soundId) {
+            socket.Emit("stop_playing_sound", new JObject{["soundId"] = soundId}.ToString(Formatting.None));
+            SoundManager.Instance.StopPlaying(soundId);
         }
 
         private void Update() {
@@ -229,6 +240,19 @@ namespace game {
             });
             socket.On("results_minigame_1", data => { showResultsMinigame1 = true; });
             socket.On("finished_minigame_1", data => { finishedMinigame1 = true; });
+
+            socket.On("play_sound", data => {
+                var jsonData = (JObject) data;
+                var soundId = jsonData.Value<string>("soundId");
+                var stopAlreadyPlaying = jsonData.Value<bool>("stopAlreadyPlaying");
+                SoundManager.Instance.PlaySound(soundId, stopAlreadyPlaying);
+            });
+            
+            socket.On("stop_playing_sound", data => {
+                var jsonData = (JObject) data;
+                var soundId = jsonData.Value<string>("soundId");
+                SoundManager.Instance.StopPlaying(soundId);
+            });
         }
     }
 }

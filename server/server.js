@@ -122,6 +122,14 @@ server.on("connection", socket => {
         broadcast(socket, 'finished_minigame_1', minigameData, players[playerId].room);
     });
 
+    socket.on('play_sound', data => {
+        broadcast(socket, 'play_sound', JSON.parse(data), players[socketIdToPlayerId[socket.id]].room);
+    });
+
+    socket.on('stop_playing_sound', data => {
+        broadcast(socket, 'stop_playing_sound', JSON.parse(data), players[socketIdToPlayerId[socket.id]].room);
+    });
+
     socket.on("send_message", data => {
         broadcast(socket, "new_message", {'message': data, 'from': players[socketIdToPlayerId[socket.id]].toJSON()}, players[socketIdToPlayerId[socket.id]].room)
     });
