@@ -33,20 +33,14 @@ namespace game {
         public bool RoomsReady;
         public List<NetworkRoom> Rooms;
 
-        private NetworkManager() {
-        }
+        private NetworkManager() { }
 
         public void Initialize(string username, int avatarIndex, bool consent) {
             PlayerData = new NetworkPlayer(username, Guid.NewGuid().ToString(), "none", "none", avatarIndex, consent);
 
             // Remote URL: "https://saxion-0.ey.r.appspot.com"
             socket = IO.Socket("http://localhost:8080");
-            socket.On("connect", data => {
-                Debug.Log("Client connected.");
-                if (!initialized)
-                    clientLoggedIn = true;
-                initialized = true;
-            });
+
             SetupSocket();
         }
 
@@ -110,12 +104,12 @@ namespace game {
         }
 
         public void PlaySound(string soundId, bool stopAlreadyPlaying) {
-            socket.Emit("play_sound", new JObject{["soundId"] = soundId, ["stopAlreadyPlaying"]= stopAlreadyPlaying}.ToString(Formatting.None));
+            socket.Emit("play_sound", new JObject {["soundId"] = soundId, ["stopAlreadyPlaying"] = stopAlreadyPlaying}.ToString(Formatting.None));
             SoundManager.Instance.PlaySound(soundId, stopAlreadyPlaying);
         }
-        
+
         public void StopPlayingSound(string soundId) {
-            socket.Emit("stop_playing_sound", new JObject{["soundId"] = soundId}.ToString(Formatting.None));
+            socket.Emit("stop_playing_sound", new JObject {["soundId"] = soundId}.ToString(Formatting.None));
             SoundManager.Instance.StopPlaying(soundId);
         }
 
@@ -162,10 +156,24 @@ namespace game {
         }
 
         private void SetupSocket() {
-            socket.On("request_account", data => { socket.Emit("request_account_success", PlayerData.JSONString); });
+            SetupSocket_Basic();
+            SetupSocket_Rooms();
+            SetupSocket_Sound();
+            SetupSocket_Minigames();
+        }
 
+        private void SetupSocket_Basic() {
+            socket.On("connect", data => {
+                Debug.Log("Client connected.");
+                if (!initialized)
+                    clientLoggedIn = true;
+                initialized = true;
+            });
             socket.On("disconnect", data => { Debug.Log($"Client disconnected. Reason: {data}"); });
+            socket.On("request_account", data => { socket.Emit("request_account_success", PlayerData.JSONString); });
+        }
 
+        private void SetupSocket_Rooms() {
             socket.On("request_rooms_success", data => {
                 Rooms = new List<NetworkRoom>();
                 var objData = (JObject) data;
@@ -197,24 +205,42 @@ namespace game {
                     ActiveRoom.Players.Add(playerId.Name, networkPlayerData);
                 }
             });
-
             socket.On("client_joined", data => {
                 var playerData = (JObject) data;
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` joined the room!");
                 ActiveRoom.Players.Add(playerData.Value<string>("guid"), new NetworkPlayer() {AvatarIndex = playerData.Value<int>("avatar"), Username = playerData.Value<string>("username"), GUID = playerData.Value<string>("guid")});
                 gotNewMessage = true;
             });
+
             socket.On("new_message", data => {
                 newestMessage = ChatMessage.FromJSON(JObject.Parse(((JObject) data).Value<string>("message")));
                 gotNewMessage = true;
             });
+
             socket.On("client_disconnected", data => {
                 var playerData = (JObject) data;
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` left the room!");
                 ActiveRoom.Players.Remove(playerData.Value<string>("guid"));
                 gotNewMessage = true;
             });
+        }
 
+        private void SetupSocket_Sound() {
+            socket.On("play_sound", data => {
+                var jsonData = (JObject) data;
+                var soundId = jsonData.Value<string>("soundId");
+                var stopAlreadyPlaying = jsonData.Value<bool>("stopAlreadyPlaying");
+                SoundManager.Instance.PlaySound(soundId, stopAlreadyPlaying);
+            });
+
+            socket.On("stop_playing_sound", data => {
+                var jsonData = (JObject) data;
+                var soundId = jsonData.Value<string>("soundId");
+                SoundManager.Instance.StopPlaying(soundId);
+            });
+        }
+
+        private void SetupSocket_Minigames() {
             socket.On("started_minigame_1", data => {
                 var minigameData = (JObject) data;
                 ActiveMinigame1 = new NetworkMostLikelyTo(minigameData.Value<string>("gameGuid"), minigameData.Value<string>("ownerGuid"));
@@ -240,19 +266,6 @@ namespace game {
             });
             socket.On("results_minigame_1", data => { showResultsMinigame1 = true; });
             socket.On("finished_minigame_1", data => { finishedMinigame1 = true; });
-
-            socket.On("play_sound", data => {
-                var jsonData = (JObject) data;
-                var soundId = jsonData.Value<string>("soundId");
-                var stopAlreadyPlaying = jsonData.Value<bool>("stopAlreadyPlaying");
-                SoundManager.Instance.PlaySound(soundId, stopAlreadyPlaying);
-            });
-            
-            socket.On("stop_playing_sound", data => {
-                var jsonData = (JObject) data;
-                var soundId = jsonData.Value<string>("soundId");
-                SoundManager.Instance.StopPlaying(soundId);
-            });
         }
     }
 }
