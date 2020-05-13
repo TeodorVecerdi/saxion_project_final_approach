@@ -1,3 +1,4 @@
+using game.utils;
 using GXPEngine;
 
 namespace game {
@@ -5,6 +6,7 @@ namespace game {
         private readonly MouseCursor mouseCursor;
         private readonly NetworkManager networkManager;
         private readonly SceneManager sceneManager;
+        private readonly SoundManager soundManager;
 
         public App() : base(Globals.WIDTH, Globals.HEIGHT, Globals.FULLSCREEN, Globals.VSYNC, pPixelArt: Globals.PIXEL_ART, windowTitle: Globals.WINDOW_TITLE) {
             targetFps = 60;
@@ -14,9 +16,11 @@ namespace game {
             networkManager = NetworkManager.Instance;
             sceneManager = SceneManager.Instance;
             mouseCursor = MouseCursor.Instance;
+            soundManager = SoundManager.Instance;
 
             AddChild(networkManager);
             AddChild(sceneManager);
+            AddChild(soundManager);
             AddChild(mouseCursor);
 
             sceneManager.LoadScene("Login");
