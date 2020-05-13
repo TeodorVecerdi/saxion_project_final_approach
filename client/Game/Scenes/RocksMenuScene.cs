@@ -37,7 +37,6 @@ namespace game {
         }
 
         public override void Load() {
-            var transparentButtonStyle = ButtonStyle.Default.Alter(backgroundColorNormal: Color.Transparent, backgroundColorHover: Color.Transparent, backgroundColorPressed: Color.Transparent, borderColorNormal: Color.Transparent, borderColorHover: Color.Transparent, borderColorPressed: Color.Transparent, textColorNormal: Color.Transparent, textColorHover: Color.Transparent, textColorPressed: Color.Transparent);
             var textFieldBackground = Color.FromArgb(255, 73, 65, 54);
             var textFieldText = Color.FromArgb(255, 227, 227, 222);
             var textFieldStyle = TextFieldStyle.Default.Alter(backgroundNormal:textFieldBackground,backgroundFocused:textFieldBackground, borderNormal:Color.Transparent, borderFocused:Color.Transparent, borderSizeNormal: 4f, borderSizeFocused:4f, caretNormal:textFieldText, caretFocused:textFieldText, textNormal:textFieldText, textFocused:textFieldText);
@@ -63,26 +62,26 @@ namespace game {
             tab1.AddChild(tab1Main);
             tab1.AddChild(tab1CreatePublic);
             tab1.AddChild(tab1CreatePrivate);
-            tab1Main.AddChild(new Button(133, 358, 449, 83, "Create public room", transparentButtonStyle, onClick: () => {
+            tab1Main.AddChild(new Button(133, 358, 449, 83, "Create public room", ButtonStyle.Transparent, onClick: () => {
                 tab1CreatePublic.x = 0f;
                 backgroundImage2.x = 0f;
                 tab1Main.x = -100000f;
                 backgroundImage1.x = -100000f;
             }));
-            tab1Main.AddChild(new Button(133, 509, 449, 83, "Create private room", transparentButtonStyle, onClick: () => {
+            tab1Main.AddChild(new Button(133, 509, 449, 83, "Create private room", ButtonStyle.Transparent, onClick: () => {
                 tab1CreatePrivate.x = 0;
                 backgroundImage3.x = 0f;
                 tab1Main.x = -100000f;
                 backgroundImage1.x = -100000f;
             }));
-            tab1Main.AddChild(new Button(267, 836, 177, 83, "Back", transparentButtonStyle, () => {
+            tab1Main.AddChild(new Button(267, 836, 177, 83, "Back", ButtonStyle.Transparent, () => {
                 NetworkManager.Instance.JoinLocation("none", false);
                 SceneManager.Instance.LoadScene("Map");
             }));
             tab1CreatePublic.AddChild(publicRoomNameTextField = new TextField(111, 315, 499, 60 , "", textFieldStyle));
             tab1CreatePublic.AddChild(publicRoomDescriptionTextField = new TextField(111, 462, 499, 60, "", textFieldStyle));
             tab1CreatePublic.AddChild(publicRoomNSFWCheckbox = new Checkbox(80, 617, 564, 40, "", checkboxStyle));
-            tab1CreatePublic.AddChild(new Button(190, 679, 338, 83, "Create", transparentButtonStyle, onClick: () => {
+            tab1CreatePublic.AddChild(new Button(190, 679, 338, 83, "Create", ButtonStyle.Transparent, onClick: () => {
                 if (string.IsNullOrEmpty(publicRoomNameTextField.Text) || string.IsNullOrEmpty(publicRoomDescriptionTextField.Text))
                     return;
                 NetworkManager.Instance.CreateAndJoinRoom(publicRoomNameTextField.Text, publicRoomDescriptionTextField.Text, "", publicRoomNSFWCheckbox.IsChecked, true);
@@ -95,7 +94,7 @@ namespace game {
                 backgroundImage1.x = 0f;
                 RefreshRooms();
             }));
-            tab1CreatePublic.AddChild(new Button(267, 836, 177, 83, "Back", transparentButtonStyle, onClick: () => {
+            tab1CreatePublic.AddChild(new Button(267, 836, 177, 83, "Back", ButtonStyle.Transparent, onClick: () => {
                 tab1CreatePublic.x = -100000f;
                 backgroundImage2.x = -100000f;
                 tab1Main.x = 0f;
@@ -105,7 +104,7 @@ namespace game {
             tab1CreatePrivate.AddChild(privateRoomDescriptionTextField = new TextField(111, 442, 499, 60, "", textFieldStyle));
             tab1CreatePrivate.AddChild(privateRoomCodeTextField = new TextField(111, 568, 499, 60, "", textFieldStyle));
             tab1CreatePrivate.AddChild(privateRoomNSFWCheckbox = new Checkbox(85, 650, 560, 40, "", checkboxStyle));
-            tab1CreatePrivate.AddChild(new Button(191, 709, 338, 83, "Create", transparentButtonStyle, onClick: () => {
+            tab1CreatePrivate.AddChild(new Button(191, 709, 338, 83, "Create", ButtonStyle.Transparent, onClick: () => {
                 if (string.IsNullOrEmpty(privateRoomNameTextField.Text) || string.IsNullOrEmpty(privateRoomDescriptionTextField.Text) || string.IsNullOrEmpty(privateRoomCodeTextField.Text))
                     return;
                 NetworkManager.Instance.CreateAndJoinRoom(privateRoomNameTextField.Text, privateRoomDescriptionTextField.Text, privateRoomCodeTextField.Text, privateRoomNSFWCheckbox.IsChecked, false);
@@ -119,7 +118,7 @@ namespace game {
                 backgroundImage1.x = 0f;
                 RefreshRooms();
             }));
-            tab1CreatePrivate.AddChild(new Button(267, 836, 177, 83, "Back", transparentButtonStyle, onClick: () => {
+            tab1CreatePrivate.AddChild(new Button(267, 836, 177, 83, "Back", ButtonStyle.Transparent, onClick: () => {
                 tab1CreatePrivate.x = -100000f;
                 backgroundImage3.x = -100000f;
                 tab1Main.x = 0f;
@@ -127,10 +126,10 @@ namespace game {
             }));
 
             tab2.AddChild(loadingPrivateRooms = new AnimatedSprite(Texture2D.GetInstance("data/sprites/spinner.png", true), 12, 1, 0.083F) {x = -100000f, y = 232 + 64f - 48f, scale = 0.75f});
-            tab2.AddChild(new Button(815f-width/3f, 838, 283, 83, "Refresh", transparentButtonStyle, onClick: () => { RefreshRooms(); }));
+            tab2.AddChild(new Button(815f-width/3f, 838, 283, 83, "Refresh", ButtonStyle.Transparent, onClick: () => { RefreshRooms(); }));
 
             tab3.AddChild(loadingPublicRooms = new AnimatedSprite(Texture2D.GetInstance("data/sprites/spinner.png", true), 12, 1, 0.083F) {x = -100000f, y = 232 + 64f - 48f, scale = 0.75f});
-            tab3.AddChild(new Button(1390 - 2*width/3f, 838, 283, 83, "Refresh", transparentButtonStyle, onClick: () => { RefreshRooms(); }));
+            tab3.AddChild(new Button(1390 - 2*width/3f, 838, 283, 83, "Refresh", ButtonStyle.Transparent, onClick: () => { RefreshRooms(); }));
 
             RefreshRooms();
             IsLoaded = true;

@@ -141,5 +141,7 @@ namespace game.ui {
             TextAlignment = FontLoader.CenterCenterAlignment,
             Font = FontLoader.SourceCode[16f]
         };
+        
+        public static ButtonStyle Transparent = Default.Alter(backgroundColorNormal: Color.Transparent, backgroundColorHover: Color.Transparent, backgroundColorPressed: Color.Transparent, borderColorNormal: Color.Transparent, borderColorHover: Color.Transparent, borderColorPressed: Color.Transparent, textColorNormal: Color.Transparent, textColorHover: Color.Transparent, textColorPressed: Color.Transparent);
     }
 }
