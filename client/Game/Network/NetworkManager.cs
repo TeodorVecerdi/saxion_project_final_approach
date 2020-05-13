@@ -50,6 +50,7 @@ namespace game {
             PlayerData.RoomID = ActiveRoom.GUID;
             socket.Emit("create_room", ActiveRoom.JSONString);
             SceneManager.Instance.LoadScene($"{PlayerData.Location}-Bar");
+            SoundManager.Instance.PlaySound("bar_ambiance");
         }
 
         public void TryJoinRoom(string roomGuid, string roomCode) {
@@ -73,6 +74,8 @@ namespace game {
 
         private void ReceivedMessage(ChatMessage message) {
             ChatElement.ActiveChat.ReceiveMessage(message);
+            if(message.SenderGUID != "00000000-0000-0000-0000-000000000000")
+                SoundManager.Instance.PlaySound("new_message");
         }
 
         public void NextQuestionMinigame1() {
@@ -126,6 +129,7 @@ namespace game {
 
             if (joinRoomSuccess) {
                 SceneManager.Instance.LoadScene($"{PlayerData.Location}-Bar");
+                SoundManager.Instance.PlaySound("bar_ambiance");
                 joinRoomSuccess = false;
             }
 
@@ -185,10 +189,7 @@ namespace game {
 
                 RoomsReady = true;
             });
-            socket.On("create_room_success", data => {
-                Debug.LogWarning("Socket.IO response not implemented for 'create_room_success'");
-                Debug.Log(data);
-            });
+            socket.On("create_room_success", data => { });
             socket.On("join_room_failed", data => { Debug.LogWarning("Socket.IO response not implemented for 'join_room_failed'"); });
             socket.On("join_room_success", data => {
                 var roomData = (JObject) data;
@@ -209,6 +210,7 @@ namespace game {
                 var playerData = (JObject) data;
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` joined the room!");
                 ActiveRoom.Players.Add(playerData.Value<string>("guid"), new NetworkPlayer() {AvatarIndex = playerData.Value<int>("avatar"), Username = playerData.Value<string>("username"), GUID = playerData.Value<string>("guid")});
+                SoundManager.Instance.PlaySound("client_joined");
                 gotNewMessage = true;
             });
 
@@ -221,6 +223,7 @@ namespace game {
                 var playerData = (JObject) data;
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` left the room!");
                 ActiveRoom.Players.Remove(playerData.Value<string>("guid"));
+                SoundManager.Instance.PlaySound("client_left", true);
                 gotNewMessage = true;
             });
         }
