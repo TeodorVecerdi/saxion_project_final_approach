@@ -9,7 +9,7 @@ namespace game {
         private Sprite active;
         public static MouseCursor Instance => instance ?? (instance = new MouseCursor());
 
-        public bool PreventMouseClickPropagation;
+        public bool PreventMouseEventPropagation;
 
         public MouseCursor() {
             name = "Mouse Cursor";
@@ -28,8 +28,8 @@ namespace game {
 
         private void Update() {
             SetXY(Input.mouseX, Input.mouseY);
-            if (PreventMouseClickPropagation) {
-                PreventMouseClickPropagation = false;
+            if (PreventMouseEventPropagation) {
+                PreventMouseEventPropagation = false;
             }
         }
 

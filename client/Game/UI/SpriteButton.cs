@@ -50,37 +50,39 @@ namespace game.ui {
         }
 
         private void Update() {
-            var onTop = IsMouseOnTop;
+            if (!MouseCursor.Instance.PreventMouseEventPropagation) {
+                var onTop = IsMouseOnTop;
 
-            // Check for button states and setup style
-            if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
-                OnMouseRelease?.Invoke();
-                if (onTop) buttonStyle.Hover();
-                else buttonStyle.Normal();
-                pressed = false;
-                Draw();
-            } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
-                OnClick?.Invoke();
-                buttonStyle.Press();
-                pressed = true;
-                Draw();
-            } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
-                OnMousePress?.Invoke();
-                buttonStyle.Press();
-                Draw();
-            } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
-                OnMouseEnter?.Invoke();
-                MouseCursor.Instance.Button();
-                buttonStyle.Hover();
-                Draw();
-            } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
-                OnMouseLeave?.Invoke();
-                MouseCursor.Instance.Normal();
-                buttonStyle.Normal();
-                Draw();
+                // Check for button states and setup style
+                if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
+                    OnMouseRelease?.Invoke();
+                    if (onTop) buttonStyle.Hover();
+                    else buttonStyle.Normal();
+                    pressed = false;
+                    Draw();
+                } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
+                    OnClick?.Invoke();
+                    buttonStyle.Press();
+                    pressed = true;
+                    Draw();
+                } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
+                    OnMousePress?.Invoke();
+                    buttonStyle.Press();
+                    Draw();
+                } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
+                    OnMouseEnter?.Invoke();
+                    MouseCursor.Instance.Button();
+                    buttonStyle.Hover();
+                    Draw();
+                } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
+                    OnMouseLeave?.Invoke();
+                    MouseCursor.Instance.Normal();
+                    buttonStyle.Normal();
+                    Draw();
+                }
+
+                wasMouseOnTopPreviousFrame = onTop;
             }
-
-            wasMouseOnTopPreviousFrame = onTop;
 
             if (ShouldRepaint) {
                 ShouldRepaint = false;

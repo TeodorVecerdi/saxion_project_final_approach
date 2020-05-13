@@ -17,13 +17,13 @@ namespace game.ui {
 
         private bool wasMouseOnTopPreviousFrame;
         private bool pressed;
-        
+
         public bool ShouldRepaint { private get; set; }
         public string ButtonText;
-        
+
         private bool IsMouseOnTop {
             get {
-                var globalBounds = TransformPoint(0,0);
+                var globalBounds = TransformPoint(0, 0);
                 return Input.mouseX >= globalBounds.x && Input.mouseX <= globalBounds.x + bounds.width && Input.mouseY >= globalBounds.y && Input.mouseY <= globalBounds.y + bounds.height;
             }
         }
@@ -48,38 +48,40 @@ namespace game.ui {
         }
 
         private void Update() {
-            var onTop = IsMouseOnTop;
 
-            // Check for button states and apply style
-            if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
-                OnMouseRelease?.Invoke();
-                if (onTop) buttonStyle.Hover();
-                else buttonStyle.Normal();
-                pressed = false;
-                Draw();
-            } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
-                OnClick?.Invoke();
-                buttonStyle.Press();
-                pressed = true;
-                Draw();
-            } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
-                OnMousePress?.Invoke();
-                buttonStyle.Press();
-                Draw();
-            } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
-                OnMouseEnter?.Invoke();
-                MouseCursor.Instance.Button();
-                buttonStyle.Hover();
-                Draw();
-            } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
-                OnMouseLeave?.Invoke();
-                MouseCursor.Instance.Normal();
-                buttonStyle.Normal();
-                Draw();
+            if (!MouseCursor.Instance.PreventMouseEventPropagation) {
+                var onTop = IsMouseOnTop;
+                // Check for button states and apply style
+                if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
+                    OnMouseRelease?.Invoke();
+                    if (onTop) buttonStyle.Hover();
+                    else buttonStyle.Normal();
+                    pressed = false;
+                    Draw();
+                } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
+                    OnClick?.Invoke();
+                    buttonStyle.Press();
+                    pressed = true;
+                    Draw();
+                } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
+                    OnMousePress?.Invoke();
+                    buttonStyle.Press();
+                    Draw();
+                } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
+                    OnMouseEnter?.Invoke();
+                    MouseCursor.Instance.Button();
+                    buttonStyle.Hover();
+                    Draw();
+                } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
+                    OnMouseLeave?.Invoke();
+                    MouseCursor.Instance.Normal();
+                    buttonStyle.Normal();
+                    Draw();
+                }
+
+                wasMouseOnTopPreviousFrame = onTop;
             }
 
-            wasMouseOnTopPreviousFrame = onTop;
-            
             if (ShouldRepaint) {
                 ShouldRepaint = false;
                 Draw();
@@ -90,7 +92,7 @@ namespace game.ui {
             Clear(Color.Transparent);
 
             Stroke(buttonStyle.BorderColor, buttonStyle.BorderColor.A);
-            if(buttonStyle.BorderSize>0f) StrokeWeight(buttonStyle.BorderSize);
+            if (buttonStyle.BorderSize > 0f) StrokeWeight(buttonStyle.BorderSize);
             else NoStroke();
             Fill(buttonStyle.BackgroundColor, buttonStyle.BackgroundColor.A);
             ShapeAlign(CenterMode.Min, CenterMode.Min);
@@ -108,7 +110,6 @@ namespace game.ui {
                 textY += bounds.height;
             else if (buttonStyle.TextAlignment.LineAlignment == StringAlignment.Center) textY += bounds.height / 2;
             graphics.DrawString(ButtonText, buttonStyle.Font, brush, textX, textY, buttonStyle.TextAlignment);
-            
         }
     }
 }

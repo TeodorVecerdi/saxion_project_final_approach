@@ -81,41 +81,45 @@ namespace game.ui {
         }
 
         private void Update() {
-            var onTop = IsMouseOnTop;
+            if (!MouseCursor.Instance.PreventMouseEventPropagation) {
+                var onTop = IsMouseOnTop;
 
-            // Check for button states and apply style
-            if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
-                OnMouseRelease?.Invoke();
-                pressed = false;
-                Draw();
-            } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
-                OnMouseClick?.Invoke();
-                pressed = true;
-                if (!focused) {
-                    OnGainFocus?.Invoke();
-                    focused = true;
-                    caretTimer = caretTimerInitial;
-                    showCaret = true;
+                // Check for button states and apply style
+                if (Input.GetMouseButtonUp(GXPEngine.Button.LEFT) && pressed) {
+                    OnMouseRelease?.Invoke();
+                    pressed = false;
+                    Draw();
+                } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && onTop) {
+                    OnMouseClick?.Invoke();
+                    pressed = true;
+                    if (!focused) {
+                        OnGainFocus?.Invoke();
+                        focused = true;
+                        caretTimer = caretTimerInitial;
+                        showCaret = true;
+                    }
+
+                    textFieldStyle.Focus();
+                    Draw();
+                } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
+                    OnMousePress?.Invoke();
+                    Draw();
+                } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
+                    OnMouseEnter?.Invoke();
+                    MouseCursor.Instance.Text();
+                    Draw();
+                } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
+                    OnMouseLeave?.Invoke();
+                    MouseCursor.Instance.Normal();
+                    Draw();
+                } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && !onTop && focused) {
+                    focused = false;
+                    OnLoseFocus?.Invoke();
+                    textFieldStyle.Normal();
+                    Draw();
                 }
 
-                textFieldStyle.Focus();
-                Draw();
-            } else if (Input.GetMouseButton(GXPEngine.Button.LEFT) && pressed) {
-                OnMousePress?.Invoke();
-                Draw();
-            } else if (onTop && !wasMouseOnTopPreviousFrame && !pressed) {
-                OnMouseEnter?.Invoke();
-                MouseCursor.Instance.Text();
-                Draw();
-            } else if (!onTop && wasMouseOnTopPreviousFrame && !pressed) {
-                OnMouseLeave?.Invoke();
-                MouseCursor.Instance.Normal();
-                Draw();
-            } else if (Input.GetMouseButtonDown(GXPEngine.Button.LEFT) && !onTop && focused) {
-                focused = false;
-                OnLoseFocus?.Invoke();
-                textFieldStyle.Normal();
-                Draw();
+                wasMouseOnTopPreviousFrame = onTop;
             }
 
             if (focused) {
@@ -171,8 +175,6 @@ namespace game.ui {
 
             if (repeating && repeatKey != Input.LastKey)
                 repeating = false;
-
-            wasMouseOnTopPreviousFrame = onTop;
 
             if (ShouldRepaint) {
                 ShouldRepaint = false;

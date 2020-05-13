@@ -33,6 +33,7 @@ namespace game {
             avatarButton.OnClick += () => {
                 avatarContainer.x = 230f;
                 avatarButton.x = -100000f;
+                MouseCursor.Instance.PreventMouseEventPropagation = true;
             };
             Root.AddChild(avatarButton);
             Root.AddChild(avatarContainer);
