@@ -214,7 +214,7 @@
     </Target>
     
     <Target Name="AfterBuild">
-        <Exec ContinueOnError="true" Command="ROBOCOPY &quot;$(TargetDir) &quot; &quot;$(TargetDir)lib\ &quot; /XF *.exe *.config *.manifest *.sh *.bat GXPEngine.dll GXPEngine.pdb BarHUB.pdb /XD lib logs data /E /IS /MOVE"> 
+        <Exec ContinueOnError="true" Command="ROBOCOPY &quot;$(TargetDir) &quot; &quot;$(TargetDir)lib\ &quot; /XF *.exe *.config *.manifest *.sh *.bat *.txt GXPEngine.dll GXPEngine.pdb BarHUB.pdb /XD lib logs data /E /IS /MOVE"> 
             <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
         </Exec>
         <Error Condition="$(ErrorCode) &gt; 8" Message="Robocopy failed" />
