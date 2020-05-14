@@ -54,6 +54,7 @@ namespace game.ui {
 
         public void Deinitialize() {
             rootElement.GetChildren().ForEach(obj => obj.Destroy());
+            currentlyPlaying = "none";
         }
     }
 }
