@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.Drawing;
 using game.ui;
 using game.utils;
 using GXPEngine;
 using Button = game.ui.Button;
 using Image = game.ui.Image;
+using Rectangle = GXPEngine.Core.Rectangle;
 
 namespace game {
     public class RocksBarScene : Scene {
@@ -19,7 +21,17 @@ namespace game {
             Root.AddChild(new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/rocks/bar.jpg")));
             Root.AddChild(new Button(Globals.WIDTH / 3f + 20, 40, 200, 40, "Start minigame", () => { NetworkManager.Instance.StartMinigame2(); }));
             Root.AddChild(chatInstance = new ChatElement(0, 0, Globals.WIDTH / 3f, Globals.HEIGHT));
-            Root.AddChild(jukeboxInstance = new JukeboxElement(0, 0, Globals.WIDTH, Globals.HEIGHT, "data/sprites/locations/rocks/jukebox.jpg"));
+            Root.AddChild(jukeboxInstance = new JukeboxElement(0, 0, Globals.WIDTH, Globals.HEIGHT, "data/sprites/locations/rocks/jukebox.jpg",
+                new []{"Song1","Song2","Song3","Song4","Song5"},
+                new List<Rectangle> {
+                    new Rectangle(1392, 178, 112, 106),
+                    new Rectangle(616, 315, 637, 111),
+                    new Rectangle(616, 437, 637, 111),
+                    new Rectangle(616, 560, 637, 111),
+                    new Rectangle(616, 683, 637, 111),
+                    new Rectangle(616, 806, 637, 111),
+                    new Rectangle(1292, 796, 128, 121)
+                }));
             var brownColor = Color.FromArgb(255, 64, 51, 31);
             var lightColor = Color.FromArgb(255, 239, 237, 225);
             var lightColor2 = Color.FromArgb(255, 215, 213, 201);
