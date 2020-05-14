@@ -5,10 +5,12 @@ const server = io.listen(port);
 const Player = require('./models/Player');
 const Room = require('./models/Room');
 const MostLikelyToMinigame = require('./models/MostLikelyToMinigame');
+const WouldYouRatherMinigame = require('./models/WouldYouRatherMinigame');
 
 let players = {};
 let rooms = {};
 let activeMostLikelyToMinigames = {};
+let activeWouldYouRatherMinigames = {};
 
 let socketIdToSocket = {};
 let socketIdToPlayerId = {};
@@ -81,9 +83,9 @@ server.on("connection", socket => {
         broadcast(socket, 'client_disconnected', player.toJSON(), player.room);
 
         // clean-up
-        if (players[playerId].room !== "none") {
-            rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId));
-            if (!rooms[players[playerId].room].players || !rooms[players[playerId].room].players.length) {
+        if (players[playerId].room !== "none" && rooms[players[playerId].room] !== undefined) {
+            rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId), 1);
+            if (rooms[players[playerId].room].players.length === 0) {
                 delete rooms[players[playerId].room];
             }
         }
@@ -132,6 +134,35 @@ server.on("connection", socket => {
         broadcast(socket, 'finished_minigame_1', minigameData, players[playerId].room);
     });
 
+    socket.on('start_minigame_2', data => {
+        let minigameData = JSON.parse(data);
+        let minigame = new WouldYouRatherMinigame(minigameData['gameGuid'], minigameData['roomGuid'], minigameData['ownerGuid']);
+        let playerId = socketIdToPlayerId[socket.id];
+        activeWouldYouRatherMinigames[minigame.gameGuid] = minigame;
+        broadcast(socket, 'started_minigame_2', minigame.toJSON(), players[playerId].room);
+    });
+    socket.on('voted_minigame_2', data => {
+        let playerId = socketIdToPlayerId[socket.id];
+        broadcast(socket, 'voted_minigame_2', JSON.parse(data), players[playerId].room);
+    });
+    socket.on('request_minigame_2', data => {
+        let minigameData = JSON.parse(data);
+        let question = activeWouldYouRatherMinigames[minigameData['gameGuid']].getQuestion();
+        let playerId = socketIdToPlayerId[socket.id];
+        socket.emit('request_minigame_2', { 'question': question, 'gameGuid': minigameData['gameGuid'] });
+        broadcast(socket, 'request_minigame_2', { 'question': question, 'gameGuid': minigameData['gameGuid'] }, players[playerId].room);
+    });
+    socket.on('results_minigame_2', data => {
+        let playerId = socketIdToPlayerId[socket.id];
+        broadcast(socket, 'results_minigame_2', data, players[playerId].room);
+    });
+    socket.on('finish_minigame_2', data => {
+        let minigameData = JSON.parse(data);
+        let playerId = socketIdToPlayerId[socket.id];
+        delete activeWouldYouRatherMinigames[minigameData['gameGuid']];
+        broadcast(socket, 'finished_minigame_2', minigameData, players[playerId].room);
+    });
+
     socket.on('play_sound', data => {
         broadcast(socket, 'play_sound', JSON.parse(data), players[socketIdToPlayerId[socket.id]].room);
     });
@@ -151,9 +182,9 @@ server.on("connection", socket => {
         broadcast(socket, 'client_disconnected', players[playerId].toJSON(), players[playerId].room);
 
         // clean-up
-        if (players[playerId].room !== "none") {
-            rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId));
-            if (!rooms[players[playerId].room].players || !rooms[players[playerId].room].players.length) {
+        if (players[playerId].room !== "none" && rooms[players[playerId].room] !== undefined) {
+            rooms[players[playerId].room].players.splice(rooms[players[playerId].room].players.indexOf(playerId), 1);
+            if (rooms[players[playerId].room].players.length === 0) {
                 delete rooms[players[playerId].room];
             }
         }

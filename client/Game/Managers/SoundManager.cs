@@ -37,7 +37,7 @@ namespace game {
         public void StopPlaying(string sound) {
             if (!currentlyPlayingSoundChannels.ContainsKey(sound)) return;
             currentlyPlayingSoundChannels[sound].Stop();
-            currentlyPlayingSoundChannels[sound] = null;
+            currentlyPlayingSoundChannels.Remove(sound);
         }
     }
 }

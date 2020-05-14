@@ -18,5 +18,9 @@ namespace game.utils {
             copy.Sort(string.CompareOrdinal);
             return copy;
         }
+
+        public static string Capitalize(this string s) {
+            return new string(char.ToUpperInvariant(s[0]), 1) + s.Substring(1);
+        }
     }
 }

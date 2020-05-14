@@ -16,6 +16,7 @@ namespace game {
         public NetworkPlayer PlayerData;
         public NetworkRoom ActiveRoom;
         public NetworkMostLikelyTo ActiveMinigame1;
+        public NetworkWouldYouRather ActiveMinigame2;
 
         private Socket socket;
         private bool initialized;
@@ -27,6 +28,12 @@ namespace game {
         private bool finishedMinigame1;
         private bool showResultsMinigame1;
 
+        private bool startedMinigame2;
+        private bool newVoteMinigame2;
+        private bool newQuestionMinigame2;
+        private bool showResultsMinigame2;
+        private bool finishedMinigame2;
+
         private bool gotNewMessage;
         private ChatMessage newestMessage;
 
@@ -37,6 +44,7 @@ namespace game {
 
         public void Initialize() {
             PlayerData = new NetworkPlayer("", Guid.NewGuid().ToString(), "none", "none", -1, false);
+
             var hosted = File.ReadAllText("data/hosted.txt") == "1";
             var socketURL = "https://saxion-0.ey.r.appspot.com";
             if (!hosted) socketURL = "http://localhost:8080";
@@ -91,6 +99,15 @@ namespace game {
                 SoundManager.Instance.PlaySound("new_message");
         }
 
+        public void StartMinigame1() {
+            var minigame1Data = new NetworkMostLikelyTo(Guid.NewGuid().ToString(), PlayerData.GUID);
+            ActiveMinigame1 = minigame1Data;
+            var jsonData = minigame1Data.JSONObject;
+            jsonData["roomGuid"] = ActiveRoom.GUID;
+            socket.Emit("start_minigame_1", jsonData.ToString(Formatting.None));
+            socket.Emit("request_minigame_1", jsonData.ToString(Formatting.None));
+        }
+
         public void NextQuestionMinigame1() {
             socket.Emit("request_minigame_1", new JObject {["gameGuid"] = ActiveMinigame1.GUID}.ToString(Formatting.None));
         }
@@ -104,19 +121,40 @@ namespace game {
             ActiveMinigame1.SetVote(PlayerData.GUID, playerGuid);
             if (ActiveMinigame1.Owner == PlayerData.GUID && ActiveMinigame1.IsQuestionDone) {
                 socket.Emit("results_minigame_1", "");
+                socket.Emit("voted_minigame_1", new JObject {["guid"] = PlayerData.GUID, ["vote"] = playerGuid, ["redirect"] = false}.ToString(Formatting.None));
                 showResultsMinigame1 = true;
             } else {
                 socket.Emit("voted_minigame_1", new JObject {["guid"] = PlayerData.GUID, ["vote"] = playerGuid}.ToString(Formatting.None));
             }
         }
 
-        public void StartMinigame1() {
-            var minigame1Data = new NetworkMostLikelyTo(Guid.NewGuid().ToString(), PlayerData.GUID);
-            ActiveMinigame1 = minigame1Data;
-            var jsonData = minigame1Data.JSONObject;
+        public void StartMinigame2() {
+            var minigame2Data = new NetworkWouldYouRather(Guid.NewGuid().ToString(), PlayerData.GUID);
+            ActiveMinigame2 = minigame2Data;
+            var jsonData = minigame2Data.JSONObject;
             jsonData["roomGuid"] = ActiveRoom.GUID;
-            socket.Emit("start_minigame_1", jsonData.ToString(Formatting.None));
-            socket.Emit("request_minigame_1", jsonData.ToString(Formatting.None));
+            socket.Emit("start_minigame_2", jsonData.ToString(Formatting.None));
+            socket.Emit("request_minigame_2", jsonData.ToString(Formatting.None));
+        }
+
+        public void NextQuestionMinigame2() {
+            socket.Emit("request_minigame_2", new JObject {["gameGuid"] = ActiveMinigame2.GUID}.ToString(Formatting.None));
+        }
+
+        public void StopPlayingMinigame2() {
+            socket.Emit("finish_minigame_2", new JObject {["gameGuid"] = ActiveMinigame2.GUID}.ToString(Formatting.None));
+            Minigame2Element.ActiveMinigame.Deinitialize();
+        }
+
+        public void VoteMinigame2(string playerGuid) {
+            ActiveMinigame2.SetVote(PlayerData.GUID, playerGuid);
+            if (ActiveMinigame2.Owner == PlayerData.GUID && ActiveMinigame2.IsQuestionDone) {
+                socket.Emit("results_minigame_2", "");
+                socket.Emit("voted_minigame_2", new JObject {["guid"] = PlayerData.GUID, ["vote"] = playerGuid, ["redirect"] = false}.ToString(Formatting.None));
+                showResultsMinigame2 = true;
+            } else {
+                socket.Emit("voted_minigame_2", new JObject {["guid"] = PlayerData.GUID, ["vote"] = playerGuid}.ToString(Formatting.None));
+            }
         }
 
         public void PlaySound(string soundId, bool stopAlreadyPlaying) {
@@ -169,6 +207,31 @@ namespace game {
             if (finishedMinigame1) {
                 Minigame1Element.ActiveMinigame.Deinitialize();
                 finishedMinigame1 = false;
+            }
+            
+            if (startedMinigame2) {
+                startedMinigame2 = false;
+            }
+
+            if (newVoteMinigame2) {
+                if (ActiveMinigame2.ActiveQuestionVotes[PlayerData.GUID] != "")
+                    Minigame2Element.ActiveMinigame.Initialize(1);
+                newVoteMinigame2 = false;
+            }
+
+            if (newQuestionMinigame2) {
+                Minigame2Element.ActiveMinigame.Initialize(0);
+                newQuestionMinigame2 = false;
+            }
+
+            if (showResultsMinigame2) {
+                Minigame2Element.ActiveMinigame.Initialize(2);
+                showResultsMinigame2 = false;
+            }
+
+            if (finishedMinigame2) {
+                Minigame2Element.ActiveMinigame.Deinitialize();
+                finishedMinigame2 = false;
             }
         }
 
@@ -246,6 +309,9 @@ namespace game {
                 var jsonData = (JObject) data;
                 var soundId = jsonData.Value<string>("soundId");
                 var stopAlreadyPlaying = jsonData.Value<bool>("stopAlreadyPlaying");
+                if (soundId.StartsWith("Song")) {
+                    JukeboxElement.ActiveJukebox.CurrentlyPlaying = soundId;
+                }
                 SoundManager.Instance.PlaySound(soundId, stopAlreadyPlaying);
             });
 
@@ -257,6 +323,11 @@ namespace game {
         }
 
         private void SetupSocket_Minigames() {
+            SetupSocket_Minigames_1();
+            SetupSocket_Minigames_2();
+        }
+
+        private void SetupSocket_Minigames_1() {
             socket.On("started_minigame_1", data => {
                 var minigameData = (JObject) data;
                 ActiveMinigame1 = new NetworkMostLikelyTo(minigameData.Value<string>("gameGuid"), minigameData.Value<string>("ownerGuid"));
@@ -264,7 +335,9 @@ namespace game {
             });
             socket.On("voted_minigame_1", data => {
                 var minigameData = (JObject) data;
+                var redirect = minigameData.TryGetValue("redirect", out _);
                 ActiveMinigame1.SetVote(minigameData.Value<string>("guid"), minigameData.Value<string>("vote"));
+                if (redirect) return;
                 if (ActiveMinigame1.Owner == PlayerData.GUID && ActiveMinigame1.IsQuestionDone) {
                     socket.Emit("results_minigame_1", "");
                     showResultsMinigame1 = true;
@@ -282,6 +355,36 @@ namespace game {
             });
             socket.On("results_minigame_1", data => { showResultsMinigame1 = true; });
             socket.On("finished_minigame_1", data => { finishedMinigame1 = true; });
+        }
+
+        private void SetupSocket_Minigames_2() {
+            socket.On("started_minigame_2", data => {
+                var minigameData = (JObject) data;
+                ActiveMinigame2 = new NetworkWouldYouRather(minigameData.Value<string>("gameGuid"), minigameData.Value<string>("ownerGuid"));
+                startedMinigame2 = true;
+            });
+            socket.On("voted_minigame_2", data => {
+                var minigameData = (JObject) data;
+                var redirect = minigameData.TryGetValue("redirect", out _);
+                ActiveMinigame2.SetVote(minigameData.Value<string>("guid"), minigameData.Value<string>("vote"));
+                if (redirect) return;
+                if (ActiveMinigame2.Owner == PlayerData.GUID && ActiveMinigame2.IsQuestionDone) {
+                    socket.Emit("results_minigame_2", "");
+                    showResultsMinigame2 = true;
+                } else {
+                    newVoteMinigame2 = true;
+                }
+            });
+
+            socket.On("request_minigame_2", data => {
+                var minigameData = (JObject) data;
+                var questionIndex = minigameData.Value<int>("question");
+                var question = Minigame2Element.GetQuestion(questionIndex);
+                ActiveMinigame2.StartNewQuestion(question);
+                newQuestionMinigame2 = true;
+            });
+            socket.On("results_minigame_2", data => { showResultsMinigame2 = true; });
+            socket.On("finished_minigame_2", data => { finishedMinigame2 = true; });
         }
     }
 }
