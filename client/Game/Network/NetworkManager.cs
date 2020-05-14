@@ -38,11 +38,10 @@ namespace game {
 
         public void Initialize() {
             PlayerData = new NetworkPlayer("", Guid.NewGuid().ToString(), "none", "none", -1, false);
-
-            if (File.ReadAllText("data/hosted.txt") == "1")
-                socket = IO.Socket("https://saxion-0.ey.r.appspot.com");
-            else
-                socket = IO.Socket("http://localhost:8080");
+            var hosted = File.ReadAllText("data/hosted.txt") == "1";
+            var socketURL = "https://saxion-0.ey.r.appspot.com";
+            if (!hosted) socketURL = "http://localhost:8080";
+            socket = IO.Socket(socketURL);
 
             SetupSocket();
         }
@@ -76,6 +75,11 @@ namespace game {
             PlayerData.Location = location;
             socket.Emit("set_location", PlayerData.Location);
             SceneManager.Instance.LoadScene(joiningLocation ? $"{location}-Menu" : "Map");
+        }
+
+        public void LeaveRoom() {
+            socket.Emit("leave_room");
+            JoinLocation(PlayerData.Location);
         }
 
         public void SendMessage(ChatMessage message) {
