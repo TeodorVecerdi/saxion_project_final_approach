@@ -157,13 +157,15 @@ namespace game {
                     if (room.Type != NetworkManager.Instance.PlayerData.Location)
                         continue;
                     if (room.IsPublic) {
-                        var roomUIElement = UIFactory.CreateJoinPublicRoomEntry(room);
-                        roomUIElement.y = iPublic * 150 + 250;
+                        var roomUIElement = UIFactory.CreateJoinPublicRoomEntryCoffee(room);
+                        roomUIElement.y = iPublic * 190 + 260;
+                        roomUIElement.x = 114f;
                         tab3.AddChild(roomUIElement);
                         iPublic++;
                     } else {
-                        var roomUIElement = UIFactory.CreateJoinPrivateRoomEntry(room);
-                        roomUIElement.y = iPrivate * 200 + 250;
+                        var roomUIElement = UIFactory.CreateJoinPublicRoomEntryCoffee(room);
+                        roomUIElement.y = iPrivate * 240 + 260;
+                        roomUIElement.x = 110f;
                         tab2.AddChild(roomUIElement);
                         iPrivate++;
                     }
