@@ -3,7 +3,7 @@ namespace game {
         public const bool FULLSCREEN = false;
         public const bool PIXEL_ART = false;
         public const bool USE_ASPECT_RATIO = false;
-        public const bool VSYNC = true;
+        public const bool VSYNC = false;
         
         public const int WIDTH = 1920;
         private const int H_MAIN = 1080;
