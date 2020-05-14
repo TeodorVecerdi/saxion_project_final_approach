@@ -20,9 +20,12 @@ namespace game {
             Root.AddChild(new Button(Globals.WIDTH / 3f + 20, 40, 200, 40, "Start minigame", () => { NetworkManager.Instance.StartMinigame2(); }));
             Root.AddChild(chatInstance = new ChatElement(0, 0, Globals.WIDTH / 3f, Globals.HEIGHT));
             Root.AddChild(jukeboxInstance = new JukeboxElement(0, 0, Globals.WIDTH, Globals.HEIGHT, "data/sprites/locations/rocks/jukebox.jpg"));
-            Root.AddChild(minigame2Element = new Minigame2Element(730f, 314f, 1100f, 450f, LabelStyle.Default.Alter(textSizeNormal: 32f, textAlignmentNormal: FontLoader.CenterCenterAlignment, textColorNormal: Color.Yellow), LabelStyle.Default.Alter(textColorNormal: Color.Yellow), LabelStyle.Default.Alter(textSizeNormal: 12f, textColorNormal: Color.Yellow, textAlignmentNormal: FontLoader.CenterTopAlignment), LabelStyle.Default.Alter(textAlignmentNormal: FontLoader.LeftCenterAlignment, textColorNormal: Color.Yellow), LabelStyle.Default.Alter(textAlignmentNormal: FontLoader.CenterCenterAlignment, textColorNormal: Color.Yellow), ButtonStyle.Default, ButtonStyle.Default));
+            var brownColor = Color.FromArgb(255, 64, 51, 31);
+            var lightColor = Color.FromArgb(255, 239, 237, 225);
+            var lightColor2 = Color.FromArgb(255, 215, 213, 201);
+            Root.AddChild(minigame2Element = new Minigame2Element(730f, 500f, 1100f, 450f, LabelStyle.Default.Alter(textSizeNormal: 32f, textAlignmentNormal: FontLoader.CenterCenterAlignment, textColorNormal: brownColor), LabelStyle.Default.Alter(textColorNormal: lightColor, textSizeNormal: 24f), LabelStyle.Default.Alter(textColorNormal: lightColor, textAlignmentNormal: FontLoader.CenterCenterAlignment), LabelStyle.Default.Alter(textAlignmentNormal: FontLoader.CenterCenterAlignment, textColorNormal: lightColor), LabelStyle.Default.Alter(textSizeNormal: 24f, textAlignmentNormal: FontLoader.CenterCenterAlignment, textColorNormal: brownColor), ButtonStyle.Transparent, ButtonStyle.Transparent.Alter(backgroundColorNormal: lightColor, backgroundColorHover: lightColor2, backgroundColorPressed: lightColor2)));
             Root.AddChild(new Button(788, 207, 295, 300, "Open jukebox", ButtonStyle.Transparent, () => { jukeboxInstance.Initialize(); }));
-            Root.AddChild(new Button(10, 10, Globals.WIDTH/3f - 20f, 40, "Leave room", () => {
+            Root.AddChild(new Button(10, 10, Globals.WIDTH / 3f - 20f, 40, "Leave room", () => {
                 SoundManager.Instance.StopPlaying(jukeboxInstance.CurrentlyPlaying);
                 NetworkManager.Instance.LeaveRoom();
             }));

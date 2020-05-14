@@ -58,13 +58,13 @@ namespace game.ui {
             rootElement.AddChild(new Image(0, 0, bounds.width, bounds.height, new Sprite(backgroundPath, true, false)));
 
             // question
-            questionLabel = new Label(0, 0, bounds.width, 100, activeMinigameCopy.ActiveQuestion.Question, questionStyle);
+            questionLabel = new Label(93, 18, 912, 125, activeMinigameCopy.ActiveQuestion.Question, questionStyle);
             rootElement.AddChild(questionLabel);
             if (state == 0) { // not voted
-                situationAButton = new Button(20, 120 + topOffset, 520, 210, "s1", situationButtonStyle, () => {OnVoteClicked(activeMinigameCopy.ActiveQuestion.SituationA);});
-                situationBButton = new Button(560, 120 + topOffset, 520, 210, "s2", situationButtonStyle, () => {OnVoteClicked(activeMinigameCopy.ActiveQuestion.SituationB);});
-                situationALabel = new Label(20, 120 + topOffset, 520, 210, activeMinigameCopy.ActiveQuestion.SituationA, situationLabelStyle);
-                situationBLabel = new Label(560, 120 + topOffset, 520, 210, activeMinigameCopy.ActiveQuestion.SituationB, situationLabelStyle);
+                situationAButton = new Button(57, 160 + topOffset, 420, 180, "s1", situationButtonStyle, () => {OnVoteClicked(activeMinigameCopy.ActiveQuestion.SituationA);});
+                situationBButton = new Button(620, 160 + topOffset, 420, 180, "s2", situationButtonStyle, () => {OnVoteClicked(activeMinigameCopy.ActiveQuestion.SituationB);});
+                situationALabel = new Label(57, 160 + topOffset, 420, 180, activeMinigameCopy.ActiveQuestion.SituationA, situationLabelStyle);
+                situationBLabel = new Label(620, 160 + topOffset, 420, 180, activeMinigameCopy.ActiveQuestion.SituationB, situationLabelStyle);
                 rootElement.AddChild(situationAButton);
                 rootElement.AddChild(situationALabel);
                 rootElement.AddChild(situationBButton);
@@ -72,13 +72,13 @@ namespace game.ui {
             } else if (state == 1) { // voted
                 var votedSituation = activeMinigameCopy.ActiveQuestionVotes[NetworkManager.Instance.PlayerData.GUID];
                 if (votedSituation == activeMinigameCopy.ActiveQuestion.SituationA) {
-                    situationAButton = new Button(20, 120 + topOffset, 520, 210, "s1", situationButtonStyle);
-                    situationALabel = new Label(20, 120 + topOffset, 520, 210, activeMinigameCopy.ActiveQuestion.SituationA, situationLabelStyle);
+                    situationAButton = new Button(57, 160 + topOffset, 420, 180, "s1", situationButtonStyle);
+                    situationALabel = new Label(57, 160 + topOffset, 420, 180, activeMinigameCopy.ActiveQuestion.SituationA, situationLabelStyle);
                     rootElement.AddChild(situationAButton);
                     rootElement.AddChild(situationALabel);
                 } else {
-                    situationBButton = new Button(20, 120 + topOffset, 520, 210, "s2", situationButtonStyle);
-                    situationBLabel = new Label(20, 120 + topOffset, 520, 210, activeMinigameCopy.ActiveQuestion.SituationB, situationLabelStyle);
+                    situationBButton = new Button(57, 160 + topOffset, 420, 180, "s2", situationButtonStyle);
+                    situationBLabel = new Label(57, 160 + topOffset, 420, 180, activeMinigameCopy.ActiveQuestion.SituationB, situationLabelStyle);
                     rootElement.AddChild(situationBButton);
                     rootElement.AddChild(situationBLabel);
                 }
@@ -91,20 +91,20 @@ namespace game.ui {
                 var totalVotes = NetworkManager.Instance.ActiveRoom.Players.Count;
                 var (winnerSituation, winnerVotes) = activeMinigameCopy.Result();
                 if (winnerSituation == activeMinigameCopy.ActiveQuestion.SituationA) {
-                    situationAButton = new Button(20, 120 + topOffset, 520, 210, "s1", situationButtonStyle);
-                    situationALabel = new Label(20, 120 + topOffset, 520, 210, activeMinigameCopy.ActiveQuestion.SituationA, situationLabelStyle);
+                    situationAButton = new Button(57, 160 + topOffset, 420, 180, "s1", situationButtonStyle);
+                    situationALabel = new Label(57, 160 + topOffset, 420, 180, activeMinigameCopy.ActiveQuestion.SituationA, situationLabelStyle);
                     rootElement.AddChild(situationAButton);
                     rootElement.AddChild(situationALabel);
                 } else {
-                    situationBButton = new Button(20, 120 + topOffset, 520, 210, "s2", situationButtonStyle);
-                    situationBLabel = new Label(20, 120 + topOffset, 520, 210, activeMinigameCopy.ActiveQuestion.SituationB, situationLabelStyle);
+                    situationBButton = new Button(57, 160 + topOffset, 420, 180, "s2", situationButtonStyle);
+                    situationBLabel = new Label(57, 160 + topOffset, 420, 180, activeMinigameCopy.ActiveQuestion.SituationB, situationLabelStyle);
                     rootElement.AddChild(situationBButton);
                     rootElement.AddChild(situationBLabel);
                 }
-                resultLabel = new Label(bounds.width / 2f, 100 + topOffset, bounds.width / 2f, 100, $"WINNER\nWith {winnerVotes}/{totalVotes} votes", resultStyle);
+                resultLabel = new Label(620, 160 + topOffset, 420, 90, $"WINNER\nWith {winnerVotes}/{totalVotes} votes", resultStyle);
                 rootElement.AddChild(resultLabel);
                 if (!isOwner) {
-                    rootElement.AddChild(new Label(bounds.width / 2f, 200 + topOffset, bounds.width / 2f, 150, "WAITING FOR CREATOR TO MOVE ON TO THE NEXT QUESTION", alertStyle));
+                    rootElement.AddChild(new Label(620, 250 + topOffset, 420, 90, "WAITING FOR CREATOR TO MOVE ON TO THE NEXT QUESTION", alertStyle));
                 }
             }
 
