@@ -40,7 +40,7 @@ namespace game.ui {
                     SendMessage();
                 }
             };
-            messageInputTextField = new TextField(0, height - 80f, width, 40f, "send message", textFieldStyle, textFieldOnValueChanged, textFieldOnKeyTyped, textFieldOnKeyRepeat, textFieldOnGainFocus, textFieldOnLoseFocus, textFieldOnMouseClick, textFieldOnMouseEnter, textFieldOnMouseLeave, textFieldOnMousePress, textFieldOnMouseRelease);
+            messageInputTextField = new TextField(0, height - 50f, width, 50f, "send message", textFieldStyle, textFieldOnValueChanged, textFieldOnKeyTyped, textFieldOnKeyRepeat, textFieldOnGainFocus, textFieldOnLoseFocus, textFieldOnMouseClick, textFieldOnMouseEnter, textFieldOnMouseLeave, textFieldOnMousePress, textFieldOnMouseRelease);
             AddChild(messageInputTextField);
             SetXY(x, y);
             Draw();
@@ -71,7 +71,7 @@ namespace game.ui {
             ShapeAlign(CenterMode.Min, CenterMode.Min);
             Rect(0, 0, bounds.width, bounds.height);
             
-            var currentMessageHeight = bounds.height - 90f - messageHeight * 1.5f;
+            var currentMessageHeight = bounds.height - 60f - messageHeight * 1.5f;
             Fill(messageStyle.TextColor);
             graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
             foreach (var chatMessage in chatMessages) {
