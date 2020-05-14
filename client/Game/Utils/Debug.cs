@@ -44,7 +44,6 @@ namespace game.utils {
                     logger = StreamWriter.Null;
                 }
             }
-
             IsFileLoggerEnabled = enabled;
         }
 
@@ -95,7 +94,6 @@ namespace game.utils {
         }
 
         public static void Log(object message, string messageTitle = "LOG") {
-#if DEBUG
             var stack = new StackFrame(1, true);
             var mth = stack.GetMethod();
             var fname = stack.GetFileName();
@@ -112,6 +110,7 @@ namespace game.utils {
             }
 
             method.Append(")");
+#if DEBUG
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.DarkGray;
             Console.Write("[" + messageTitle + "]");
@@ -119,12 +118,11 @@ namespace game.utils {
             Console.Write(" " + GetString(message));
             Console.ResetColor();
             Console.WriteLine(LogFormat.format(className, method, lineNumber, fileName));
-            if (IsFileLoggerEnabled) logger.WriteLine("[" + messageTitle + "]" + " " + GetString(message) + LogFormat.format(className, method, lineNumber, fileName));
 #endif
+            if (IsFileLoggerEnabled) logger.WriteLine("[" + messageTitle + "]" + " " + GetString(message) + LogFormat.format(className, method, lineNumber, fileName));
         }
 
         public static void LogInfo(object message, string messageTitle = "INFO") {
-#if DEBUG
             var stack = new StackFrame(1, true);
             var mth = stack.GetMethod();
             var fname = stack.GetFileName();
@@ -141,6 +139,7 @@ namespace game.utils {
             }
 
             method.Append(")");
+#if DEBUG
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.Write("[" + messageTitle + "]");
@@ -148,12 +147,11 @@ namespace game.utils {
             Console.Write(" " + GetString(message));
             Console.ResetColor();
             Console.WriteLine(LogFormat.format(className, method, lineNumber, fileName));
-            if (IsFileLoggerEnabled) logger.WriteLine("[" + messageTitle + "]" + " " + GetString(message) + LogFormat.format(className, method, lineNumber, fileName));
 #endif
+            if (IsFileLoggerEnabled) logger.WriteLine("[" + messageTitle + "]" + " " + GetString(message) + LogFormat.format(className, method, lineNumber, fileName));
         }
 
         public static void LogWarning(object message, string messageTitle = "WARN") {
-#if DEBUG
             var stack = new StackFrame(1, true);
             var mth = stack.GetMethod();
             var fname = stack.GetFileName();
@@ -170,6 +168,7 @@ namespace game.utils {
             }
 
             method.Append(")");
+#if DEBUG
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.DarkYellow;
             Console.Write("[" + messageTitle + "]");
@@ -179,12 +178,11 @@ namespace game.utils {
             Console.ResetColor();
             Console.WriteLine(LogFormat.format(className, method, lineNumber, fileName));
             Console.ResetColor();
-            if (IsFileLoggerEnabled) logger.WriteLine("[" + messageTitle + "]" + " " + GetString(message) + LogFormat.format(className, method, lineNumber, fileName));
 #endif
+            if (IsFileLoggerEnabled) logger.WriteLine("[" + messageTitle + "]" + " " + GetString(message) + LogFormat.format(className, method, lineNumber, fileName));
         }
 
         public static void LogError(object message, string messageTitle = "ERROR") {
-#if DEBUG
             var stack = new StackFrame(1, true);
             var mth = stack.GetMethod();
             var fname = stack.GetFileName();
@@ -201,6 +199,7 @@ namespace game.utils {
             }
 
             method.Append(")");
+#if DEBUG
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.Write("[" + messageTitle + "]");
@@ -210,8 +209,8 @@ namespace game.utils {
             Console.ResetColor();
             Console.WriteLine(LogFormat.format(className, method, lineNumber, fileName));
             Console.ResetColor();
-            if (IsFileLoggerEnabled) logger.WriteLine("[" + messageTitle + "]" + " " + GetString(message) + LogFormat.format(className, method, lineNumber, fileName));
 #endif
+            if (IsFileLoggerEnabled) logger.WriteLine("[" + messageTitle + "]" + " " + GetString(message) + LogFormat.format(className, method, lineNumber, fileName));
         }
 
         public static void Assert(bool condition, object message) {
