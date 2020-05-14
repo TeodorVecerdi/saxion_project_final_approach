@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GXPEngine;
+using Debug = game.utils.Debug;
 
 namespace game {
     public class SceneManager : GameObject {

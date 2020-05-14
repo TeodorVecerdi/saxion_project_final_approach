@@ -1,5 +1,7 @@
+using System;
 using game.utils;
 using GXPEngine;
+using Debug = game.utils.Debug;
 
 namespace game {
     public class App : Game {
@@ -9,7 +11,8 @@ namespace game {
         private readonly SoundManager soundManager;
 
         public App() : base(Globals.WIDTH, Globals.HEIGHT, Globals.FULLSCREEN, Globals.VSYNC, pPixelArt: Globals.PIXEL_ART, windowTitle: Globals.WINDOW_TITLE) {
-            targetFps = 60;
+            // targetFps = 60;
+            Debug.EnableFileLogger(true);
             ShowMouse(true);
             SetupInput();
 
@@ -32,7 +35,15 @@ namespace game {
         }
 
         public static void Main(string[] args) {
-            new App().Start();
+            try {
+                new App().Start();
+            } catch (Exception e) {
+                Debug.LogError($"An error occured: {e.Message}.\nYou can contact the developer Teodor Vecerdi (475884@student.saxion.nl).\nStacktrace:\n{e.StackTrace}");
+                if (Debug.IsFileLoggerEnabled) {
+                    Debug.EnableFileLogger(false);
+                }
+                throw;
+            }
         }
     }
 }

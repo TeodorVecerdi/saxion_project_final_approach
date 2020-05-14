@@ -5,7 +5,7 @@ using GXPEngine;
 using GXPEngine.Core;
 using Quobject.EngineIoClientDotNet.Modules;
 using Button = game.ui.Button;
-using Debug = GXPEngine.Debug;
+using Debug = game.utils.Debug;
 using Image = game.ui.Image;
 
 namespace game {

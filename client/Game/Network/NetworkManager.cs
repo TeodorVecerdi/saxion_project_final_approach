@@ -7,7 +7,7 @@ using GXPEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
-using Debug = GXPEngine.Debug;
+using Debug = game.utils.Debug;
 
 namespace game {
     public class NetworkManager : GameObject {
