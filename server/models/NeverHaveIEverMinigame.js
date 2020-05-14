@@ -1,5 +1,5 @@
-const questionAmount = 161;
-module.exports = class WouldYouRather {
+const questionAmount = 100;
+module.exports = class NeverHaveIEver {
     constructor(gameGuid, roomGuid, ownerGuid) {
         this.gameGuid = gameGuid;
         this.roomGuid = roomGuid;

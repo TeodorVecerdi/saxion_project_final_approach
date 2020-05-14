@@ -21,7 +21,7 @@ namespace game {
             Root.AddChild(new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/rocks/bar.jpg")));
             Root.AddChild(new Button(Globals.WIDTH / 3f + 20, 40, 200, 40, "Start minigame", () => { NetworkManager.Instance.StartMinigame2(); }));
             Root.AddChild(chatInstance = new ChatElement(0, 0, Globals.WIDTH / 3f, Globals.HEIGHT));
-            Root.AddChild(jukeboxInstance = new JukeboxElement(0, 0, Globals.WIDTH, Globals.HEIGHT, "data/sprites/locations/rocks/jukebox.jpg",
+            Root.AddChild(jukeboxInstance = new JukeboxElement(0, 0, Globals.WIDTH, Globals.HEIGHT, "data/sprites/locations/rocks/jukebox.png",
                 new []{"Song1","Song2","Song3","Song4","Song5"},
                 new List<Rectangle> {
                     new Rectangle(1392, 178, 112, 106),
@@ -50,6 +50,8 @@ namespace game {
         public override void Unload() {
             base.Unload();
             ChatElement.ActiveChat = null;
+            Minigame2Element.ActiveMinigame = null;
+            JukeboxElement.ActiveJukebox = null;
         }
     }
 }

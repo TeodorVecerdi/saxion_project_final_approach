@@ -146,6 +146,7 @@
         <Compile Include="MouseCursor.cs" />
         <Compile Include="Network\ChatMessage.cs" />
         <Compile Include="Network\NetworkMostLikelyTo.cs" />
+        <Compile Include="Network\NetworkNeverHaveIEver.cs" />
         <Compile Include="Network\NetworkPlayer.cs" />
         <Compile Include="Network\NetworkRoom.cs" />
         <Compile Include="Network\NetworkWouldYouRather.cs" />
@@ -168,6 +169,7 @@
         <Compile Include="UI\Custom\JukeboxElement.cs" />
         <Compile Include="UI\Custom\Minigame1Element.cs" />
         <Compile Include="UI\Custom\Minigame2Element.cs" />
+        <Compile Include="UI\Custom\Minigame3Element.cs" />
         <Compile Include="UI\Custom\PlayerAvatarElement.cs" />
         <Compile Include="UI\Custom\RectangleElement.cs" />
         <Compile Include="UI\Image.cs" />
@@ -193,6 +195,9 @@
     <ItemGroup>
         <None Include="App.config" />
         <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="data\sprites\minigames\3" />
     </ItemGroup>
 
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

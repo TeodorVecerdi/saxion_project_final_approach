@@ -36,6 +36,8 @@ namespace game {
         public override void Unload() {
             base.Unload();
             ChatElement.ActiveChat = null;
+            Minigame1Element.ActiveMinigame = null;
+            JukeboxElement.ActiveJukebox = null;
         }
     }
 }

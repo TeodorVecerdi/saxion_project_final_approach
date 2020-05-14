@@ -11,7 +11,9 @@ module.exports = class MostLikelyTo {
     }
 
     getQuestion() {
-        return this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
+        if (this.questions.length > 0)
+            return this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
+        return 0;
     }
 
     toJSON() {

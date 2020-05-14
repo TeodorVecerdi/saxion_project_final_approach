@@ -6,11 +6,14 @@ const Player = require('./models/Player');
 const Room = require('./models/Room');
 const MostLikelyToMinigame = require('./models/MostLikelyToMinigame');
 const WouldYouRatherMinigame = require('./models/WouldYouRatherMinigame');
+const NeverHaveIEverMinigame = require('./models/NeverHaveIEverMinigame');
 
 let players = {};
 let rooms = {};
+
 let activeMostLikelyToMinigames = {};
 let activeWouldYouRatherMinigames = {};
+let activeNeverHaveIEverMinigames = {};
 
 let socketIdToSocket = {};
 let socketIdToPlayerId = {};
@@ -161,6 +164,35 @@ server.on("connection", socket => {
         let playerId = socketIdToPlayerId[socket.id];
         delete activeWouldYouRatherMinigames[minigameData['gameGuid']];
         broadcast(socket, 'finished_minigame_2', minigameData, players[playerId].room);
+    });
+
+    socket.on('start_minigame_3', data => {
+        let minigameData = JSON.parse(data);
+        let minigame = new NeverHaveIEverMinigame(minigameData['gameGuid'], minigameData['roomGuid'], minigameData['ownerGuid']);
+        let playerId = socketIdToPlayerId[socket.id];
+        activeNeverHaveIEverMinigames[minigame.gameGuid] = minigame;
+        broadcast(socket, 'started_minigame_3', minigame.toJSON(), players[playerId].room);
+    });
+    socket.on('voted_minigame_3', data => {
+        let playerId = socketIdToPlayerId[socket.id];
+        broadcast(socket, 'voted_minigame_3', JSON.parse(data), players[playerId].room);
+    });
+    socket.on('request_minigame_3', data => {
+        let minigameData = JSON.parse(data);
+        let question = activeNeverHaveIEverMinigames[minigameData['gameGuid']].getQuestion();
+        let playerId = socketIdToPlayerId[socket.id];
+        socket.emit('request_minigame_3', { 'question': question, 'gameGuid': minigameData['gameGuid'] });
+        broadcast(socket, 'request_minigame_3', { 'question': question, 'gameGuid': minigameData['gameGuid'] }, players[playerId].room);
+    });
+    socket.on('results_minigame_3', data => {
+        let playerId = socketIdToPlayerId[socket.id];
+        broadcast(socket, 'results_minigame_3', data, players[playerId].room);
+    });
+    socket.on('finish_minigame_3', data => {
+        let minigameData = JSON.parse(data);
+        let playerId = socketIdToPlayerId[socket.id];
+        delete activeNeverHaveIEverMinigames[minigameData['gameGuid']];
+        broadcast(socket, 'finished_minigame_3', minigameData, players[playerId].room);
     });
 
     socket.on('play_sound', data => {
