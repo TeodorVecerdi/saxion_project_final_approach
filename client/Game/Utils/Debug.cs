@@ -15,14 +15,15 @@ namespace game.utils {
         #region File Logger
         public static bool IsFileLoggerEnabled { get; private set; }
         private static StreamWriter logger;
+        private static FileStream loggerFileStream;
 
         public static void EnableFileLogger(bool enabled) {
             if (enabled) {
                 if (!Directory.Exists("logs")) {
                     Directory.CreateDirectory("logs");
                 }
-
-                logger = new StreamWriter($"logs/log_{Time.now}.txt");
+                loggerFileStream = new FileStream($"logs/log_{Time.now}.txt", FileMode.Create, FileAccess.Write);
+                logger = new StreamWriter(loggerFileStream, Encoding.UTF8, 128) {AutoFlush = true};
                 var sb = new StringBuilder();
                 sb.Append(new string('=', 23));
                 sb.Append("System Information");
@@ -30,6 +31,7 @@ namespace game.utils {
                 sb.Append("\n");
                 sb.AppendLine($"{SystemInformation()}");
                 sb.AppendLine(new string('=', 64));
+                sb.Append("\n");
                 sb.Append(new string('=', 24));
                 sb.Append("Application Logs");
                 sb.Append(new string('=', 24));
@@ -47,10 +49,10 @@ namespace game.utils {
         }
 
         public static void FinalizeLogger() {
-            if(!IsFileLoggerEnabled) return;
+            if(!IsFileLoggerEnabled || !logger.BaseStream.CanWrite) return;
             logger.WriteLine(new string('=', 64));
-            logger.Flush();
             logger.Close();
+            IsFileLoggerEnabled = false;
         }
         
         private static string SystemInformation() {

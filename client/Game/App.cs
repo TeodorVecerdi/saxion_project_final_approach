@@ -1,6 +1,7 @@
 using System;
 using game.utils;
 using GXPEngine;
+using GXPEngine.Core;
 using Debug = game.utils.Debug;
 
 namespace game {
@@ -25,7 +26,7 @@ namespace game {
             AddChild(sceneManager);
             AddChild(soundManager);
             AddChild(mouseCursor);
-
+            
             sceneManager.LoadScene("Loading");
         }
 
