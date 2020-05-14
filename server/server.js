@@ -1,5 +1,5 @@
 const io = require('socket.io');
-let port = process.env.PORT || 8080;
+let port = 3000;
 const server = io.listen(port);
 
 const Player = require('./models/Player');

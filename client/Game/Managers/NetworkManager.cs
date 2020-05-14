@@ -53,8 +53,8 @@ namespace game {
             PlayerData = new NetworkPlayer("", Guid.NewGuid().ToString(), "none", "none", -1, false);
 
             var hosted = File.ReadAllText("data/hosted.txt") == "1";
-            var socketURL = "https://saxion-0.ey.r.appspot.com";
-            if (!hosted) socketURL = "http://localhost:8080";
+            var socketURL = "http://35.238.111.228:3000";
+            // if (!hosted) socketURL = "http://localhost:3000";
             socket = IO.Socket(socketURL);
 
             SetupSocket();
