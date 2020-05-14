@@ -14,7 +14,7 @@ namespace game {
         public App() : base(Globals.WIDTH, Globals.HEIGHT, Globals.FULLSCREEN, Globals.VSYNC, pPixelArt: Globals.PIXEL_ART, windowTitle: Globals.WINDOW_TITLE) {
             // targetFps = 60;
             Debug.EnableFileLogger(true);
-            ShowMouse(true);
+            // ShowMouse(true);
             SetupInput();
 
             networkManager = NetworkManager.Instance;
