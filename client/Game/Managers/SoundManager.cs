@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GXPEngine;
 
-namespace game.utils {
+namespace game {
     public class SoundManager : GameObject {
         private static SoundManager instance;
         public static SoundManager Instance => instance ?? (instance = new SoundManager());
@@ -17,11 +17,11 @@ namespace game.utils {
             sounds.Add("client_joined", new Sound("data/sounds/client_joined.wav"));
             sounds.Add("client_left", new Sound("data/sounds/client_left.wav"));
             sounds.Add("new_message", new Sound("data/sounds/new_message.wav"));
-            sounds.Add("Song1", new Sound("data/sounds/bensound-cute.mp3", true));
-            sounds.Add("Song2", new Sound("data/sounds/bensound-dreams.mp3", true));
-            sounds.Add("Song3", new Sound("data/sounds/bensound-erf.mp3", true));
-            sounds.Add("Song4", new Sound("data/sounds/bensound-jazzyfrenchy.mp3", true));
-            sounds.Add("Song5", new Sound("data/sounds/bensound-summer.mp3", true));
+            sounds.Add("Song1", new Sound("data/sounds/bensound-jazzyfrenchy.mp3", true));
+            sounds.Add("Song2", new Sound("data/sounds/bensound-cute.mp3", true));
+            sounds.Add("Song3", new Sound("data/sounds/bensound-summer.mp3", true));
+            sounds.Add("Song4", new Sound("data/sounds/bensound-dreams.mp3", true));
+            sounds.Add("Song5", new Sound("data/sounds/bensound-erf.mp3", true));
         }
 
         public void PlaySound(string soundName, bool stopAlreadyPlaying = true) {

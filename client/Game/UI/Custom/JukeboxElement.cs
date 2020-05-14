@@ -7,7 +7,7 @@ namespace game.ui {
         private readonly Rectangle bounds;
         private readonly string backgroundPath;
         private readonly Pivot rootElement;
-        public string CurrentlyPlaying;
+        public string CurrentlyPlaying = "";
 
         public JukeboxElement(float x, float y, float width, float height, string backgroundPath) {
             bounds = new Rectangle(x, y, width, height);
@@ -54,7 +54,6 @@ namespace game.ui {
 
         public void Deinitialize() {
             rootElement.GetChildren().ForEach(obj => obj.Destroy());
-            CurrentlyPlaying = "none";
         }
     }
 }
