@@ -22,7 +22,7 @@ namespace game {
             Root.AddChild(new Button(Globals.WIDTH / 3f + 20, 40, 200, 40, "Start minigame", () => { NetworkManager.Instance.StartMinigame2(); }));
             Root.AddChild(chatInstance = new ChatElement(0, 0, Globals.WIDTH / 3f, Globals.HEIGHT));
             Root.AddChild(jukeboxInstance = new JukeboxElement(0, 0, Globals.WIDTH, Globals.HEIGHT, "data/sprites/locations/rocks/jukebox.png",
-                new []{"Song1","Song2","Song3","Song4","Song5"},
+                new []{"Song11","Song12","Song13","Song14","Song15"},
                 new List<Rectangle> {
                     new Rectangle(1392, 178, 112, 106),
                     new Rectangle(616, 315, 637, 111),

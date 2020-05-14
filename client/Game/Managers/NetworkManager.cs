@@ -93,6 +93,7 @@ namespace game {
 
         public void LeaveRoom() {
             socket.Emit("leave_room");
+            SoundManager.Instance.StopPlaying("bar_ambiance");
             JoinLocation(PlayerData.Location);
         }
 

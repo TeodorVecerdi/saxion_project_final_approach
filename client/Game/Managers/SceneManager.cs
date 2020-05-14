@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using GXPEngine;
 using Debug = game.utils.Debug;
 
@@ -7,13 +8,18 @@ namespace game {
         private static SceneManager instance;
         public static SceneManager Instance => instance ?? (instance = new SceneManager());
 
+        public bool IsLoadingDone;
         private Dictionary<string, Scene> scenes;
         private string activeSceneID;
 
         private SceneManager() {
             scenes = new Dictionary<string, Scene>();
             activeSceneID = "none";
-            SetupScenes();
+            new Thread(() => {
+                SetupScenes();
+                IsLoadingDone = true;
+            }).Start();
+            // SetupScenes();
         }
 
         private void SetupScenes() {
