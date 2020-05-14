@@ -22,6 +22,10 @@ namespace game {
             Root.AddChild(jukeboxInstance = new JukeboxElement(0, 0, Globals.WIDTH, Globals.HEIGHT, "data/sprites/locations/rocks/jukebox.jpg"));
             Root.AddChild(minigame2Element = new Minigame2Element(730f, 314f, 1100f, 450f, LabelStyle.Default.Alter(textSizeNormal: 32f, textAlignmentNormal: FontLoader.CenterCenterAlignment, textColorNormal: Color.Yellow), LabelStyle.Default.Alter(textColorNormal: Color.Yellow), LabelStyle.Default.Alter(textSizeNormal: 12f, textColorNormal: Color.Yellow, textAlignmentNormal: FontLoader.CenterTopAlignment), LabelStyle.Default.Alter(textAlignmentNormal: FontLoader.LeftCenterAlignment, textColorNormal: Color.Yellow), LabelStyle.Default.Alter(textAlignmentNormal: FontLoader.CenterCenterAlignment, textColorNormal: Color.Yellow), ButtonStyle.Default, ButtonStyle.Default));
             Root.AddChild(new Button(788, 207, 295, 300, "Open jukebox", ButtonStyle.Transparent, () => { jukeboxInstance.Initialize(); }));
+            Root.AddChild(new Button(10, 10, Globals.WIDTH/3f - 20f, 40, "Leave room", () => {
+                SoundManager.Instance.StopPlaying(jukeboxInstance.CurrentlyPlaying);
+                NetworkManager.Instance.LeaveRoom();
+            }));
             ChatElement.ActiveChat = chatInstance;
             JukeboxElement.ActiveJukebox = jukeboxInstance;
             Minigame2Element.ActiveMinigame = minigame2Element;
