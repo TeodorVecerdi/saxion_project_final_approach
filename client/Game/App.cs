@@ -39,10 +39,9 @@ namespace game {
                 new App().Start();
             } catch (Exception e) {
                 Debug.LogError($"An error occured: {e.Message}.\nYou can contact the developer Teodor Vecerdi (475884@student.saxion.nl).\nStacktrace:\n{e.StackTrace}");
-                if (Debug.IsFileLoggerEnabled) {
-                    Debug.EnableFileLogger(false);
-                }
                 throw;
+            } finally {
+                Debug.FinalizeLogger();
             }
         }
     }

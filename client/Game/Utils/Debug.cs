@@ -11,6 +11,8 @@ namespace game.utils {
     /// </summary>
     public static class Debug {
         private const string LogFormat = " at {0}.{1}:{2} ({3}:line {2})";
+        
+        #region File Logger
         public static bool IsFileLoggerEnabled { get; private set; }
         private static StreamWriter logger;
 
@@ -22,14 +24,16 @@ namespace game.utils {
 
                 logger = new StreamWriter($"logs/log_{Time.now}.txt");
                 var sb = new StringBuilder();
-                sb.AppendLine(new string('=', 64));
                 sb.Append(new string('=', 23));
                 sb.Append("System Information");
                 sb.Append(new string('=', 23));
                 sb.Append("\n");
-                sb.AppendLine(new string('=', 64));
                 sb.AppendLine($"{SystemInformation()}");
                 sb.AppendLine(new string('=', 64));
+                sb.Append(new string('=', 24));
+                sb.Append("Application Logs");
+                sb.Append(new string('=', 24));
+                sb.Append("\n");
                 logger.WriteLine(sb.ToString());
             } else {
                 if (logger != null) {
@@ -41,6 +45,45 @@ namespace game.utils {
 
             IsFileLoggerEnabled = enabled;
         }
+
+        public static void FinalizeLogger() {
+            if(!IsFileLoggerEnabled) return;
+            logger.WriteLine(new string('=', 64));
+            logger.Flush();
+            logger.Close();
+        }
+        
+        private static string SystemInformation() {
+            var stringBuilder = new StringBuilder(string.Empty);
+            try {
+                stringBuilder.AppendFormat("Operation System:  {0}\n", Environment.OSVersion);
+                stringBuilder.AppendFormat($"\t\t  {(Environment.Is64BitOperatingSystem ? "64" : "32")} Bit Operating System\n");
+                stringBuilder.AppendFormat("SystemDirectory:  {0}\n", Environment.SystemDirectory);
+                stringBuilder.AppendFormat("ProcessorCount:  {0}\n", Environment.ProcessorCount);
+                stringBuilder.AppendFormat("UserDomainName:  {0}\n", Environment.UserDomainName);
+                stringBuilder.AppendFormat("UserName: {0}\n", Environment.UserName);
+                //Drives
+                stringBuilder.AppendFormat("LogicalDrives:\n");
+                foreach (var driveInfo1 in DriveInfo.GetDrives()) {
+                    try {
+                        stringBuilder.AppendFormat("\t Drive: {0}\n\t\t VolumeLabel: " +
+                                                   "{1}\n\t\t DriveType: {2}\n\t\t DriveFormat: {3}\n\t\t " +
+                                                   "TotalSize: {4}\n\t\t AvailableFreeSpace: {5}\n",
+                            driveInfo1.Name, driveInfo1.VolumeLabel, driveInfo1.DriveType,
+                            driveInfo1.DriveFormat, driveInfo1.TotalSize, driveInfo1.AvailableFreeSpace);
+                    } catch {
+                        // exceptions are ignored 
+                    }
+                }
+                stringBuilder.AppendFormat("SystemPageSize:  {0}\n", Environment.SystemPageSize);
+                stringBuilder.AppendFormat("Version:  {0}", Environment.Version);
+            } catch {
+                // exceptions are ignored 
+            }
+
+            return stringBuilder.ToString();
+        }
+        #endregion
 
         private static string GetString(object message) {
             if (message == null) return "Null";
@@ -210,32 +253,6 @@ namespace game.utils {
             Console.ResetColor();
             Environment.Exit(4);
 #endif
-        }
-
-        private static string SystemInformation() {
-            var stringBuilder = new StringBuilder(string.Empty);
-            try {
-                stringBuilder.AppendFormat("Operation System:  {0}\n", Environment.OSVersion);
-                stringBuilder.AppendFormat($"\t\t  {(Environment.Is64BitOperatingSystem ? "64" : "32")} Bit Operating System\n");
-                stringBuilder.AppendFormat("SystemDirectory:  {0}\n", Environment.SystemDirectory);
-                stringBuilder.AppendFormat("ProcessorCount:  {0}\n", Environment.ProcessorCount);
-                stringBuilder.AppendFormat("UserDomainName:  {0}\n", Environment.UserDomainName);
-                stringBuilder.AppendFormat("UserName: {0}\n", Environment.UserName);
-                //Drives
-                stringBuilder.AppendFormat("LogicalDrives:\n");
-                foreach (var driveInfo1 in DriveInfo.GetDrives()) {
-                    try {
-                        stringBuilder.AppendFormat("\t Drive: {0}\n\t\t VolumeLabel: " +
-                                                    "{1}\n\t\t DriveType: {2}\n\t\t DriveFormat: {3}\n\t\t " +
-                                                    "TotalSize: {4}\n\t\t AvailableFreeSpace: {5}\n",
-                            driveInfo1.Name, driveInfo1.VolumeLabel, driveInfo1.DriveType,
-                            driveInfo1.DriveFormat, driveInfo1.TotalSize, driveInfo1.AvailableFreeSpace);
-                    } catch { }
-                }
-                stringBuilder.AppendFormat("SystemPageSize:  {0}\n", Environment.SystemPageSize);
-                stringBuilder.AppendFormat("Version:  {0}", Environment.Version);
-            } catch { }
-            return stringBuilder.ToString();
         }
     }
 }
