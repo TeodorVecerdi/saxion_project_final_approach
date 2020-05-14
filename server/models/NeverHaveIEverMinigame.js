@@ -1,4 +1,4 @@
-const questionAmount = 100;
+const questionAmount = 101;
 module.exports = class NeverHaveIEver {
     constructor(gameGuid, roomGuid, ownerGuid) {
         this.gameGuid = gameGuid;

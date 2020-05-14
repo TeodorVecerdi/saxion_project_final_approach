@@ -141,7 +141,7 @@ namespace game.ui {
 
         private static void InitializeQuestionList() {
             questionList = new List<string>();
-            File.OpenText("data/most_likely_to.txt").ReadToEnd().Split('\n').ToList().ForEach(s => {
+            File.OpenText("data/never_have_i_ever.txt").ReadToEnd().Split('\n').ToList().ForEach(s => {
                 var chr = s[0];
                 chr = char.ToUpperInvariant(chr);
                 questionList.Add(new string(chr, 1) + s.Substring(1));
