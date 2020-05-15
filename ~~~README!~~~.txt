@@ -1,3 +1,0 @@
-- When the Game project builds it copies Game/data and Game/lib to the output folder overriding existing files.
-- GXPEngine is used as a library and is kept as a separate project (it's built and copied to the output folder as well when the Game project builds).
-- To switch the networking from localhost to our hosted server edit data/hosted.txt and change 0 (local) to 1 (hosted).
