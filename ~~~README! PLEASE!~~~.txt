@@ -9,3 +9,5 @@ Some of the reasons were:
 - another reason to crash might be because the project is targeted at the v4.8 .NET Framework if you don't have it installed
 
 It worked perfectly on two of my machines ( :) ) and on a friend's laptop but this might be because we have everything installed to the latest version, including the .net framework, and we're both running windows.
+
+Also, the project is so big (~150MB) because of the songs we have. They're around 100MB.
