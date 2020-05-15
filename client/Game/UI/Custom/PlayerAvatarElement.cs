@@ -32,7 +32,7 @@ namespace game.ui {
             else playerAvatarPath += $"male_{avatarIndex - 4}_";
             if (Math.Abs(spriteSize - 128f) < 0.00001f) playerAvatarPath += "128.png";
             else playerAvatarPath += "64.png";
-            playerAvatar = new Sprite(playerAvatarPath, true, false);
+            playerAvatar = new game.Sprite(playerAvatarPath, true, false);
             SetXY(x, y);
             Draw();
         }

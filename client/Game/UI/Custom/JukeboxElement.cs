@@ -33,7 +33,7 @@ namespace game.ui {
 
         public void Initialize() {
             Deinitialize();
-            rootElement.AddChild(new Image(x, y, bounds.width, bounds.height, new Sprite(backgroundPath, true, false)));
+            rootElement.AddChild(new Image(x, y, bounds.width, bounds.height, new game.Sprite(backgroundPath, true, false)));
             rootElement.AddChild(new Button(buttonPositions[0].x, buttonPositions[0].y, buttonPositions[0].width, buttonPositions[0].height, "Back", ButtonStyle.Transparent, () => { Deinitialize(); }));
             rootElement.AddChild(new Button(buttonPositions[1].x, buttonPositions[1].y, buttonPositions[1].width, buttonPositions[1].height, "Song1", ButtonStyle.Transparent, () => {
                 NetworkManager.Instance.StopPlayingSound(CurrentlyPlaying);

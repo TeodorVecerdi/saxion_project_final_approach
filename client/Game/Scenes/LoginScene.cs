@@ -26,10 +26,10 @@ namespace game {
                 textColorNormal: Color.Black, textColorHover: Color.Black, textColorPressed: Color.Black,
                 fontLoaderInstance: FontLoader.SourceCodeBold);
 
-            Root.AddChild(new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/login.jpg")));
+            Root.AddChild(new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new game.Sprite("data/sprites/login.jpg")));
             Root.AddChild(new TextField(670, 417, 500, 60, "", new TextFieldStyle(placeholderTextSizeNormal: 12f, placeholderTextSizeFocused: 12f), onValueChanged: (oldValue, newValue) => username = newValue));
             var avatarContainer = new Pivot {x = -100000f, y = 582};
-            var avatarButton = new SpriteButton(856, 582, 128, 128, "Click\r\nto switch", new Sprite("data/sprites/avatars/female_1_128.png", true), avatarButtonStyle);
+            var avatarButton = new SpriteButton(856, 582, 128, 128, "Click\r\nto switch", new game.Sprite("data/sprites/avatars/female_1_128.png", true), avatarButtonStyle);
             avatarButton.OnClick += () => {
                 avatarContainer.x = 230f;
                 avatarButton.x = -100000f;

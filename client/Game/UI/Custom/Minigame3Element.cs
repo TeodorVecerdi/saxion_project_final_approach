@@ -55,7 +55,7 @@ namespace game.ui {
             var backgroundPath = "data/sprites/minigames/3/background";
             backgroundPath += (isOwner ? "_owner" : "") + ".png";
             var topOffset = isOwner ? 0f : 50;
-            rootElement.AddChild(new Image(0, 0, bounds.width, bounds.height, new Sprite(backgroundPath, true, false)));
+            rootElement.AddChild(new Image(0, 0, bounds.width, bounds.height, new game.Sprite(backgroundPath, true, false)));
 
             //title
 
@@ -63,8 +63,8 @@ namespace game.ui {
             questionLabel = new Label(0, 100, bounds.width, 60, activeMinigame.ActiveQuestion, questionStyle);
             rootElement.AddChild(questionLabel);
             if (state == 0) {
-                yesChoiceButton = new Button(57, 170 + topOffset, 420, 160, "s1", choiceButtonStyle, () => {OnVoteClicked("yes");});
-                noChoiceButton = new Button(620, 170 + topOffset, 420, 160, "s2", choiceButtonStyle, () => {OnVoteClicked("no");});
+                yesChoiceButton = new Button(57, 170 + topOffset, 420, 160, "s1", choiceButtonStyle, () => { OnVoteClicked("yes"); });
+                noChoiceButton = new Button(620, 170 + topOffset, 420, 160, "s2", choiceButtonStyle, () => { OnVoteClicked("no"); });
                 yesChoiceLabel = new Label(57, 170 + topOffset, 420, 160, "I have", choiceLabelStyle);
                 noChoiceLabel = new Label(620, 170 + topOffset, 420, 160, "I have never", choiceLabelStyle);
                 rootElement.AddChild(yesChoiceButton);
@@ -74,16 +74,17 @@ namespace game.ui {
             } else if (state == 1) {
                 var votedSituation = activeMinigame.ActiveQuestionVotes[NetworkManager.Instance.PlayerData.GUID];
                 if (votedSituation == "yes") {
-                    yesChoiceButton = new Button(57, 170 + topOffset, 420, 160, "s1", choiceButtonStyle, () => {OnVoteClicked("yes");});
+                    yesChoiceButton = new Button(57, 170 + topOffset, 420, 160, "s1", choiceButtonStyle, () => { OnVoteClicked("yes"); });
                     yesChoiceLabel = new Label(57, 170 + topOffset, 420, 160, "I have", choiceLabelStyle);
                     rootElement.AddChild(yesChoiceButton);
                     rootElement.AddChild(yesChoiceLabel);
                 } else {
-                    noChoiceButton = new Button(57, 170 + topOffset, 420, 160, "s2", choiceButtonStyle, () => {OnVoteClicked("no");});
+                    noChoiceButton = new Button(57, 170 + topOffset, 420, 160, "s2", choiceButtonStyle, () => { OnVoteClicked("no"); });
                     noChoiceLabel = new Label(57, 170 + topOffset, 420, 160, "I have never", choiceLabelStyle);
                     rootElement.AddChild(noChoiceButton);
                     rootElement.AddChild(noChoiceLabel);
                 }
+
                 var totalVotes = NetworkManager.Instance.ActiveRoom.Players.Count;
                 var remainingVotes = activeMinigame.RemainingVotes;
                 var totalVoted = totalVotes - remainingVotes;
@@ -103,11 +104,13 @@ namespace game.ui {
                 foreach (var playerGUID in players.Keys.ToList().Sorted()) {
                     var player = players[playerGUID];
                     var x = index * spriteSize + (index == 0 ? 0 : spacing);
-                    var playerAvatar = new PlayerAvatarElement(x, bounds.height / 2f - spriteSize / 2f + topOffset, player.Username, player.AvatarIndex, playerNameStyle, () => {}, spriteSize);
+                    var playerAvatar = new PlayerAvatarElement(x, bounds.height / 2f - spriteSize / 2f + topOffset, player.Username, player.AvatarIndex, playerNameStyle, () => { }, spriteSize);
                     index++;
                     rootElement.AddChild(playerAvatar);
-                    var sprite = new Sprite($"data/sprites/{results[playerGUID]}Icon.png", true, false);
-                    rootElement.AddChild(new Image(x+spriteSize-64f, bounds.height / 2f + spriteSize/2f + topOffset - 64f, 64f, 64f, sprite));
+                    if (!string.IsNullOrEmpty(results[playerGUID])) {
+                        var sprite = new game.Sprite($"data/sprites/{results[playerGUID]}Icon.png", true, false);
+                        rootElement.AddChild(new Image(x + spriteSize - 64f, bounds.height / 2f + spriteSize / 2f + topOffset - 64f, 64f, 64f, sprite));
+                    }
                 }
             }
 
@@ -134,6 +137,7 @@ namespace game.ui {
 
         private static List<string> questionList;
         private static bool isQuestionListInitialized;
+
         public static string GetQuestion(int questionIndex) {
             if (!isQuestionListInitialized) InitializeQuestionList();
             return questionList[questionIndex];

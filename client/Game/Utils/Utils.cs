@@ -1,4 +1,6 @@
 using System;
+using System.Drawing;
+using System.IO;
 
 namespace game.utils {
     public static class Utils {
@@ -70,6 +72,20 @@ namespace game.utils {
         public static float Closest(float value, params float[] values) {
             Array.Sort(values);
             return ClosestSorted(value, values);
+        }
+
+        /// <summary>
+        /// Ugly workaround for ensuring the file handle for a bitmap is closed after reading it.
+        /// I have encountered Out of Memory exceptions on Graphics.DrawImage because of this 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static Bitmap ReadBitmapFromFile(string path) {
+            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
+                using (var bmp = new Bitmap(stream)) {
+                    return new Bitmap(bmp);
+                }
+            }
         }
     }
 }

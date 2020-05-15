@@ -40,9 +40,9 @@ namespace game {
             var textFieldStyle = TextFieldStyle.Default.Alter(backgroundNormal:Color.Transparent,backgroundFocused:Color.Transparent, borderNormal:Color.FromArgb(255,255,255,0), borderFocused:Color.FromArgb(255,255,255,0), borderSizeNormal: 4f, borderSizeFocused:4f);
             var checkboxStyle = CheckboxStyle.Default.Alter(tickColorNormal: Color.FromArgb(255,255,255,0),tickColorHover: Color.FromArgb(255,255,255,0),tickColorPressed: Color.FromArgb(255,255,255,0));
 
-            backgroundImage1 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/fellini/menu_1.png", false, false)) {x = 0f};
-            backgroundImage2 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/fellini/menu_2.png", false, false)) {x = -100000f};
-            backgroundImage3 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/fellini/menu_3.png", false, false)) {x = -100000f};
+            backgroundImage1 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new game.Sprite("data/sprites/locations/fellini/menu_1.png", false, false)) {x = 0f};
+            backgroundImage2 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new game.Sprite("data/sprites/locations/fellini/menu_2.png", false, false)) {x = -100000f};
+            backgroundImage3 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new game.Sprite("data/sprites/locations/fellini/menu_3.png", false, false)) {x = -100000f};
             Root.AddChild(backgroundImage1);
             Root.AddChild(backgroundImage2);
             Root.AddChild(backgroundImage3);

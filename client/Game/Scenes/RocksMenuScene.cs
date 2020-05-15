@@ -42,9 +42,9 @@ namespace game {
             var textFieldStyle = TextFieldStyle.Default.Alter(backgroundNormal:textFieldBackground,backgroundFocused:textFieldBackground, borderNormal:Color.Transparent, borderFocused:Color.Transparent, borderSizeNormal: 4f, borderSizeFocused:4f, caretNormal:textFieldText, caretFocused:textFieldText, textNormal:textFieldText, textFocused:textFieldText);
             var checkboxStyle = CheckboxStyle.Default.Alter(backgroundColorNormal: textFieldBackground, backgroundColorHover: textFieldBackground,backgroundColorPressed: textFieldBackground,borderColorNormal: Color.Transparent, borderColorHover: Color.Transparent, borderColorPressed: Color.Transparent, tickColorHover:textFieldText, tickColorNormal:textFieldText, tickColorPressed:textFieldText); 
 
-            backgroundImage1 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/rocks/menu_1.jpg", false, false)) {x = 0f};
-            backgroundImage2 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/rocks/menu_2.jpg", false, false)) {x = -100000f};
-            backgroundImage3 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/rocks/menu_3.jpg", false, false)) {x = -100000f};
+            backgroundImage1 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new game.Sprite("data/sprites/locations/rocks/menu_1.jpg", false, false)) {x = 0f};
+            backgroundImage2 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new game.Sprite("data/sprites/locations/rocks/menu_2.jpg", false, false)) {x = -100000f};
+            backgroundImage3 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new game.Sprite("data/sprites/locations/rocks/menu_3.jpg", false, false)) {x = -100000f};
             Root.AddChild(backgroundImage1);
             Root.AddChild(backgroundImage2);
             Root.AddChild(backgroundImage3);

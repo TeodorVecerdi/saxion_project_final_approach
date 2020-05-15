@@ -163,6 +163,7 @@
         <Compile Include="Scenes\RocksMenuScene.cs" />
         <Compile Include="Scenes\Scene.cs" />
         <Compile Include="Scenes\Test.cs" />
+        <Compile Include="Sprite.cs" />
         <Compile Include="UI\Button.cs" />
         <Compile Include="UI\Checkbox.cs" />
         <Compile Include="UI\Custom\ChatElement.cs" />

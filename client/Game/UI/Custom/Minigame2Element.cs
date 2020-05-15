@@ -55,7 +55,7 @@ namespace game.ui {
             var backgroundPath = "data/sprites/minigames/2/background";
             backgroundPath += (isOwner ? "_owner" : "") + ".png";
             var topOffset = isOwner ? 0f : 50;
-            rootElement.AddChild(new Image(0, 0, bounds.width, bounds.height, new Sprite(backgroundPath, true, false)));
+            rootElement.AddChild(new Image(0, 0, bounds.width, bounds.height, new game.Sprite(backgroundPath, true, false)));
 
             // question
             questionLabel = new Label(93, 18, 912, 125, activeMinigameCopy.ActiveQuestion.Question, questionStyle);

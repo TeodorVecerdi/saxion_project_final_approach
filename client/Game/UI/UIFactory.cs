@@ -30,7 +30,7 @@ namespace game.ui {
             roomContainer.AddChild(new Label(40, 30, 500f - 80f, 70f, roomDesc, RoomDescStyleFellini));
             roomContainer.AddChild(new Button(40, 110, 500f- 80f, 40f, "JOIN", RoomButtonStyleFellini, () => NetworkManager.Instance.TryJoinRoom(roomId, "")));
             if (isNSFW) {
-                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
+                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new game.Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
                 roomContainer.AddChild(new Label(500 - 32 - 40 - 32 - 24, 0, 50, 32, "NSFW", RoomDescStyleFellini.Alter(textAlignmentNormal: FontLoader.RightCenterAlignment)));
             }
 
@@ -56,7 +56,7 @@ namespace game.ui {
                 NetworkManager.Instance.TryJoinRoom(roomId, roomCode);
             }));
             if (isNSFW) {
-                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
+                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new game.Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
                 roomContainer.AddChild(new Label(500 - 32 - 40 - 32 - 24, 0, 50, 32, "NSFW", RoomDescStyleFellini.Alter(textAlignmentNormal: FontLoader.RightCenterAlignment)));
             }
 
@@ -74,7 +74,7 @@ namespace game.ui {
             roomContainer.AddChild(new Label(40, 30, 500f - 80f, 70f, roomDesc, RoomDescStyleCoffee));
             roomContainer.AddChild(new Button(40, 110, 500f- 80f, 40f, "JOIN", RoomButtonStyleCoffee, () => NetworkManager.Instance.TryJoinRoom(roomId, "")));
             if (isNSFW) {
-                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
+                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new game.Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
                 roomContainer.AddChild(new Label(500 - 32 - 40 - 32 - 24, 0, 50, 32, "NSFW", RoomDescStyleCoffee.Alter(textAlignmentNormal: FontLoader.RightCenterAlignment)));
             }
 
@@ -100,7 +100,7 @@ namespace game.ui {
                 NetworkManager.Instance.TryJoinRoom(roomId, roomCode);
             }));
             if (isNSFW) {
-                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
+                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new game.Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
                 roomContainer.AddChild(new Label(500 - 32 - 40 - 32 - 24, 0, 50, 32, "NSFW", RoomDescStyleCoffee.Alter(textAlignmentNormal: FontLoader.RightCenterAlignment)));
             }
 
@@ -119,7 +119,7 @@ namespace game.ui {
             roomContainer.AddChild(new Label(40, 30, 500f - 80f, 70f, roomDesc, RoomDescStyleRocks));
             roomContainer.AddChild(new Button(40, 110, 500f- 80f, 40f, "JOIN", RoomButtonStyleRocks, () => NetworkManager.Instance.TryJoinRoom(roomId, "")));
             if (isNSFW) {
-                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
+                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new game.Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
                 roomContainer.AddChild(new Label(500 - 32 - 40 - 32 - 24, 0, 50, 32, "NSFW", RoomDescStyleRocks.Alter(textAlignmentNormal: FontLoader.RightCenterAlignment)));
             }
 
@@ -145,7 +145,7 @@ namespace game.ui {
                 NetworkManager.Instance.TryJoinRoom(roomId, roomCode);
             }));
             if (isNSFW) {
-                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
+                roomContainer.AddChild(new Image(500 - 32 - 40, 0, 32, 32, new game.Sprite("data/sprites/warning.png", false, false) {scale = 32f / 480f}));
                 roomContainer.AddChild(new Label(500 - 32 - 40 - 32 - 24, 0, 50, 32, "NSFW", RoomDescStyleRocks.Alter(textAlignmentNormal: FontLoader.RightCenterAlignment)));
             }
 
@@ -153,8 +153,8 @@ namespace game.ui {
         }
 
         public static SpriteButton CreateAvatarSelectionEntry(float x, float y, string fileName, SpriteButton avatarButton, Pivot avatarContainer, ButtonStyle avatarButtonStyle) {
-            return new SpriteButton(x, y, 128, 128, "", new Sprite(fileName, true), avatarButtonStyle, () => {
-                avatarButton.Sprite = new Sprite(fileName, true);
+            return new SpriteButton(x, y, 128, 128, "", new game.Sprite(fileName, true), avatarButtonStyle, () => {
+                avatarButton.Sprite = new game.Sprite(fileName, true);
                 avatarButton.ShouldRepaint = true;
                 avatarButton.x = 856f;
                 avatarContainer.x = -100000f;

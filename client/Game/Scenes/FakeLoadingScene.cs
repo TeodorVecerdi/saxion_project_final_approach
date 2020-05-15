@@ -24,9 +24,9 @@ namespace game {
 
         public override void Load() {
             timeLeft = moveTime + stayTime;
-            Root.AddChild(new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/fakeLoading.png")));
+            Root.AddChild(new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new game.Sprite("data/sprites/fakeLoading.png")));
             Root.AddChild(fakeOpacity = new RectangleElement(0, 0, Globals.WIDTH, Globals.HEIGHT, Color.Transparent, Color.Transparent, 0f));
-            Root.AddChild(logo = new Image(542, 96, new Sprite("data/sprites/logo.png")));
+            Root.AddChild(logo = new Image(542, 96, new game.Sprite("data/sprites/logo.png")));
             Root.AddChild(extra = new Label(0, Globals.HEIGHT/2f + 200, Globals.WIDTH, 100, "Loading extra assets. Please wait.", LabelStyle.Default.Alter(textAlignmentNormal:FontLoader.CenterCenterAlignment, textSizeNormal:48f, fontLoaderInstance:FontLoader.SourceCodeBold)) {x = -100000f});
             Root.AddChild(extra2 = new Label(0, Globals.HEIGHT/2f + 250, Globals.WIDTH, 100, "It should take less than a minute.", LabelStyle.Default.Alter(textAlignmentNormal:FontLoader.CenterCenterAlignment, textSizeNormal:48f, fontLoaderInstance:FontLoader.SourceCodeBold)) {x = -100000f});
             IsLoaded = true;

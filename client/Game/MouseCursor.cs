@@ -1,5 +1,7 @@
 using GXPEngine;
 using GXPEngine.Core;
+using game.utils;
+using Debug = game.utils.Debug;
 
 namespace game {
     public class MouseCursor : GameObject {
@@ -13,11 +15,11 @@ namespace game {
 
         public MouseCursor() {
             name = "Mouse Cursor";
-            normal = new Sprite("data/sprites/cursors/cursor_normal.png") {scale = 0.05f};
+            normal = new game.Sprite("data/sprites/cursors/cursor_normal.png") {scale = 0.05f};
             normal.SetOrigin(512, 512);
-            button = new Sprite("data/sprites/cursors/cursor_button.png") {scale = 0.05f};
+            button = new game.Sprite("data/sprites/cursors/cursor_button.png") {scale = 0.05f};
             button.SetOrigin(512, 512);
-            text = new Sprite("data/sprites/cursors/cursor_text.png") {scale = 0.05f};
+            text = new game.Sprite("data/sprites/cursors/cursor_text.png") {scale = 0.05f};
             text.SetOrigin(512, 512);
             Normal();
         }
@@ -27,6 +29,8 @@ namespace game {
         public void Text() => active = text;
 
         private void Update() {
+            // var (mouseX, mouseY) = (Input.mouseX.Constrain(0, Globals.WIDTH), Input.mouseY.Constrain(0, Globals.HEIGHT));
+            // Debug.Log($"{mouseX}, {mouseY}");
             SetXY(Input.mouseX, Input.mouseY);
             if (PreventMouseEventPropagation) {
                 PreventMouseEventPropagation = false;
