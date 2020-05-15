@@ -40,9 +40,9 @@ namespace game {
             var textFieldStyle = TextFieldStyle.Default.Alter(backgroundNormal:Color.FromArgb(255,73,73,81),backgroundFocused:Color.FromArgb(255,73,73,81), borderNormal:Color.Transparent, borderFocused:Color.Transparent, borderSizeNormal: 4f, borderSizeFocused:4f, caretNormal:Color.White, caretFocused:Color.White);
             var checkboxStyle = CheckboxStyle.Default.Alter(backgroundColorNormal: Color.FromArgb(255,73,73,81), backgroundColorHover: Color.FromArgb(255,73,73,81),backgroundColorPressed: Color.FromArgb(255,73,73,81),borderColorNormal: Color.Transparent, borderColorHover: Color.Transparent, borderColorPressed: Color.Transparent); 
 
-            backgroundImage1 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/coffee_fellows/menu_1.jpg", false, false)) {x = 0f};
-            backgroundImage2 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/coffee_fellows/menu_2.jpg", false, false)) {x = -100000f};
-            backgroundImage3 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/coffee_fellows/menu_3.jpg", false, false)) {x = -100000f};
+            backgroundImage1 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/coffee_fellows/menu_1.jpg", true, false)) {x = 0f};
+            backgroundImage2 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/coffee_fellows/menu_2.jpg", true, false)) {x = -100000f};
+            backgroundImage3 = new Image(0, 0, Globals.WIDTH, Globals.HEIGHT, new Sprite("data/sprites/locations/coffee_fellows/menu_3.jpg", true, false)) {x = -100000f};
             Root.AddChild(backgroundImage1);
             Root.AddChild(backgroundImage2);
             Root.AddChild(backgroundImage3);

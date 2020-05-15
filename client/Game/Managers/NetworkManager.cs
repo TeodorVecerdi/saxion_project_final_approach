@@ -345,6 +345,7 @@ namespace game {
                 }
             });
             socket.On("client_joined", data => {
+                if(PlayerData.RoomID == "none") return;
                 var playerData = (JObject) data;
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` joined the room!");
                 ActiveRoom.Players.Add(playerData.Value<string>("guid"), new NetworkPlayer() {AvatarIndex = playerData.Value<int>("avatar"), Username = playerData.Value<string>("username"), GUID = playerData.Value<string>("guid")});
@@ -358,6 +359,7 @@ namespace game {
             });
 
             socket.On("client_disconnected", data => {
+                if(PlayerData.RoomID == "none") return;
                 var playerData = (JObject) data;
                 newestMessage = new ChatMessage("SERVER", "00000000-0000-0000-0000-000000000000", $"`{playerData.Value<string>("username")}` left the room!");
                 ActiveRoom.Players.Remove(playerData.Value<string>("guid"));
